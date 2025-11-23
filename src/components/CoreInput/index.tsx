@@ -1,7 +1,7 @@
 import { Controller, Control, FieldValues, Path, RegisterOptions } from 'react-hook-form'
 import { Input, Form } from 'antd'
 
-interface FormInputProps<T extends FieldValues> {
+interface CoreInputProps<T extends FieldValues> {
   name: Path<T>
   control: Control<T>
   label?: string
@@ -16,7 +16,7 @@ interface FormInputProps<T extends FieldValues> {
   required?: boolean
 }
 
-export function FormInput<T extends FieldValues>({
+export function CoreInput<T extends FieldValues>({
   name,
   control,
   label,
@@ -29,7 +29,7 @@ export function FormInput<T extends FieldValues>({
   password = false,
   rules,
   required = false
-}: FormInputProps<T>) {
+}: CoreInputProps<T>) {
   return (
     <Controller
       name={name}

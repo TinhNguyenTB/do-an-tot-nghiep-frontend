@@ -3,7 +3,6 @@ import { PublicLayout } from '@/components/Templates/Layout/Public'
 import { PATHS } from '@/constants/paths'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
-import UserPage from '@/pages/User'
 import { createBrowserRouter } from 'react-router-dom'
 
 export const router = createBrowserRouter([
@@ -19,9 +18,5 @@ export const router = createBrowserRouter([
         <LoginPage />
       </PublicLayout>
     )
-  },
-  {
-    path: '/users',
-    element: <UserPage />
   }
 ])

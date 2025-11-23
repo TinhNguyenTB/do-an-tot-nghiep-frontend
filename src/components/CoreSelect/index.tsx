@@ -15,7 +15,7 @@ interface Props<TOption extends Record<string, any>, TFormValues extends Record<
   disabled?: boolean
 }
 
-export function FormSelect<
+export function CoreSelect<
   TOption extends Record<string, any>,
   TFormValues extends Record<string, any>
 >({

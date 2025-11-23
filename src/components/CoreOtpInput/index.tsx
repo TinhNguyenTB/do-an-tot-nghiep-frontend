@@ -2,7 +2,7 @@ import { Control, Controller, FieldValues, Path, RegisterOptions } from 'react-h
 import { Input, Space, Form } from 'antd'
 import { useRef } from 'react'
 
-interface FormOtpInputProps<T extends FieldValues> {
+interface CoreOtpInputProps<T extends FieldValues> {
   name: Path<T>
   control: Control<T>
   label?: string
@@ -11,14 +11,14 @@ interface FormOtpInputProps<T extends FieldValues> {
   required?: boolean
 }
 
-export function FormOtpInput<T extends FieldValues>({
+export function CoreOtpInput<T extends FieldValues>({
   name,
   control,
   label,
   length = 6,
   rules,
   required = false
-}: FormOtpInputProps<T>) {
+}: CoreOtpInputProps<T>) {
   const inputsRef = useRef<Array<HTMLInputElement | null>>([])
 
   return (
