@@ -65,7 +65,9 @@ export function CoreOtpInput<T extends FieldValues>({
               {Array.from({ length }).map((_, index) => (
                 <Input
                   key={index}
-                  ref={(el) => (inputsRef.current[index] = el?.input || null)}
+                  ref={(el) => {
+                    inputsRef.current[index] = el?.input || null
+                  }}
                   maxLength={1}
                   style={{ width: 40, textAlign: 'center' }}
                   value={otpValue[index] || ''}

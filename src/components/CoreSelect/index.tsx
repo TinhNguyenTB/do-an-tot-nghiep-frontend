@@ -1,4 +1,4 @@
-import { Control, Controller, Path, RegisterOptions } from 'react-hook-form'
+import { Control, Controller, Path, RegisterOptions, useFormState } from 'react-hook-form'
 import { Select, Form } from 'antd'
 import { get } from 'lodash'
 
@@ -34,33 +34,29 @@ export function CoreSelect<
     label: get(item, labelPath),
     value: get(item, valuePath)
   }))
-
-  const errorMessage = get(control._formState.errors, name)?.message
+  const { errors } = useFormState({ control })
+  const errorMessage = get(errors, name)?.message
 
   return (
     <Form.Item
       label={label}
       required={required}
-      validateStatus={control?._formState?.errors?.[name] ? 'error' : ''}
+      validateStatus={get(errors, name) ? 'error' : ''}
       help={typeof errorMessage === 'string' ? errorMessage : undefined}
     >
       <Controller
         name={name}
         control={control}
-        rules={{
-          ...(required && { required: 'Trường này là bắt buộc' }),
-          ...rules
-        }}
+        rules={rules}
         render={({ field }) => (
           <Select
             {...field}
             options={mappedOptions}
             placeholder={placeholder}
             disabled={disabled}
-            onChange={(value) => field.onChange(value)}
-            value={field.value ?? undefined}
-            allowClear
             showSearch
+            value={mappedOptions.some((opt) => opt.value === field.value) ? field.value : undefined}
+            onChange={(value) => field.onChange(value || undefined)}
             filterOption={(input, option) =>
               option?.label?.toLowerCase().includes(input.toLowerCase())
             }

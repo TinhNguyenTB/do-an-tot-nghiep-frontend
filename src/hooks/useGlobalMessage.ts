@@ -9,9 +9,9 @@ export const useGlobalMessage = () => {
   const [messageApi] = context
 
   return {
-    success: (msg: string) => messageApi.open({ type: 'success', content: msg }),
-    error: (msg: string) => messageApi.open({ type: 'error', content: msg }),
-    warning: (msg: string) => messageApi.open({ type: 'warning', content: msg }),
-    info: (msg: string) => messageApi.open({ type: 'info', content: msg })
+    toastSuccess: (msg: string) => messageApi.open({ type: 'success', content: msg }),
+    toastError: (msg: string) => messageApi.open({ type: 'error', content: msg }),
+    toastWarning: (msg: string) => messageApi.open({ type: 'warning', content: msg }),
+    toastInfo: (msg: string) => messageApi.open({ type: 'info', content: msg })
   }
 }

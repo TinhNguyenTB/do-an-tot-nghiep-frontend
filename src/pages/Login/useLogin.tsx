@@ -15,7 +15,7 @@ export function useLogin() {
   const { t } = useTranslation(TRANSLATION.AUTH)
   const navigate = useNavigate()
   const { handleSubmit, control } = useForm<LoginFormValues>()
-  const { success, error } = useGlobalMessage()
+  const { toastSuccess, toastError } = useGlobalMessage()
   const onSubmit = handleSubmit(async (data: LoginFormValues) => {
     try {
       const res = await login(data)
@@ -23,11 +23,11 @@ export function useLogin() {
         // Lưu token vào localStorage
         const token = res.data.token
         localStorage.setItem('token', token)
-        success(t('login.success'))
+        toastSuccess(t('login.success'))
         navigate(PATHS.HOME)
       }
     } catch (e) {
-      error(t('login.error'))
+      toastError(t('login.error'))
       console.error('Login failed:', e)
     }
   })
