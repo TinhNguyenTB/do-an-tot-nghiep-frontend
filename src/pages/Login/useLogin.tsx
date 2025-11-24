@@ -1,4 +1,4 @@
-import { PATHS } from '@/constants/paths'
+import { MENU_URL } from '@/constants/menuUrl'
 import { TRANSLATION } from '@/constants/translates'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { login } from '@/services/auth/login'
@@ -24,7 +24,7 @@ export function useLogin() {
         const token = res.data.token
         localStorage.setItem('token', token)
         toastSuccess(t('login.success'))
-        navigate(PATHS.HOME)
+        navigate(MENU_URL.HOME)
       }
     } catch (e) {
       toastError(t('login.error'))

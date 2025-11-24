@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom'
-import { PATHS } from '@/constants/paths'
+import { MENU_URL } from '@/constants/menuUrl'
 
 interface Props {
   children: JSX.Element
@@ -7,5 +7,5 @@ interface Props {
 
 export const PublicLayout = ({ children }: Props) => {
   const token = localStorage.getItem('token')
-  return token ? <Navigate to={PATHS.HOME} replace /> : children
+  return token ? <Navigate to={MENU_URL.HOME} replace /> : children
 }
