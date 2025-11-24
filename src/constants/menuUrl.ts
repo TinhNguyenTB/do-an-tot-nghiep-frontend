@@ -1,5 +1,6 @@
 export const MENU_URL = {
   HOME: '/',
   LOGIN: '/login',
-  SUBSCRIPTIONS: '/subscriptions'
+  SUBSCRIPTIONS: '/subscriptions',
+  ACCESS_DENIED: '/access-denied'
 }

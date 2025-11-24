@@ -10,6 +10,7 @@ export interface BaseResponse<T> {
   message?: string
   data: T
 }
+
 export interface PaginationMeta {
   totalItems: number
   totalPages: number

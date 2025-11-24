@@ -9,12 +9,10 @@ const axiosInstance = axios.create({
   withCredentials: true
 })
 
+// let refreshTokenPromise = null;
+
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
     return config
   },
   (error) => Promise.reject(error)
@@ -25,6 +23,17 @@ axiosInstance.interceptors.response.use(
     return response
   },
   (error) => {
+    const status = error.response.status
+    if (status === 401) {
+      // handleLogoutAPI().then(() => {
+      //   // Dùng cookie -> xóa userInfo trong localStrorage
+      //   localStorage.removeItem("userInfo");
+      //   // Điều hướng đến trang login
+      //   location.href = "/login";
+      // });
+    }
+    const originalRequest = error.config
+
     return Promise.reject(error)
   }
 )

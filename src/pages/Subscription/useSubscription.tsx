@@ -1,10 +1,12 @@
+import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
-import { useQuerySubscriptions } from '@/services/subscription'
+import axiosInstance from '@/libs/axiosInstance'
+import { SUBSCRIPTIONS_QUERY_KEY, useQuerySubscriptions } from '@/services/subscription'
 import { Subscription } from '@/services/subscription/type'
 import { PaginationMeta } from '@/services/types'
 import { formatVND } from '@/utils/formatVND'
-import { useQueryClient } from '@tanstack/react-query'
-import { TableProps } from 'antd'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Button, Popconfirm, TableProps } from 'antd'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 const defaultFilters = {
@@ -18,9 +20,9 @@ interface ISubscriptionFilters {
 
 export const useSubscription = () => {
   const queryClient = useQueryClient()
-
+  const { toastSuccess, toastError } = useGlobalMessage()
   // --- SỬ DỤNG CUSTOM HOOK ---
-  const { pagination, queryParams, handlePageChange, handleFilterSubmit, handleFilterReset } =
+  const { queryParams, handlePageChange, handleFilterSubmit, handleFilterReset } =
     usePaginationAndFilter(defaultFilters, 5) // Khai báo kích thước mặc định là 5
 
   const { data, isLoading, error } = useQuerySubscriptions(queryParams)
@@ -62,62 +64,53 @@ export const useSubscription = () => {
       }
     },
     {
-      title: 'Name',
+      title: 'Tên',
       dataIndex: 'name',
       // Sắp xếp theo thứ tự bảng chữ cái (A-Z)
       sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
-      title: 'Price',
+      title: 'Giá',
       dataIndex: 'price',
       render: (value: string) => formatVND(value)
     },
-    { title: 'Duration (Days)', dataIndex: 'duration' }
-    // {
-    //   title: 'Actions',
-    //   render: (_, record) => {
-    //     return (
-    //       <Popconfirm
-    //         title='Delete the Subscription'
-    //         description={`Are you sure to delete plan: ${record.name}?`}
-    //         onConfirm={() => confirmDelete(record)}
-    //         okText='Yes'
-    //         cancelText='No'
-    //       >
-    //         <Button danger loading={deleteSubscriptionMutation.isPending}>
-    //           Delete
-    //         </Button>
-    //       </Popconfirm>
-    //     )
-    //   }
-    // }
+    { title: 'Số ngày sử dụng', dataIndex: 'duration' },
+    {
+      title: 'Actions',
+      render: (_, record) => {
+        return (
+          <Popconfirm
+            title='Xác nhận xóa'
+            description={`Bạn có chắc muốn xóa gói dịch vụ: ${record.name}?`}
+            onConfirm={() => confirmDelete(record)}
+            okText='Yes'
+            cancelText='No'
+          >
+            <Button danger loading={deleteSubscriptionMutation.isPending}>
+              Delete
+            </Button>
+          </Popconfirm>
+        )
+      }
+    }
   ]
 
-  // --- 4. useMutation cho thao tác Delete (Giả định có API Delete) ---
-  // const deleteSubscriptionMutation = useMutation({
-  //   mutationFn: async (subscriptionId: string) => {
-  //     // Giả định API DELETE /api/subscriptions/:id
-  //     const { data } = await axiosInstance.delete<any>(`${BASE_URL}/${subscriptionId}`)
-  //     return data
-  //   },
-  //   onSuccess: () => {
-  //     // Invalidate query để tự động re-fetch danh sách mới nhất
-  //     queryClient.invalidateQueries({ queryKey: [SUBSCRIPTIONS_QUERY_KEY] })
-  //     notification.success({
-  //       message: 'Xóa gói đăng ký thành công'
-  //     })
-  //   },
-  //   onError: (err: any) => {
-  //     notification.error({
-  //       message: 'Có lỗi xảy ra khi xóa',
-  //       description: err.message || 'Lỗi không xác định'
-  //     })
-  //   }
-  // })
+  const deleteSubscriptionMutation = useMutation({
+    mutationFn: async (subscriptionId: string) => {
+      await axiosInstance.delete(`${SUBSCRIPTIONS_QUERY_KEY}/${subscriptionId}`)
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTIONS_QUERY_KEY] })
+      toastSuccess('Xóa gói dịch vụ thành công')
+    },
+    onError: (err: any) => {
+      toastError('Có lỗi xảy ra khi xóa')
+    }
+  })
 
-  // const confirmDelete = (subscription: Subscription) => {
-  //   deleteSubscriptionMutation.mutate(subscription.id.toString())
-  // }
+  const confirmDelete = (subscription: Subscription) => {
+    deleteSubscriptionMutation.mutate(subscription.id.toString())
+  }
 
   return [
     { meta, listSubscriptions: data?.data?.content || [], isLoading, error, columns, control },
