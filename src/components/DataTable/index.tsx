@@ -28,7 +28,7 @@ export interface DataTableProps<T> extends TableProps<T> {
 
 const DataTable = <T extends object>({
   columns: initialColumns,
-  initialQueryParams = { page: 0, size: 10 },
+  initialQueryParams = { page: 1, size: 10 },
   rowKey = 'id' as keyof T,
   showResetAll = false,
   pagination,
@@ -52,7 +52,7 @@ const DataTable = <T extends object>({
     const newQueryParams = {
       ...queryParams,
       ...debouncedFilters,
-      page: 0
+      page: 1
     }
     setQueryParams(newQueryParams)
     onQueryParamsChange?.(newQueryParams) // Gọi callback khi queryParams thay đổi
@@ -74,7 +74,7 @@ const DataTable = <T extends object>({
 
     const newQueryParams = {
       ...queryParams,
-      page: pagination.current ? pagination.current - 1 : 0,
+      page: pagination.current || 1,
       size: pagination.pageSize || 10,
       sort: newSort
     }
@@ -146,8 +146,8 @@ const DataTable = <T extends object>({
   }, [initialColumns, getColumnSearchProps])
 
   const tableDataSource = externalData?.data.content || []
-  const totalElements = externalData?.data.totalElements || 0
-  const currentPage = (externalData?.data.number || 0) + 1
+  const totalElements = externalData?.data.meta.totalItems || 0
+  const currentPage = externalData?.data.meta.currentPage || 1
 
   return (
     <>

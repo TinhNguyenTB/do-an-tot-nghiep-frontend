@@ -8,8 +8,9 @@ import { createBrowserRouter } from 'react-router-dom'
 export const router = createBrowserRouter([
   {
     path: '',
-    element: <ProtectedLayout />,
-    children: [{ path: PATHS.HOME, element: <HomePage /> }]
+    element: <HomePage />
+    // element: <ProtectedLayout />,
+    // children: [{ path: PATHS.HOME, element: <HomePage /> }]
   },
   {
     path: PATHS.LOGIN,
