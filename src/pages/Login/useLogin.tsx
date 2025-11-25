@@ -18,14 +18,17 @@ export function useLogin() {
   const { toastSuccess, toastError } = useGlobalMessage()
   const onSubmit = handleSubmit(async (data: LoginFormValues) => {
     try {
-      const res = await login(data)
-      if (res.data) {
-        // Lưu token vào localStorage
-        const token = res.data.token
-        localStorage.setItem('token', token)
-        toastSuccess(t('login.success'))
-        navigate(MENU_URL.HOME)
+      // const res = await login(data)
+      // if (res.data) {
+      // const token = res.data.token
+      const userInfo = {
+        roles: ['client']
       }
+
+      localStorage.setItem('userInfo', JSON.stringify(userInfo))
+      toastSuccess(t('login.success'))
+      navigate(MENU_URL.HOME)
+      // }
     } catch (e) {
       toastError(t('login.error'))
       console.error('Login failed:', e)
