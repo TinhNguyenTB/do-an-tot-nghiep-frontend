@@ -2,37 +2,31 @@ import { MENU_URL } from '@/constants/menuUrl'
 import { TRANSLATION } from '@/constants/translates'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { login } from '@/services/auth/login'
+import { LoginFormValues, LoginResponse } from '@/services/auth/login/type'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-
-type LoginFormValues = {
-  email: string
-  password: string
-}
 
 export function useLogin() {
   const { t } = useTranslation(TRANSLATION.AUTH)
   const navigate = useNavigate()
   const { handleSubmit, control } = useForm<LoginFormValues>()
   const { toastSuccess, toastError } = useGlobalMessage()
-  const onSubmit = handleSubmit(async (data: LoginFormValues) => {
-    try {
-      // const res = await login(data)
-      // if (res.data) {
-      // const token = res.data.token
-      const userInfo = {
-        roles: ['client']
-      }
 
-      localStorage.setItem('userInfo', JSON.stringify(userInfo))
-      toastSuccess(t('login.success'))
+  const { mutate } = useMutation({
+    mutationFn: login,
+    onSuccess(data: LoginResponse) {
+      toastSuccess(data.message ?? t('login.success'))
       navigate(MENU_URL.HOME)
-      // }
-    } catch (e) {
+    },
+    onError(error: any) {
       toastError(t('login.error'))
-      console.error('Login failed:', e)
     }
+  })
+
+  const onSubmit = handleSubmit(async (data: LoginFormValues) => {
+    mutate(data)
   })
 
   return [{ control }, { onSubmit }] as const

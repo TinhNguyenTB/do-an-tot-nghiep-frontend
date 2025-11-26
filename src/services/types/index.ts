@@ -6,7 +6,7 @@ export interface QueryParams {
 }
 
 export interface BaseResponse<T> {
-  code: number
+  statusCode: number
   message?: string
   data: T
 }

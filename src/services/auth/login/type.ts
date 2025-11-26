@@ -6,9 +6,12 @@ export interface LoginFormValues {
 }
 
 export type LoginResponse = BaseResponse<{
-  authenticated: boolean
-  avatarUrl: string | null
-  email: string
-  name: string
-  token: string
+  userInfo: {
+    id: number
+    email: string
+    roles: string[]
+    organizationId: number | null
+  }
+  accessToken: string
+  refreshToken: string
 }>

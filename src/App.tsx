@@ -5,6 +5,7 @@ import { AccessDeniedPage } from '@/pages/AccessDenied'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
+import { RegisterPage } from '@/pages/Register'
 import { SubscriptionPage } from '@/pages/Subscription'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
@@ -50,6 +51,7 @@ function App() {
       <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
       {/* </Route> */}
       <Route path={MENU_URL.LOGIN} element={<LoginPage />} />
+      <Route path={MENU_URL.REGISTER} element={<RegisterPage />} />
 
       <Route path={MENU_URL.ACCESS_DENIED} element={<AccessDeniedPage />} />
       <Route path='*' element={<NotFoundPage />} />
