@@ -1,3 +1,6 @@
+import { MENU_URL } from '@/constants/menuUrl'
+import { logout } from '@/services/auth/logout'
+import { message } from 'antd'
 import axios from 'axios'
 
 const axiosInstance = axios.create({
@@ -9,8 +12,6 @@ const axiosInstance = axios.create({
   withCredentials: true
 })
 
-// let refreshTokenPromise = null;
-
 axiosInstance.interceptors.request.use(
   (config) => {
     return config
@@ -18,21 +19,73 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
+// Hàm xử lý Logout tập trung
+const handleUnauthorizedLogout = async () => {
+  await logout()
+  localStorage.removeItem('userInfo')
+  location.href = MENU_URL.LOGIN
+}
+
+// let refreshTokenPromise = null
+
 axiosInstance.interceptors.response.use(
   (response) => {
     return response
   },
-  (error) => {
-    const status = error.response.status
-    if (status === 401) {
-      // handleLogoutAPI().then(() => {
-      //   // Dùng cookie -> xóa userInfo trong localStrorage
-      //   localStorage.removeItem("userInfo");
-      //   // Điều hướng đến trang login
-      //   location.href = "/login";
-      // });
-    }
+  async (error) => {
+    const { response } = error
     const originalRequest = error.config
+
+    // --- 1. Xử lý 401 Unauthorized (Lỗi xác thực chung) ---
+    if (response?.status === 401) {
+      await handleUnauthorizedLogout()
+      return Promise.reject(error)
+    }
+
+    // --- 2. Xử lý 410 Gone (Cần Refresh Token) ---
+    // if (response?.status === 410 && originalRequest) {
+    //   if (!refreshTokenPromise) {
+    //     // Tạo Promise mới: Logic phức tạp dùng async/await
+    //     refreshTokenPromise = (async () => {
+    //       try {
+    //         const refreshToken = localStorage.getItem('refreshToken')
+
+    //         // Gọi API refreshToken
+    //         const res = await refreshTokenAPI(refreshToken)
+
+    //         // Cập nhật Token mới
+    //         const { accessToken } = res.data
+    //         localStorage.setItem('accessToken', accessToken)
+    //         axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`
+    //       } catch (refreshError) {
+    //         // Nếu refresh thất bại, logout và ném lỗi để ngăn retry
+    //         await handleUnauthorizedLogout()
+    //         return Promise.reject(refreshError)
+    //       } finally {
+    //         // Xóa promise để cho phép request refresh token mới sau này
+    //         refreshTokenPromise = null
+    //       }
+    //     })()
+    //   }
+
+    //   // Đợi refresh token xong xuôi, sau đó retry lại request gốc
+    //   try {
+    //     // Chờ Promise refresh token hoàn tất (thành công hoặc thất bại)
+    //     await refreshTokenPromise
+    //     // Retry request gốc
+    //     return axiosInstance(originalRequest)
+    //   } catch (retryError) {
+    //     // Nếu refresh token thất bại (đã bị catch bên trên và logout),
+    //     // thì retryError là lỗi từ refresh token, ta reject luôn.
+    //     return Promise.reject(retryError)
+    //   }
+    // }
+
+    // --- 3. Xử lý hiển thị lỗi chung ---
+    // Xử lý tập trung phần hiển thị thông báo lỗi trả về từ mọi API, ngoại trừ 410
+    if (response?.status !== 410) {
+      message.error(response?.data?.message || error.message)
+    }
 
     return Promise.reject(error)
   }

@@ -5,13 +5,15 @@ export interface LoginFormValues {
   password: string
 }
 
+export interface UserInfo {
+  id: number
+  email: string
+  roles: string[]
+  organizationId: number | null
+}
+
 export type LoginResponse = BaseResponse<{
-  userInfo: {
-    id: number
-    email: string
-    roles: string[]
-    organizationId: number | null
-  }
+  userInfo: UserInfo
   accessToken: string
   refreshToken: string
 }>
