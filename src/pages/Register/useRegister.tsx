@@ -1,21 +1,12 @@
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { register } from '@/services/auth/register'
+import { RegisterFormValues } from '@/services/auth/register/type'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import type { FieldPath } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-
-export interface RegisterFormValues {
-  email: string
-  password: string
-  name: string
-  organizationName?: string
-  subscriptionId: number
-}
 
 export const useRegister = () => {
   const { toastSuccess, toastError } = useGlobalMessage()
-  const navigate = useNavigate()
   const methodForm = useForm<RegisterFormValues>({ mode: 'onBlur' })
   const { trigger, handleSubmit } = methodForm
 
@@ -29,7 +20,7 @@ export const useRegister = () => {
 
   const { mutate } = useMutation({
     mutationFn: register,
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       toastSuccess('Đăng ký thành công')
       location.href = data.data.redirectUrl
     },

@@ -1,16 +1,17 @@
 import { CoreInput } from '@/components/CoreInput'
-import { Button, Form } from 'antd'
-import { LockOutlined, MailOutlined } from '@ant-design/icons'
-import { useTranslation } from 'react-i18next'
-import { useLogin } from '@/pages/Login/useLogin'
-import { TRANSLATION } from '@/constants/translates'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { TRANSLATION } from '@/constants/translates'
+import { useLogin } from '@/pages/Login/useLogin'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
+import { Button, Form } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 export function LoginPage() {
   const { t } = useTranslation(TRANSLATION.COMMON)
   const [values, handles] = useLogin()
-  const { control } = values
-  const { onSubmit } = handles
+  const { control, MENU_URL } = values
+  const { onSubmit, onRePayment } = handles
 
   return (
     <main
@@ -50,6 +51,18 @@ export function LoginPage() {
             </Button>
           </Form.Item>
         </Form>
+        <span className='text-sm flex items-center gap-2 justify-center'>
+          Chưa có tài khoản?
+          <Link className='text-blue-500' to={MENU_URL.REGISTER}>
+            Đăng ký
+          </Link>
+        </span>
+        <span className='text-sm flex items-center justify-center gap-2'>
+          Tài khoản chưa kích hoạt?
+          <Button type='link' style={{ padding: 0 }} onClick={onRePayment}>
+            Kích hoạt ngay
+          </Button>
+        </span>
       </div>
     </main>
   )

@@ -3,6 +3,7 @@ import { TRANSLATION } from '@/constants/translates'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { login } from '@/services/auth/login'
 import { LoginFormValues } from '@/services/auth/login/type'
+import { rePayment } from '@/services/user'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -24,9 +25,23 @@ export function useLogin() {
     }
   })
 
+  const { mutate: handleRePayment } = useMutation({
+    mutationFn: rePayment,
+    onSuccess: (data) => {
+      location.href = data.data.redirectUrl
+    }
+  })
+
   const onSubmit = handleSubmit((data: LoginFormValues) => {
     mutate(data)
   })
 
-  return [{ control }, { onSubmit }] as const
+  const onRePayment = handleSubmit((data: LoginFormValues) => {
+    handleRePayment(data)
+  })
+
+  return [
+    { control, MENU_URL },
+    { onSubmit, onRePayment }
+  ] as const
 }
