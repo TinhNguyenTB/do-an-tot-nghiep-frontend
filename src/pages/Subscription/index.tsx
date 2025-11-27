@@ -12,7 +12,7 @@ export const SubscriptionPage = () => {
   }
 
   return (
-    <div className='p-10'>
+    <main>
       <div
         style={{
           display: 'flex',
@@ -26,14 +26,7 @@ export const SubscriptionPage = () => {
       </div>
 
       <Form layout='vertical' onFinish={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
-        <CoreInput
-          control={control}
-          name='name'
-          label={'Tên'}
-          size='large'
-          required
-          rules={{ required: 'hihi' }}
-        />
+        <CoreInput control={control} name='name' label={'Tên'} size='large' />
         {/* Các nút Submit và Reset nằm ngang */}
         <Form.Item>
           <Space>
@@ -61,6 +54,6 @@ export const SubscriptionPage = () => {
           pageSizeOptions: ['5', '10', '20']
         }}
       />
-    </div>
+    </main>
   )
 }

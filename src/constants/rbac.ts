@@ -1,15 +1,26 @@
 export const roles = {
   CLIENT: 'client',
-  MODERATOR: 'moderator',
-  ADMIN: 'admin'
+  ORG_ADMIN: 'org_admin',
+  SUPER_ADMIN: 'super_admin'
 }
 
 export const permissions = {
-  VIEW_DASHBOARD: 'view_dashboard',
-  VIEW_SUPPORT: 'view_support',
-  VIEW_MESSAGES: 'view_messages',
-  VIEW_REVENUE: 'view_revenue',
-  VIEW_ADMIN_TOOLS: 'view_admin-tools'
+  // CLIENT
+  READ_SELF_SUBSCRIPTION: 'read_self_subscription',
+  UPDATE_SELF_PROFILE: 'update_self_profile',
+  MANAGE_SUBSCRIPTION: 'manage_subscription',
+  READ_PAYMENTS: 'read_payments',
+
+  // ORG ADMIN
+  MANAGE_ORGANIZATION_USERS: 'manage_organization_users',
+  READ_ORGANIZATION_DETAILS: 'read_organization_details',
+  UPDATE_ORGANIZATION_DETAILS: 'update_organization_details',
+
+  // SUPER ADMIN
+  MANAGE_SYSTEM_ROLES: 'manage_system_roles',
+  MANAGE_ALL_ORGANIZATIONS: 'manage_all_organizations',
+  MANAGE_ALL_SUBSCRIPTIONS: 'manage_all_subscriptions',
+  MANAGE_ALL_USERS: 'manage_all_users'
 }
 
 export interface RoleDefinition {
@@ -27,16 +38,28 @@ export interface RoleDefinitions {
 export const roleDefinitions: RoleDefinitions = {
   [roles.CLIENT]: {
     inherits: [],
-    ownPermissions: [permissions.VIEW_DASHBOARD, permissions.VIEW_SUPPORT]
+    ownPermissions: [
+      permissions.READ_SELF_SUBSCRIPTION,
+      permissions.UPDATE_SELF_PROFILE,
+      permissions.MANAGE_SUBSCRIPTION,
+      permissions.READ_PAYMENTS
+    ]
   },
-  [roles.MODERATOR]: {
-    // MODERATOR kế thừa quyền của CLIENT
+  [roles.ORG_ADMIN]: {
     inherits: [roles.CLIENT],
-    ownPermissions: [permissions.VIEW_MESSAGES]
+    ownPermissions: [
+      permissions.MANAGE_ORGANIZATION_USERS,
+      permissions.READ_ORGANIZATION_DETAILS,
+      permissions.UPDATE_ORGANIZATION_DETAILS
+    ]
   },
-  [roles.ADMIN]: {
-    // ADMIN kế thừa quyền của MODERATOR và thêm quyền riêng
-    inherits: [roles.MODERATOR],
-    ownPermissions: [permissions.VIEW_REVENUE, permissions.VIEW_ADMIN_TOOLS]
+  [roles.SUPER_ADMIN]: {
+    inherits: [roles.ORG_ADMIN],
+    ownPermissions: [
+      permissions.MANAGE_SYSTEM_ROLES,
+      permissions.MANAGE_ALL_ORGANIZATIONS,
+      permissions.MANAGE_ALL_SUBSCRIPTIONS,
+      permissions.MANAGE_ALL_USERS
+    ]
   }
 }

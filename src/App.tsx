@@ -1,3 +1,4 @@
+import { AppLayout } from '@/components/Layout'
 import { MENU_URL } from '@/constants/menuUrl'
 import { permissions, roles } from '@/constants/rbac'
 import { usePermission } from '@/hooks/usePermission'
@@ -45,13 +46,20 @@ function RBACRoute({
 function App() {
   return (
     <Routes>
-      {/* <Route path={MENU_URL.HOME} element={<Navigate to={MENU_URL.LOGIN} replace />} /> */}
-      <Route path={MENU_URL.HOME} element={<HomePage />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route element={<AppLayout />}>
+          <Route path={MENU_URL.HOME} element={<HomePage />} />
+          <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
+        </Route>
+      </Route>
+
       {/* <Route element={<RBACRoute requiredPermission={permissions.VIEW_ADMIN_TOOLS} />}> */}
-      <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
       {/* </Route> */}
-      <Route path={MENU_URL.LOGIN} element={<LoginPage />} />
-      <Route path={MENU_URL.REGISTER} element={<RegisterPage />} />
+
+      <Route element={<UnauthorizedRoutes />}>
+        <Route path={MENU_URL.LOGIN} element={<LoginPage />} />
+        <Route path={MENU_URL.REGISTER} element={<RegisterPage />} />
+      </Route>
 
       <Route path={MENU_URL.ACCESS_DENIED} element={<AccessDeniedPage />} />
       <Route path='*' element={<NotFoundPage />} />
