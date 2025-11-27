@@ -3,6 +3,6 @@ export interface Subscription {
   name: string
   duration: number
   price: string
-  userLimit: number | null
+  userLimit: number
   createdAt: string
 }

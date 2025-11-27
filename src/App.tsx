@@ -46,16 +46,18 @@ function RBACRoute({
 function App() {
   return (
     <Routes>
+      {/* các route cần login */}
       <Route element={<ProtectedRoutes />}>
         <Route element={<AppLayout />}>
           <Route path={MENU_URL.HOME} element={<HomePage />} />
-          <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
+
+          <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_SUBSCRIPTIONS} />}>
+            <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
+          </Route>
         </Route>
       </Route>
 
-      {/* <Route element={<RBACRoute requiredPermission={permissions.VIEW_ADMIN_TOOLS} />}> */}
-      {/* </Route> */}
-
+      {/* các route không cần login */}
       <Route element={<UnauthorizedRoutes />}>
         <Route path={MENU_URL.LOGIN} element={<LoginPage />} />
         <Route path={MENU_URL.REGISTER} element={<RegisterPage />} />

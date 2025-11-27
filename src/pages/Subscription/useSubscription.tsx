@@ -75,6 +75,7 @@ export const useSubscription = () => {
       render: (value: string) => formatVND(value)
     },
     { title: 'Số ngày sử dụng', dataIndex: 'duration' },
+    { title: 'Giới hạn người dùng', dataIndex: 'userLimit' },
     {
       title: 'Actions',
       render: (_, record) => {

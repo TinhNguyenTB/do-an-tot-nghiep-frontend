@@ -13,31 +13,21 @@ export const SubscriptionPage = () => {
 
   return (
     <main>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 20
-        }}
-      >
-        <h2>Table Subscriptions</h2>
+      <div className='flex items-center justify-between'>
+        <Form layout='inline' onFinish={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
+          <CoreInput control={control} name='name' label={'Tên'} />
+          {/* Các nút Submit và Reset nằm ngang */}
+          <Form.Item>
+            <Space>
+              <Button htmlType='submit' type='primary' loading={isLoading}>
+                Tìm kiếm
+              </Button>
+              <Button onClick={handleReset}>Reset</Button>
+            </Space>
+          </Form.Item>
+        </Form>
         <Button type='primary'>Thêm mới</Button>
       </div>
-
-      <Form layout='vertical' onFinish={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
-        <CoreInput control={control} name='name' label={'Tên'} size='large' />
-        {/* Các nút Submit và Reset nằm ngang */}
-        <Form.Item>
-          <Space>
-            <Button htmlType='submit' type='primary' loading={isLoading}>
-              Tìm kiếm
-            </Button>
-            <Button onClick={handleReset}>Reset</Button>
-          </Space>
-        </Form.Item>
-      </Form>
-
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}
