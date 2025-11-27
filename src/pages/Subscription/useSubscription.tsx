@@ -25,7 +25,7 @@ export const useSubscription = () => {
   const { queryParams, handlePageChange, handleFilterSubmit, handleFilterReset } =
     usePaginationAndFilter(defaultFilters, 5) // Khai báo kích thước mặc định là 5
 
-  const { data, isLoading, error } = useQuerySubscriptions(queryParams)
+  const { data, isLoading } = useQuerySubscriptions(queryParams)
 
   const { control, handleSubmit, reset } = useForm<ISubscriptionFilters>({
     defaultValues: defaultFilters
@@ -114,7 +114,7 @@ export const useSubscription = () => {
   }
 
   return [
-    { meta, listSubscriptions: data?.data?.content || [], isLoading, error, columns, control },
+    { meta, listSubscriptions: data?.data?.content || [], isLoading, columns, control },
     { handleReset, handleSubmit, handleTableChange, onSubmit }
   ] as const
 }

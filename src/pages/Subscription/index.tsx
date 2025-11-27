@@ -4,12 +4,8 @@ import { Button, Form, Space, Table } from 'antd'
 
 export const SubscriptionPage = () => {
   const [values, handles] = useSubscription()
-  const { error, isLoading, listSubscriptions, columns, control, meta } = values
+  const { isLoading, listSubscriptions, columns, control, meta } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
-
-  if (error) {
-    return <div>Lỗi tải dữ liệu: {error.message}</div>
-  }
 
   return (
     <main>
