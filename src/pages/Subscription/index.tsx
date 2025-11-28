@@ -1,28 +1,42 @@
 import { CoreInput } from '@/components/CoreInput'
 import { useSubscription } from '@/pages/Subscription/useSubscription'
 import { Button, Form, Space, Table } from 'antd'
+import { SearchOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
+import { MENU_URL } from '@/constants/menuUrl'
+import { useTranslation } from 'react-i18next'
+import { TRANSLATION } from '@/constants/translates'
 
 export const SubscriptionPage = () => {
   const [values, handles] = useSubscription()
   const { isLoading, listSubscriptions, columns, control, meta } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
+  const navigate = useNavigate()
+  const { t } = useTranslation(TRANSLATION.COMMON)
 
   return (
     <main>
       <div className='flex items-center justify-between'>
         <Form layout='inline' onFinish={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
-          <CoreInput control={control} name='name' label={'Tên'} />
+          <CoreInput
+            control={control}
+            name='name'
+            prefix={<SearchOutlined />}
+            placeholder='Nhập tên gói dịch vụ'
+          />
           {/* Các nút Submit và Reset nằm ngang */}
           <Form.Item>
             <Space>
               <Button htmlType='submit' type='primary' loading={isLoading}>
-                Tìm kiếm
+                {t('btn.search')}
               </Button>
               <Button onClick={handleReset}>Reset</Button>
             </Space>
           </Form.Item>
         </Form>
-        <Button type='primary'>Thêm mới</Button>
+        <Button type='primary' onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}>
+          {t('btn.addNew')}
+        </Button>
       </div>
       <Table
         scroll={{ x: 'max-content' }}

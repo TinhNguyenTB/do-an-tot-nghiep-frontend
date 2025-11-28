@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserInfo } from '@/services/auth/login/type'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { useTranslation } from 'react-i18next'
 
 const { Header } = Layout
 
@@ -18,6 +19,7 @@ const Navbar = () => {
 
   const { toastSuccess } = useGlobalMessage()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -53,14 +55,14 @@ const Navbar = () => {
           size={{ sm: 15, md: 30, lg: 40, xl: 50 }}
           style={{ backgroundColor: '#f56a00', fontWeight: 'bold' }}
         >
-          {user?.email.slice(0, 1).toUpperCase()}
+          {user.name.slice(0, 1).toUpperCase()}
         </Avatar>
-        <h1>{user?.email}</h1>
+        <h1>{user.name}</h1>
       </div>
       <div className='flex items-center gap-2'>
         <ThemeSwitcher />
         <LanguageSwitcher />
-        <Tooltip title='Logout'>
+        <Tooltip title={t('btn.logout')}>
           <LogoutOutlined
             style={{ fontSize: '1.5rem', cursor: 'pointer' }}
             onClick={() => mutate()}

@@ -6,6 +6,8 @@ import { usePermission } from '@/hooks/usePermission'
 import { UserInfo } from '@/services/auth/login/type'
 import { permissions } from '@/constants/rbac'
 import { MENU_URL } from '@/constants/menuUrl'
+import { useTranslation } from 'react-i18next'
+import { TRANSLATION } from '@/constants/translates'
 
 const { Sider } = Layout
 
@@ -42,46 +44,48 @@ function filterMenuByPermission(
     .filter(Boolean) as AppMenuItem[]
 }
 
-const menuItems: AppMenuItem[] = [
-  {
-    label: 'Tổ chức',
-    key: MENU_URL.ORGANIZATIONS,
-    icon: <TeamOutlined />,
-    permission: permissions.MANAGE_ALL_ORGANIZATIONS
-  },
-  {
-    label: 'Người dùng',
-    key: MENU_URL.USERS,
-    icon: <UserOutlined />,
-    permission: permissions.MANAGE_ALL_USERS
-    // children: [
-    //   {
-    //     label: 'Nhóm 1',
-    //     key: '/users/group1',
-    //     permission: 'view_group1',
-    //   },
-    //   {
-    //     label: 'Nhóm 2',
-    //     key: '/users/group2',
-    //     permission: 'view_group2',
-    //   },
-    // ],
-  },
-  {
-    label: 'Gói dịch vụ',
-    key: MENU_URL.SUBSCRIPTIONS,
-    icon: <OrderedListOutlined />,
-    permission: permissions.MANAGE_ALL_SUBSCRIPTIONS
-  }
-]
-
 const Sidebar = () => {
+  const { t } = useTranslation(TRANSLATION.COMMON)
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [selectedKey, setSelectedKey] = useState<string>(location.pathname)
 
   const user: UserInfo = JSON.parse(localStorage.getItem('userInfo')!)
   const { hasPermission } = usePermission(user.roles)
+
+  const menuItems: AppMenuItem[] = [
+    {
+      label: t('menu.organizations'),
+      key: MENU_URL.ORGANIZATIONS,
+      icon: <TeamOutlined />,
+      permission: permissions.MANAGE_ALL_ORGANIZATIONS
+    },
+    {
+      label: t('menu.users'),
+      key: MENU_URL.USERS,
+      icon: <UserOutlined />,
+      permission: permissions.MANAGE_ALL_USERS
+      // children: [
+      //   {
+      //     label: 'Nhóm 1',
+      //     key: '/users/group1',
+      //     permission: 'view_group1',
+      //   },
+      //   {
+      //     label: 'Nhóm 2',
+      //     key: '/users/group2',
+      //     permission: 'view_group2',
+      //   },
+      // ],
+    },
+    {
+      label: t('menu.subscriptions'),
+      key: MENU_URL.SUBSCRIPTIONS,
+      icon: <OrderedListOutlined />,
+      permission: permissions.MANAGE_ALL_SUBSCRIPTIONS
+    }
+  ]
+
   const filteredItems = filterMenuByPermission(menuItems, hasPermission)
 
   // update selectedKey when URL change

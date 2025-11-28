@@ -8,6 +8,7 @@ export interface LoginFormValues {
 export interface UserInfo {
   id: number
   email: string
+  name: string
   roles: string[]
   organizationId: number | null
 }

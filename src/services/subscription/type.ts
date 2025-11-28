@@ -6,3 +6,10 @@ export interface Subscription {
   userLimit: number
   createdAt: string
 }
+
+export interface SubscriptionFormValues {
+  name: string
+  duration: number
+  price: string
+  userLimit: number
+}

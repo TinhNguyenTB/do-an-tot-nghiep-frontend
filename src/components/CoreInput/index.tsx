@@ -6,7 +6,7 @@ interface CoreInputProps<T extends FieldValues> {
   control: Control<T>
   label?: string
   placeholder?: string
-  type?: string
+  type?: 'text' | 'number'
   disabled?: boolean
   prefix?: React.ReactNode
   size?: 'small' | 'middle' | 'large'

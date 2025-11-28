@@ -8,6 +8,7 @@ import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
 import { RegisterPage } from '@/pages/Register'
 import { SubscriptionPage } from '@/pages/Subscription'
+import { SaveSubscription } from '@/pages/Subscription/save'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 const ProtectedRoutes = () => {
@@ -53,6 +54,8 @@ function App() {
 
           <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_SUBSCRIPTIONS} />}>
             <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
+            <Route path={`${MENU_URL.SUBSCRIPTIONS}/addNew`} element={<SaveSubscription />} />
+            <Route path={`${MENU_URL.SUBSCRIPTIONS}/:id`} element={<SaveSubscription />} />
           </Route>
         </Route>
       </Route>

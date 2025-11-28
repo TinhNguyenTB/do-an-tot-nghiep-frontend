@@ -7,6 +7,17 @@
   },
   "btn": {
     "login": "Đăng nhập",
-    "register": "Đăng ký"
+    "logout": "Đăng xuất",
+    "register": "Đăng ký",
+    "addNew": "Thêm mới",
+    "edit": "Chỉnh sửa",
+    "search": "Tìm kiếm",
+    "cancel": "Hủy",
+    "saveChanges": "Lưu thay đổi"
+  },
+  "menu": {
+    "organizations": "Tổ chức",
+    "users": "Người dùng",
+    "subscriptions": "Gói dịch vụ"
   }
 }

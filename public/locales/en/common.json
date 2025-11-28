@@ -7,6 +7,17 @@
   },
   "btn": {
     "login": "Login",
-    "register": "Register"
+    "logout": "Logout",
+    "register": "Register",
+    "addNew": "Add new",
+    "edit": "Edit",
+    "search": "Search",
+    "cancel": "Cancel",
+    "saveChanges": "Save changes"
+  },
+  "menu": {
+    "organizations": "Organizations",
+    "users": "Users",
+    "subscriptions": "Subscriptions"
   }
 }
