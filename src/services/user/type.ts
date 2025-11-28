@@ -10,3 +10,14 @@ export type RePaymentResponse = BaseResponse<{
   paymentId: number
   redirectUrl: string
 }>
+
+export interface User {
+  id: number
+  name: string
+  email: string
+  status: string
+  organizationId: number | null
+  organizationName: string | null
+  createdAt: string
+  roles: string[]
+}
