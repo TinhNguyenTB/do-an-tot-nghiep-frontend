@@ -1,12 +1,13 @@
 import { CoreInput } from '@/components/CoreInput'
+import { CoreSelect } from '@/components/CoreSelect'
 import { TRANSLATION } from '@/constants/translates'
-import { useSaveSubscription } from '@/pages/Subscription/save/useSaveSubscription'
+import { useSaveUser } from '@/pages/User/save/useSaveUser'
 import { Button, Col, Form, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
 
-export const SaveSubscriptionPage = () => {
+export const SaveUserPage = () => {
   const { t } = useTranslation(TRANSLATION.COMMON)
-  const [values, handles] = useSaveSubscription()
+  const [values, handles] = useSaveUser()
   const { methodForm, id } = values
   const { onSubmit, onCancel } = handles
   const { control } = methodForm
@@ -18,7 +19,7 @@ export const SaveSubscriptionPage = () => {
           <CoreInput
             control={control}
             name='name'
-            label='Tên gói dịch vụ'
+            label='Tên'
             required
             rules={{ required: t('validation.required') }}
           />
@@ -26,30 +27,39 @@ export const SaveSubscriptionPage = () => {
         <Col xs={24} md={12} lg={6}>
           <CoreInput
             control={control}
-            name='price'
-            label='Giá'
-            type='number'
+            name='email'
+            label='Email'
             required
-            rules={{ required: t('validation.required') }}
+            rules={{
+              required: t('validation.required'),
+              pattern: { value: /^\S+@\S+$/, message: t('validation.email') }
+            }}
           />
         </Col>
         <Col xs={24} md={12} lg={6}>
-          <CoreInput
+          <CoreSelect
             control={control}
-            name='duration'
-            label='Số ngày sử dụng'
-            type='number'
-            required
-            rules={{ required: t('validation.required') }}
+            name='organizationId'
+            label='Tổ chức'
+            options={[
+              { id: 1, name: 'Basic' },
+              { id: 2, name: 'Premium' },
+              { id: 3, name: 'Enterprise' }
+            ]}
           />
         </Col>
         <Col xs={24} md={12} lg={6}>
-          <CoreInput
+          <CoreSelect
             control={control}
-            name='userLimit'
-            label='Giới hạn người dùng'
-            type='number'
+            name='roles'
+            label='Vai trò'
             required
+            mode='multiple'
+            options={[
+              { id: 1, name: 'Basic' },
+              { id: 2, name: 'Premium' },
+              { id: 3, name: 'Enterprise' }
+            ]}
             rules={{ required: t('validation.required') }}
           />
         </Col>

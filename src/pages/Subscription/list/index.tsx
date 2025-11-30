@@ -1,15 +1,15 @@
 import { CoreInput } from '@/components/CoreInput'
+import { useListSubscription } from '@/pages/Subscription/list/useListSubscription'
 import { Button, Form, Space, Table } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { useTranslation } from 'react-i18next'
 import { TRANSLATION } from '@/constants/translates'
-import { useUser } from '@/pages/User/useUser'
 
-export const UserPage = () => {
-  const [values, handles] = useUser()
-  const { isLoading, listUsers, columns, control, meta } = values
+export const ListSubscriptionPage = () => {
+  const [values, handles] = useListSubscription()
+  const { isLoading, listSubscriptions, columns, control, meta } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
   const navigate = useNavigate()
   const { t } = useTranslation(TRANSLATION.COMMON)
@@ -22,13 +22,7 @@ export const UserPage = () => {
             control={control}
             name='name'
             prefix={<SearchOutlined />}
-            placeholder='Nhập tên người dùng'
-          />
-          <CoreInput
-            control={control}
-            name='email'
-            prefix={<SearchOutlined />}
-            placeholder='Nhập email'
+            placeholder='Nhập tên gói dịch vụ'
           />
           {/* Các nút Submit và Reset nằm ngang */}
           <Form.Item>
@@ -40,14 +34,14 @@ export const UserPage = () => {
             </Space>
           </Form.Item>
         </Form>
-        <Button type='primary' onClick={() => navigate(`${MENU_URL.USERS}/addNew`)}>
+        <Button type='primary' onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}>
           {t('btn.addNew')}
         </Button>
       </div>
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}
-        dataSource={listUsers}
+        dataSource={listSubscriptions}
         rowKey={'id'}
         loading={isLoading}
         pagination={{

@@ -21,3 +21,10 @@ export interface User {
   createdAt: string
   roles: string[]
 }
+
+export interface UserFormValues {
+  name: string
+  email: string
+  organizationId: number | null
+  roles: string[]
+}

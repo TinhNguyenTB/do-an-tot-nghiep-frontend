@@ -1,5 +1,5 @@
 import { Control, Controller, Path, RegisterOptions, useFormState } from 'react-hook-form'
-import { Select, Form } from 'antd'
+import { Select, Form, SelectProps } from 'antd'
 import { get } from 'lodash'
 
 interface Props<TOption extends Record<string, any>, TFormValues extends Record<string, any>> {
@@ -13,6 +13,7 @@ interface Props<TOption extends Record<string, any>, TFormValues extends Record<
   required?: boolean
   rules?: RegisterOptions<TFormValues, Path<TFormValues>>
   disabled?: boolean
+  mode?: SelectProps['mode']
 }
 
 export function CoreSelect<
@@ -28,7 +29,8 @@ export function CoreSelect<
   valuePath = 'id' as Path<TOption>,
   required = false,
   rules = {},
-  disabled = false
+  disabled = false,
+  mode
 }: Props<TOption, TFormValues>) {
   const mappedOptions = options.map((item) => ({
     label: get(item, labelPath),
@@ -51,12 +53,32 @@ export function CoreSelect<
         render={({ field }) => (
           <Select
             {...field}
+            mode={mode}
             options={mappedOptions}
             placeholder={placeholder}
             disabled={disabled}
             showSearch
-            value={mappedOptions.some((opt) => opt.value === field.value) ? field.value : undefined}
-            onChange={(value) => field.onChange(value || undefined)}
+            // value={mappedOptions.some((opt) => opt.value === field.value) ? field.value : undefined}
+            // onChange={(value) => field.onChange(value || undefined)}
+            value={
+              mode === 'multiple' || mode === 'tags'
+                ? Array.isArray(field.value)
+                  ? field.value
+                  : []
+                : field.value
+            }
+            // THAY ĐỔI 3: Điều chỉnh onChange để xử lý giá trị khi chọn nhiều
+            // Khi mode='multiple', value luôn là mảng (hoặc []).
+            // field.onChange xử lý mảng này trực tiếp.
+            onChange={(value) => {
+              if (mode === 'multiple' || mode === 'tags') {
+                // Nếu chọn nhiều, Ant Design Select trả về mảng (hoặc [] nếu clear hết)
+                field.onChange(value)
+              } else {
+                // Nếu chọn đơn, giá trị có thể là undefined khi clear
+                field.onChange(value || undefined)
+              }
+            }}
             filterOption={(input, option) =>
               option?.label?.toLowerCase().includes(input.toLowerCase())
             }

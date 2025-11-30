@@ -7,9 +7,10 @@ import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
 import { RegisterPage } from '@/pages/Register'
-import { SubscriptionPage } from '@/pages/Subscription'
-import { SaveSubscription } from '@/pages/Subscription/save'
-import { UserPage } from '@/pages/User'
+import { ListSubscriptionPage } from '@/pages/Subscription/list'
+import { SaveSubscriptionPage } from '@/pages/Subscription/save'
+import { ListUserPage } from '@/pages/User/list'
+import { SaveUserPage } from '@/pages/User/save'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 const ProtectedRoutes = () => {
@@ -54,15 +55,15 @@ function App() {
           <Route path={MENU_URL.HOME} element={<HomePage />} />
 
           <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_SUBSCRIPTIONS} />}>
-            <Route path={MENU_URL.SUBSCRIPTIONS} element={<SubscriptionPage />} />
-            <Route path={`${MENU_URL.SUBSCRIPTIONS}/addNew`} element={<SaveSubscription />} />
-            <Route path={`${MENU_URL.SUBSCRIPTIONS}/:id`} element={<SaveSubscription />} />
+            <Route path={MENU_URL.SUBSCRIPTIONS} element={<ListSubscriptionPage />} />
+            <Route path={`${MENU_URL.SUBSCRIPTIONS}/addNew`} element={<SaveSubscriptionPage />} />
+            <Route path={`${MENU_URL.SUBSCRIPTIONS}/:id`} element={<SaveSubscriptionPage />} />
           </Route>
 
           <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_USERS} />}>
-            <Route path={MENU_URL.USERS} element={<UserPage />} />
-            {/* <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveSubscription />} />
-            <Route path={`${MENU_URL.USERS}/:id`} element={<SaveSubscription />} /> */}
+            <Route path={MENU_URL.USERS} element={<ListUserPage />} />
+            <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
+            <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} />
           </Route>
         </Route>
       </Route>

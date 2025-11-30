@@ -1,41 +1,45 @@
+import { MENU_URL } from '@/constants/menuUrl'
+import { UserStatus } from '@/enums'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
 import axiosInstance from '@/libs/axiosInstance'
-import { SUBSCRIPTIONS_QUERY_KEY, useQuerySubscriptions } from '@/services/subscription'
-import { Subscription } from '@/services/subscription/type'
 import { PaginationMeta } from '@/services/types'
-import { formatVND } from '@/utils/formatVND'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Popconfirm, Space, TableProps } from 'antd'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useQueryUsers, USERS_QUERY_KEY } from '@/services/user'
+import { User } from '@/services/user/type'
+import { formatRoleName, getRoleColor } from '@/utils/roleUtils'
+import { formatUserStatusName, getUserStatusColor } from '@/utils/statusUtils'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Popconfirm, Space, TableProps, Tag } from 'antd'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { MENU_URL } from '@/constants/menuUrl'
 
 const defaultFilters = {
-  name: ''
+  name: '',
+  email: ''
 }
 
 // Định nghĩa kiểu dữ liệu cho form tìm kiếm
-interface ISubscriptionFilters {
+interface IUserFilters {
   name: string
+  email: string
 }
 
-export const useSubscription = () => {
+export const useListUser = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { toastSuccess } = useGlobalMessage()
-  // --- SỬ DỤNG CUSTOM HOOK ---
+
   const { queryParams, handlePageChange, handleFilterSubmit, handleFilterReset } =
-    usePaginationAndFilter(defaultFilters, 5) // Khai báo kích thước mặc định là 5
+    usePaginationAndFilter(defaultFilters, 5)
 
-  const { data, isLoading } = useQuerySubscriptions(queryParams)
+  const { data, isLoading } = useQueryUsers(queryParams)
 
-  const { control, handleSubmit, reset } = useForm<ISubscriptionFilters>({
+  const { control, handleSubmit, reset } = useForm<IUserFilters>({
     defaultValues: defaultFilters
   })
 
-  const onSubmit: SubmitHandler<ISubscriptionFilters> = (data) => {
+  const onSubmit: SubmitHandler<IUserFilters> = (data) => {
     handleFilterSubmit(data)
   }
 
@@ -60,7 +64,7 @@ export const useSubscription = () => {
     hasPreviousPage: false
   }
 
-  const columns: TableProps<Subscription>['columns'] = [
+  const columns: TableProps<User>['columns'] = [
     {
       title: 'STT',
       render: (value, record, index) => {
@@ -74,13 +78,37 @@ export const useSubscription = () => {
       // sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
-      title: 'Giá',
-      dataIndex: 'price',
-      render: (value: string) => formatVND(value),
-      sorter: (a, b) => Number(a.price) - Number(b.price)
+      title: 'Email',
+      dataIndex: 'email'
     },
-    { title: 'Số ngày sử dụng', dataIndex: 'duration' },
-    { title: 'Giới hạn người dùng', dataIndex: 'userLimit' },
+    { title: 'Tổ chức', dataIndex: 'organizationName' },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      render: (status: UserStatus) => {
+        return (
+          <Tag key={status} color={getUserStatusColor(status)}>
+            {formatUserStatusName(status)}
+          </Tag>
+        )
+      }
+    },
+    {
+      title: 'Vai trò',
+      dataIndex: 'roles',
+      render: (roles: string[]) => {
+        return (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {roles.map((roleName) => (
+              <Tag key={roleName} color={getRoleColor(roleName)}>
+                {/* Chuyển đổi tên vai trò thành định dạng dễ đọc (ví dụ: super_admin -> Super Admin) */}
+                {formatRoleName(roleName)}
+              </Tag>
+            ))}
+          </div>
+        )
+      }
+    },
     {
       title: 'Actions',
       render: (_, record) => {
@@ -88,13 +116,13 @@ export const useSubscription = () => {
           <Space size={'large'}>
             <EditOutlined
               style={{ color: 'blue' }}
-              onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/${record.id}`)}
+              onClick={() => navigate(`${MENU_URL.USERS}/${record.id}`)}
             />
 
             <Popconfirm
               placement='topLeft'
               title='Xác nhận xóa'
-              description={`Bạn có chắc muốn xóa gói dịch vụ: ${record.name}?`}
+              description={`Bạn có chắc muốn xóa người dùng: ${record.name}?`}
               onConfirm={() => confirmDelete(record)}
               okText='Có'
               cancelText='Không'
@@ -107,22 +135,22 @@ export const useSubscription = () => {
     }
   ]
 
-  const deleteSubscriptionMutation = useMutation({
-    mutationFn: async (subscriptionId: string) => {
-      await axiosInstance.delete(`${SUBSCRIPTIONS_QUERY_KEY}/${subscriptionId}`)
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      await axiosInstance.delete(`${USERS_QUERY_KEY}/${userId}`)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTIONS_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEY] })
       toastSuccess('Xóa gói dịch vụ thành công')
     }
   })
 
-  const confirmDelete = (subscription: Subscription) => {
-    deleteSubscriptionMutation.mutate(subscription.id.toString())
+  const confirmDelete = (user: User) => {
+    deleteUserMutation.mutate(user.id.toString())
   }
 
   return [
-    { meta, listSubscriptions: data?.data?.content || [], isLoading, columns, control },
+    { meta, listUsers: data?.data?.content || [], isLoading, columns, control },
     { handleReset, handleSubmit, handleTableChange, onSubmit }
   ] as const
 }

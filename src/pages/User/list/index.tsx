@@ -1,15 +1,15 @@
 import { CoreInput } from '@/components/CoreInput'
-import { useSubscription } from '@/pages/Subscription/useSubscription'
 import { Button, Form, Space, Table } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { useTranslation } from 'react-i18next'
 import { TRANSLATION } from '@/constants/translates'
+import { useListUser } from '@/pages/User/list/useListUser'
 
-export const SubscriptionPage = () => {
-  const [values, handles] = useSubscription()
-  const { isLoading, listSubscriptions, columns, control, meta } = values
+export const ListUserPage = () => {
+  const [values, handles] = useListUser()
+  const { isLoading, listUsers, columns, control, meta } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
   const navigate = useNavigate()
   const { t } = useTranslation(TRANSLATION.COMMON)
@@ -22,8 +22,15 @@ export const SubscriptionPage = () => {
             control={control}
             name='name'
             prefix={<SearchOutlined />}
-            placeholder='Nhập tên gói dịch vụ'
+            placeholder='Nhập tên người dùng'
           />
+          <CoreInput
+            control={control}
+            name='email'
+            prefix={<SearchOutlined />}
+            placeholder='Nhập email'
+          />
+
           {/* Các nút Submit và Reset nằm ngang */}
           <Form.Item>
             <Space>
@@ -34,14 +41,14 @@ export const SubscriptionPage = () => {
             </Space>
           </Form.Item>
         </Form>
-        <Button type='primary' onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}>
+        <Button type='primary' onClick={() => navigate(`${MENU_URL.USERS}/addNew`)}>
           {t('btn.addNew')}
         </Button>
       </div>
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}
-        dataSource={listSubscriptions}
+        dataSource={listUsers}
         rowKey={'id'}
         loading={isLoading}
         pagination={{
