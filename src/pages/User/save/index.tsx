@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 export const SaveUserPage = () => {
   const { t } = useTranslation(TRANSLATION.COMMON)
   const [values, handles] = useSaveUser()
-  const { methodForm, id } = values
+  const { methodForm, id, roleOptions, organizationOptions } = values
   const { onSubmit, onCancel } = handles
   const { control } = methodForm
 
@@ -41,11 +41,7 @@ export const SaveUserPage = () => {
             control={control}
             name='organizationId'
             label='Tổ chức'
-            options={[
-              { id: 1, name: 'Basic' },
-              { id: 2, name: 'Premium' },
-              { id: 3, name: 'Enterprise' }
-            ]}
+            options={organizationOptions}
           />
         </Col>
         <Col xs={24} md={12} lg={6}>
@@ -55,11 +51,9 @@ export const SaveUserPage = () => {
             label='Vai trò'
             required
             mode='multiple'
-            options={[
-              { id: 1, name: 'Basic' },
-              { id: 2, name: 'Premium' },
-              { id: 3, name: 'Enterprise' }
-            ]}
+            labelPath='label'
+            valuePath='name'
+            options={roleOptions || []}
             rules={{ required: t('validation.required') }}
           />
         </Col>

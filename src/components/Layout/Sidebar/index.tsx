@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd'
+import { Drawer, Layout, Menu } from 'antd'
 import { ReactNode, useEffect, useState } from 'react'
 import { TeamOutlined, OrderedListOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -8,8 +8,15 @@ import { permissions } from '@/constants/rbac'
 import { MENU_URL } from '@/constants/menuUrl'
 import { useTranslation } from 'react-i18next'
 import { TRANSLATION } from '@/constants/translates'
+import logoUrl from '@/assets/logo.png'
 
 const { Sider } = Layout
+
+interface SidebarProps {
+  isMobile: boolean
+  isSidebarOpen?: boolean
+  onClose?: () => void
+}
 
 interface AppMenuItem {
   label: string
@@ -44,7 +51,7 @@ function filterMenuByPermission(
     .filter(Boolean) as AppMenuItem[]
 }
 
-const Sidebar = () => {
+const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) => {
   const { t } = useTranslation(TRANSLATION.COMMON)
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState<boolean>(false)
@@ -95,8 +102,49 @@ const Sidebar = () => {
 
   const handleMenuClick = (e: { key: string }) => {
     navigate(e.key)
+    if (isMobile && onClose) {
+      onClose() // Đóng drawer sau khi click trên mobile
+    }
   }
 
+  const menu = (
+    <Menu
+      onClick={handleMenuClick}
+      theme='light'
+      selectedKeys={[selectedKey]}
+      mode='inline'
+      items={filteredItems}
+    />
+  )
+
+  if (isMobile) {
+    // RENDER MOBILE SIDEBAR (Drawer)
+    return (
+      <Drawer
+        placement='left'
+        closable={false} // Thường không cần nút close vì click menu là đóng
+        onClose={onClose}
+        open={isSidebarOpen}
+        width={220}
+      >
+        <div
+          style={{
+            height: 64,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            paddingLeft: 16
+          }}
+        >
+          <img src={logoUrl} alt='logo' style={{ height: 40, width: 40, objectFit: 'contain' }} />
+          <span style={{ fontWeight: 700, fontSize: 17 }}>Dashboard</span>
+        </div>
+        {menu}
+      </Drawer>
+    )
+  }
+
+  // RENDER DESKTOP SIDEBAR (Sider)
   return (
     <Sider
       theme='light'
@@ -104,13 +152,23 @@ const Sidebar = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      <Menu
-        onClick={handleMenuClick}
-        theme='light'
-        selectedKeys={[selectedKey]}
-        mode='inline'
-        items={filteredItems}
-      />
+      {/* Logo/Tiêu đề App trên Desktop */}
+      <div
+        style={{
+          height: 64,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          paddingLeft: collapsed ? 0 : 16,
+          transition: 'all 0.3s'
+        }}
+      >
+        <img src={logoUrl} alt='logo' style={{ height: 40, width: 40, objectFit: 'contain' }} />
+        {!collapsed && (
+          <span style={{ marginLeft: 12, fontWeight: 700, fontSize: 16 }}>Dashboard</span>
+        )}
+      </div>
+      {menu}
     </Sider>
   )
 }

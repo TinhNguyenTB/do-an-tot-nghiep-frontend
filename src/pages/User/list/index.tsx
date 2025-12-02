@@ -16,35 +16,37 @@ export const ListUserPage = () => {
 
   return (
     <main>
-      <div className='flex items-center justify-between'>
-        <Form layout='inline' onFinish={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
-          <CoreInput
-            control={control}
-            name='name'
-            prefix={<SearchOutlined />}
-            placeholder='Nhập tên người dùng'
-          />
-          <CoreInput
-            control={control}
-            name='email'
-            prefix={<SearchOutlined />}
-            placeholder='Nhập email'
-          />
+      <Form layout='inline' onFinish={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
+        <CoreInput
+          control={control}
+          name='name'
+          prefix={<SearchOutlined />}
+          placeholder='Nhập tên người dùng'
+        />
+        <CoreInput
+          control={control}
+          name='email'
+          prefix={<SearchOutlined />}
+          placeholder='Nhập email'
+        />
 
-          {/* Các nút Submit và Reset nằm ngang */}
-          <Form.Item>
-            <Space>
-              <Button htmlType='submit' type='primary' loading={isLoading}>
-                {t('btn.search')}
-              </Button>
-              <Button onClick={handleReset}>Reset</Button>
-            </Space>
-          </Form.Item>
-        </Form>
-        <Button type='primary' onClick={() => navigate(`${MENU_URL.USERS}/addNew`)}>
-          {t('btn.addNew')}
-        </Button>
-      </div>
+        {/* Các nút Submit và Reset nằm ngang */}
+        <Form.Item>
+          <Space>
+            <Button htmlType='submit' type='primary' loading={isLoading}>
+              {t('btn.search')}
+            </Button>
+            <Button onClick={handleReset}>Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
+      <Button
+        type='primary'
+        onClick={() => navigate(`${MENU_URL.USERS}/addNew`)}
+        style={{ marginBottom: 20 }}
+      >
+        {t('btn.addNew')}
+      </Button>
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}

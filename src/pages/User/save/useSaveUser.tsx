@@ -1,9 +1,12 @@
 import { MENU_URL } from '@/constants/menuUrl'
 import { roles } from '@/constants/rbac'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
+import { useQueryOrganizations } from '@/services/organization'
+import { useQueryRoles } from '@/services/role'
 import { createUser, updateUser, useQueryUserById, USERS_QUERY_KEY } from '@/services/user'
 import { UserFormValues } from '@/services/user/type'
 import { convertType } from '@/utils/convertType'
+import { formatRoleName } from '@/utils/roleUtils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -13,7 +16,7 @@ const defaultValues: UserFormValues = {
   name: '',
   email: '',
   organizationId: null,
-  roles: [roles.CLIENT.toLocaleUpperCase()]
+  roles: [roles.CLIENT]
 }
 
 export const useSaveUser = () => {
@@ -21,6 +24,17 @@ export const useSaveUser = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+
+  const { data: roles } = useQueryRoles({ page: 1, size: 20 })
+  const roleOptions = roles?.data.content.map((item) => {
+    const label = formatRoleName(item.name)
+    return {
+      ...item,
+      label
+    }
+  })
+
+  const { data: organization } = useQueryOrganizations({ page: 1, size: 20 })
 
   const methodForm = useForm<UserFormValues>({ defaultValues })
   const { handleSubmit, reset } = methodForm
@@ -52,7 +66,6 @@ export const useSaveUser = () => {
     if (id) {
       update({ ...result, id })
     } else create(result)
-    console.log(data)
   })
 
   const onCancel = () => navigate(MENU_URL.SUBSCRIPTIONS)
@@ -66,7 +79,7 @@ export const useSaveUser = () => {
   }, [reset, data])
 
   return [
-    { methodForm, id },
+    { methodForm, id, roleOptions, organizationOptions: organization?.data.content ?? [] },
     { onSubmit, onCancel }
   ] as const
 }

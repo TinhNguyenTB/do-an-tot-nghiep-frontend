@@ -31,6 +31,7 @@ const Navbar = () => {
   })
 
   const user: UserInfo = JSON.parse(localStorage.getItem('userInfo')!)
+  const userNameInitial = user.name.slice(0, 1).toUpperCase()
 
   return (
     <Header
@@ -55,7 +56,7 @@ const Navbar = () => {
           size={{ sm: 15, md: 30, lg: 40, xl: 50 }}
           style={{ backgroundColor: '#f56a00', fontWeight: 'bold' }}
         >
-          {user.name.slice(0, 1).toUpperCase()}
+          {userNameInitial}
         </Avatar>
         <h1>{user.name}</h1>
       </div>
