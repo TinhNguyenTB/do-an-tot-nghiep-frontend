@@ -5,5 +5,6 @@ export const MENU_URL = {
   SUBSCRIPTIONS: '/subscriptions',
   ORGANIZATIONS: '/organizations',
   USERS: '/users',
+  ROLES: '/roles',
   ACCESS_DENIED: '/access-denied'
 }

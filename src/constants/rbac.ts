@@ -17,7 +17,7 @@ export const permissions = {
   UPDATE_ORGANIZATION_DETAILS: 'update_organization_details',
 
   // SUPER ADMIN
-  MANAGE_SYSTEM_ROLES: 'manage_system_roles',
+  MANAGE_ALL_ROLES: 'manage_all_roles',
   MANAGE_ALL_ORGANIZATIONS: 'manage_all_organizations',
   MANAGE_ALL_SUBSCRIPTIONS: 'manage_all_subscriptions',
   MANAGE_ALL_USERS: 'manage_all_users'
@@ -56,7 +56,7 @@ export const roleDefinitions: RoleDefinitions = {
   [roles.SUPER_ADMIN]: {
     inherits: [roles.ORG_ADMIN],
     ownPermissions: [
-      permissions.MANAGE_SYSTEM_ROLES,
+      permissions.MANAGE_ALL_ROLES,
       permissions.MANAGE_ALL_ORGANIZATIONS,
       permissions.MANAGE_ALL_SUBSCRIPTIONS,
       permissions.MANAGE_ALL_USERS

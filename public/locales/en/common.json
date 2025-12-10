@@ -18,6 +18,7 @@
   "menu": {
     "organizations": "Organizations",
     "users": "Users",
-    "subscriptions": "Subscriptions"
+    "subscriptions": "Subscriptions",
+    "roles": "Roles"
   }
 }

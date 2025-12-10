@@ -1,5 +1,6 @@
 export interface Role {
   name: string
+  description: string
   inheritsFrom: InheritsFrom[] // Role này kế thừa từ role nào?
   inheritedBy: InheritedBy[] // Những role nào kế thừa role này?
 }

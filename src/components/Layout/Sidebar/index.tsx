@@ -90,6 +90,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
       key: MENU_URL.SUBSCRIPTIONS,
       icon: <OrderedListOutlined />,
       permission: permissions.MANAGE_ALL_SUBSCRIPTIONS
+    },
+    {
+      label: t('menu.roles'),
+      key: MENU_URL.ROLES,
+      icon: <OrderedListOutlined />,
+      permission: permissions.MANAGE_ALL_ROLES
     }
   ]
 

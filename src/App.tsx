@@ -7,6 +7,7 @@ import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
 import { RegisterPage } from '@/pages/Register'
+import { ListRolePage } from '@/pages/Role/list'
 import { ListSubscriptionPage } from '@/pages/Subscription/list'
 import { SaveSubscriptionPage } from '@/pages/Subscription/save'
 import { ListUserPage } from '@/pages/User/list'
@@ -64,6 +65,12 @@ function App() {
             <Route path={MENU_URL.USERS} element={<ListUserPage />} />
             <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
             <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} />
+          </Route>
+
+          <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_ROLES} />}>
+            <Route path={MENU_URL.ROLES} element={<ListRolePage />} />
+            {/* <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
+            <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} /> */}
           </Route>
         </Route>
       </Route>

@@ -18,6 +18,7 @@
   "menu": {
     "organizations": "Tổ chức",
     "users": "Người dùng",
-    "subscriptions": "Gói dịch vụ"
+    "subscriptions": "Gói dịch vụ",
+    "roles": "Vai trò"
   }
 }
