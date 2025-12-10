@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { logout } from '@/services/auth/logout'
 import { MENU_URL } from '@/constants/menuUrl'
-import { UserInfo } from '@/services/auth/login/type'
+import { useRbacStore } from '@/store/rbacStore'
 
 const { Header } = Layout
 
@@ -25,19 +25,19 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ onToggleSidebar }) => {
   const { toastSuccess } = useGlobalMessage()
   const navigate = useNavigate()
 
-  const user: UserInfo = JSON.parse(localStorage.getItem('userInfo')!)
+  const username = useRbacStore((state) => state.name)
 
   const { mutate } = useMutation({
     mutationFn: logout,
     onSuccess(data) {
-      localStorage.removeItem('userInfo')
+      useRbacStore.getState().logout()
       toastSuccess(data.message)
       navigate(MENU_URL.LOGIN)
     }
   })
 
   // Xử lý trường hợp userInfo chưa load kịp hoặc null
-  const userNameInitial = user?.name?.slice(0, 1).toUpperCase() || '?'
+  const userNameInitial = username?.slice(0, 1).toUpperCase() || '?'
 
   return (
     <Header
@@ -62,7 +62,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ onToggleSidebar }) => {
         <Avatar size={30} style={{ backgroundColor: '#f56a00', fontWeight: 'bold' }}>
           {userNameInitial}
         </Avatar>
-        <h1 className='text-base font-semibold'>{user?.name}</h1>
+        <h1 className='text-base font-semibold'>{username}</h1>
       </div>
 
       {/* Controls bên phải */}

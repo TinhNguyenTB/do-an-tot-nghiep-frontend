@@ -10,6 +10,7 @@ export interface UserInfo {
   email: string
   name: string
   roles: string[]
+  permissions: string[]
   organizationId: number | null
 }
 

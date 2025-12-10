@@ -4,6 +4,7 @@ import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { login } from '@/services/auth/login'
 import { LoginFormValues } from '@/services/auth/login/type'
 import { rePayment } from '@/services/user'
+import { useRbacStore } from '@/store/rbacStore'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -19,7 +20,7 @@ export function useLogin() {
     mutationFn: login,
     onSuccess(data) {
       // Lưu userInfo vào localStorage
-      localStorage.setItem('userInfo', JSON.stringify(data.data.userInfo))
+      useRbacStore.getState().login(data.data.userInfo)
       toastSuccess(data.message ?? t('login.success'))
       navigate(MENU_URL.HOME)
     }

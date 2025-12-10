@@ -1,6 +1,7 @@
 import { MENU_URL } from '@/constants/menuUrl'
 import { logout } from '@/services/auth/logout'
 import { refreshTokenAPI } from '@/services/auth/refresh'
+import { useRbacStore } from '@/store/rbacStore'
 import { message } from 'antd'
 import axios from 'axios'
 
@@ -23,7 +24,7 @@ axiosInstance.interceptors.request.use(
 // Hàm xử lý Logout tập trung
 const handleUnauthorizedLogout = async () => {
   await logout()
-  localStorage.removeItem('userInfo')
+  useRbacStore.getState().logout()
   location.href = MENU_URL.LOGIN
 }
 

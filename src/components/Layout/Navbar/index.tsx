@@ -5,10 +5,10 @@ import { logout } from '@/services/auth/logout'
 import { useMutation } from '@tanstack/react-query'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { useNavigate } from 'react-router-dom'
-import { UserInfo } from '@/services/auth/login/type'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { useTranslation } from 'react-i18next'
+import { useRbacStore } from '@/store/rbacStore'
 
 const { Header } = Layout
 
@@ -24,14 +24,14 @@ const Navbar = () => {
   const { mutate } = useMutation({
     mutationFn: logout,
     onSuccess(data) {
-      localStorage.removeItem('userInfo')
+      useRbacStore.getState().logout()
       toastSuccess(data.message)
       navigate(MENU_URL.LOGIN)
     }
   })
 
-  const user: UserInfo = JSON.parse(localStorage.getItem('userInfo')!)
-  const userNameInitial = user.name.slice(0, 1).toUpperCase()
+  const username = useRbacStore((state) => state.name)
+  const userNameInitial = username?.slice(0, 1).toUpperCase()
 
   return (
     <Header
@@ -58,7 +58,7 @@ const Navbar = () => {
         >
           {userNameInitial}
         </Avatar>
-        <h1>{user.name}</h1>
+        <h1>{username}</h1>
       </div>
       <div className='flex items-center gap-2'>
         <ThemeSwitcher />

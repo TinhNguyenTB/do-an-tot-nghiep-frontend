@@ -1,14 +1,19 @@
 import { Drawer, Layout, Menu } from 'antd'
 import { ReactNode, useEffect, useState } from 'react'
-import { TeamOutlined, OrderedListOutlined, UserOutlined } from '@ant-design/icons'
+import {
+  TeamOutlined,
+  OrderedListOutlined,
+  ApartmentOutlined,
+  ContactsOutlined
+} from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePermission } from '@/hooks/usePermission'
-import { UserInfo } from '@/services/auth/login/type'
 import { permissions } from '@/constants/rbac'
 import { MENU_URL } from '@/constants/menuUrl'
 import { useTranslation } from 'react-i18next'
 import { TRANSLATION } from '@/constants/translates'
 import logoUrl from '@/assets/logo.png'
+import { useRbacStore } from '@/store/rbacStore'
 
 const { Sider } = Layout
 
@@ -57,8 +62,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [selectedKey, setSelectedKey] = useState<string>(location.pathname)
 
-  const user: UserInfo = JSON.parse(localStorage.getItem('userInfo')!)
-  const { hasPermission } = usePermission(user.roles)
+  const roles = useRbacStore((state) => state.roles)
+  const { hasPermission } = usePermission(roles)
 
   const menuItems: AppMenuItem[] = [
     {
@@ -70,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
     {
       label: t('menu.users'),
       key: MENU_URL.USERS,
-      icon: <UserOutlined />,
+      icon: <ContactsOutlined />,
       permission: permissions.MANAGE_ALL_USERS
       // children: [
       //   {
@@ -94,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
     {
       label: t('menu.roles'),
       key: MENU_URL.ROLES,
-      icon: <OrderedListOutlined />,
+      icon: <ApartmentOutlined />,
       permission: permissions.MANAGE_ALL_ROLES
     }
   ]

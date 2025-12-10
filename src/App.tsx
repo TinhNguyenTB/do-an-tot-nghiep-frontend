@@ -12,19 +12,20 @@ import { ListSubscriptionPage } from '@/pages/Subscription/list'
 import { SaveSubscriptionPage } from '@/pages/Subscription/save'
 import { ListUserPage } from '@/pages/User/list'
 import { SaveUserPage } from '@/pages/User/save'
+import { useRbacStore } from '@/store/rbacStore'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 const ProtectedRoutes = () => {
-  const user = JSON.parse(localStorage.getItem('userInfo')!)
-  if (!user) {
+  const isLoggedIn = useRbacStore((state) => state.isLoggedIn)
+  if (!isLoggedIn()) {
     return <Navigate to={MENU_URL.LOGIN} replace />
   }
   return <Outlet />
 }
 
 const UnauthorizedRoutes = () => {
-  const user = JSON.parse(localStorage.getItem('userInfo')!)
-  if (user) {
+  const isLoggedIn = useRbacStore((state) => state.isLoggedIn)
+  if (isLoggedIn()) {
     return <Navigate to={MENU_URL.HOME} replace />
   }
   return <Outlet />
@@ -37,9 +38,8 @@ function RBACRoute({
   requiredPermission: string
   redirectTo?: string
 }) {
-  const user = JSON.parse(localStorage.getItem('userInfo')!)
-  const userRole = user.roles || roles.CLIENT
-  const { hasPermission } = usePermission(userRole)
+  const roles = useRbacStore((state) => state.roles)
+  const { hasPermission } = usePermission(roles)
   if (!hasPermission(requiredPermission)) {
     return <Navigate to={redirectTo} replace />
   }
