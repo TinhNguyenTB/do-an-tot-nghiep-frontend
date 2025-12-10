@@ -62,8 +62,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [selectedKey, setSelectedKey] = useState<string>(location.pathname)
 
-  const roles = useRbacStore((state) => state.roles)
-  const { hasPermission } = usePermission(roles)
+  const userPermissions = useRbacStore.getState().getPermissions()
+  const { hasPermission } = usePermission(userPermissions)
 
   const menuItems: AppMenuItem[] = [
     {
