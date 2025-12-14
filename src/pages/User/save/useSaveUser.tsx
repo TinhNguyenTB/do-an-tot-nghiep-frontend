@@ -1,5 +1,5 @@
 import { MENU_URL } from '@/constants/menuUrl'
-import { roles } from '@/constants/rbac'
+import { ROLES } from '@/constants/rbac'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { useQueryOrganizations } from '@/services/organization'
 import { useQueryRoles } from '@/services/role'
@@ -16,7 +16,7 @@ const defaultValues: UserFormValues = {
   name: '',
   email: '',
   organizationId: null,
-  roles: [roles.CLIENT]
+  roles: [ROLES.CLIENT]
 }
 
 export const useSaveUser = () => {

@@ -11,7 +11,7 @@ import { MENU_URL } from '@/constants/menuUrl'
 import { ROLES_QUERY_KEY, useQueryRoles } from '@/services/role'
 import { Role } from '@/services/role/type'
 import { formatRoleName, getRoleColor } from '@/utils/roleUtils'
-import { roles } from '@/constants/rbac'
+import { ROLES } from '@/constants/rbac'
 
 const defaultFilters = {
   name: ''
@@ -109,7 +109,7 @@ export const useListRole = () => {
               style={{ color: 'blue' }}
               onClick={() => navigate(`${MENU_URL.ROLES}/${record.name}`)}
             />
-            {record.name !== roles.SUPER_ADMIN && (
+            {record.name !== ROLES.SUPER_ADMIN && (
               <Popconfirm
                 placement='topLeft'
                 title='Xác nhận xóa'

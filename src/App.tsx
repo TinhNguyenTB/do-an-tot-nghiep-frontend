@@ -1,6 +1,6 @@
 import { AppLayout } from '@/components/Layout'
 import { MENU_URL } from '@/constants/menuUrl'
-import { permissions } from '@/constants/rbac'
+import { permissions, ROLES } from '@/constants/rbac'
 import { usePermission } from '@/hooks/usePermission'
 import { AccessDeniedPage } from '@/pages/AccessDenied'
 import { HomePage } from '@/pages/Home'
@@ -39,7 +39,11 @@ function RBACRoute({
   redirectTo?: string
 }) {
   const permissions = useRbacStore.getState().getPermissions()
-  const { hasPermission } = usePermission(permissions)
+  const roles = useRbacStore((state) => state.roles)
+  const { hasPermission, isSuperAdmin } = usePermission(roles, permissions)
+  if (isSuperAdmin) {
+    return <Outlet />
+  }
   if (!hasPermission(requiredPermission)) {
     return <Navigate to={redirectTo} replace />
   }

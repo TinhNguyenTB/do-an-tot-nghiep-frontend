@@ -33,8 +33,12 @@ interface AppMenuItem {
 
 function filterMenuByPermission(
   items: AppMenuItem[],
-  hasPermission: (p: string) => boolean
+  hasPermission: (p: string) => boolean,
+  isSuperAdmin?: boolean
 ): AppMenuItem[] {
+  if (isSuperAdmin) {
+    return items
+  }
   return items
     .map((item) => {
       // Nếu có children → lọc children trước
@@ -63,7 +67,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
   const [selectedKey, setSelectedKey] = useState<string>(location.pathname)
 
   const userPermissions = useRbacStore.getState().getPermissions()
-  const { hasPermission } = usePermission(userPermissions)
+  const roles = useRbacStore((state) => state.roles)
+  const { hasPermission, isSuperAdmin } = usePermission(roles, userPermissions)
 
   const menuItems: AppMenuItem[] = [
     {
@@ -104,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
     }
   ]
 
-  const filteredItems = filterMenuByPermission(menuItems, hasPermission)
+  const filteredItems = filterMenuByPermission(menuItems, hasPermission, isSuperAdmin)
 
   // update selectedKey when URL change
   useEffect(() => {
