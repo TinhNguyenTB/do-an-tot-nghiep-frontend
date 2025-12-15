@@ -32,21 +32,20 @@ const UnauthorizedRoutes = () => {
   return <Outlet />
 }
 
-function RBACRoute({
-  requiredPermission,
-  redirectTo = MENU_URL.ACCESS_DENIED
-}: {
-  requiredPermission: string
-  redirectTo?: string
-}) {
+function RBACRoute({ requiredPermission }: { requiredPermission: string }) {
+  const isLoggedIn = useRbacStore((state) => state.isLoggedIn)
   const permissions = useRbacStore.getState().getPermissions()
   const roles = useRbacStore((state) => state.roles)
   const { hasPermission, isSuperAdmin } = usePermission(roles, permissions)
-  if (isSuperAdmin) {
-    return <Outlet />
+
+  if (!isLoggedIn()) {
+    return <Navigate to={MENU_URL.LOGIN} replace />
   }
+
+  if (isSuperAdmin) return <Outlet />
+
   if (!hasPermission(requiredPermission)) {
-    return <Navigate to={redirectTo} replace />
+    return <Navigate to={MENU_URL.ACCESS_DENIED} replace />
   }
 
   return <Outlet />

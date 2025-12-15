@@ -9,7 +9,7 @@ import { TRANSLATION } from '@/constants/translates'
 
 export const ListSubscriptionPage = () => {
   const [values, handles] = useListSubscription()
-  const { isLoading, listSubscriptions, columns, control, meta } = values
+  const { isLoading, listSubscriptions, columns, control, meta, canCreateSubscription } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
   const navigate = useNavigate()
   const { t } = useTranslation(TRANSLATION.COMMON)
@@ -32,13 +32,15 @@ export const ListSubscriptionPage = () => {
           </Space>
         </Form.Item>
       </Form>
-      <Button
-        type='primary'
-        onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}
-        style={{ marginBottom: 20 }}
-      >
-        {t('btn.addNew')}
-      </Button>
+      {canCreateSubscription && (
+        <Button
+          type='primary'
+          onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}
+          style={{ marginBottom: 20 }}
+        >
+          {t('btn.addNew')}
+        </Button>
+      )}
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}

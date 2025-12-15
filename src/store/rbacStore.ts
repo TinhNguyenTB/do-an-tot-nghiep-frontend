@@ -26,11 +26,17 @@ export const useRbacStore = create<RbacStoreType>()(
       ...initialState,
 
       login: (userInfo) => {
-        set(userInfo)
+        set({
+          ...userInfo,
+          isLoggedIn: () => true
+        })
       },
 
       logout: () => {
-        set(initialState)
+        set({
+          ...initialState,
+          isLoggedIn: () => false
+        })
       },
 
       isLoggedIn: () => {

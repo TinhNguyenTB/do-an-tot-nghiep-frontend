@@ -12,6 +12,9 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
+import { useRbacStore } from '@/store/rbacStore'
+import { usePermission } from '@/hooks/usePermission'
+import { PERMISSIONS } from '@/constants/rbac'
 
 const defaultFilters = {
   name: ''
@@ -23,6 +26,13 @@ interface ISubscriptionFilters {
 }
 
 export const useListSubscription = () => {
+  const userPermissions = useRbacStore((state) => state.permissions)
+  const { hasPermission } = usePermission(userPermissions)
+  const canMutateSubscription =
+    hasPermission(PERMISSIONS.UPDATE_SUBSCRIPTIONS) ||
+    hasPermission(PERMISSIONS.DELETE_SUBSCRIPTIONS)
+  const canCreateSubscription = hasPermission(PERMISSIONS.CREATE_SUBSCRIPTIONS)
+
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { toastSuccess } = useGlobalMessage()
@@ -75,30 +85,34 @@ export const useListSubscription = () => {
     },
     { title: 'Số ngày sử dụng', dataIndex: 'duration' },
     { title: 'Giới hạn người dùng', dataIndex: 'userLimit' },
-    {
-      title: 'Actions',
-      render: (_, record) => {
-        return (
-          <Space size={'large'}>
-            <EditOutlined
-              style={{ color: 'blue' }}
-              onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/${record.id}`)}
-            />
+    ...(canMutateSubscription
+      ? [
+          {
+            title: 'Actions',
+            render: (_: any, record: Subscription) => {
+              return (
+                <Space size={'large'}>
+                  <EditOutlined
+                    style={{ color: 'blue' }}
+                    onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/${record.id}`)}
+                  />
 
-            <Popconfirm
-              placement='topLeft'
-              title='Xác nhận xóa'
-              description={`Bạn có chắc muốn xóa gói dịch vụ: ${record.name}?`}
-              onConfirm={() => confirmDelete(record)}
-              okText='Có'
-              cancelText='Không'
-            >
-              <DeleteOutlined style={{ color: 'red' }} />
-            </Popconfirm>
-          </Space>
-        )
-      }
-    }
+                  <Popconfirm
+                    placement='topLeft'
+                    title='Xác nhận xóa'
+                    description={`Bạn có chắc muốn xóa gói dịch vụ: ${record.name}?`}
+                    onConfirm={() => confirmDelete(record)}
+                    okText='Có'
+                    cancelText='Không'
+                  >
+                    <DeleteOutlined style={{ color: 'red' }} />
+                  </Popconfirm>
+                </Space>
+              )
+            }
+          }
+        ]
+      : [])
   ]
 
   const deleteSubscriptionMutation = useMutation({
@@ -116,7 +130,14 @@ export const useListSubscription = () => {
   }
 
   return [
-    { meta, listSubscriptions: data?.data?.content || [], isLoading, columns, control },
+    {
+      meta,
+      listSubscriptions: data?.data?.content || [],
+      isLoading,
+      columns,
+      control,
+      canCreateSubscription
+    },
     { handleReset, handleSubmit, handleTableChange, onSubmit }
   ] as const
 }
