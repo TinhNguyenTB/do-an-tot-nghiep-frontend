@@ -21,7 +21,7 @@ export interface PaginationMeta {
 }
 
 export interface PageResponse<T> {
-  code?: number
+  statusCode: number
   message?: string
   data: {
     content: T[]

@@ -1,4 +1,4 @@
-import { Avatar, Layout, theme, Tooltip } from 'antd'
+import { Avatar, Button, Layout, theme, Tooltip } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
 import { MENU_URL } from '@/constants/menuUrl'
 import { logout } from '@/services/auth/logout'
@@ -63,12 +63,7 @@ const Navbar = () => {
       <div className='flex items-center gap-2'>
         <ThemeSwitcher />
         <LanguageSwitcher />
-        <Tooltip title={t('btn.logout')}>
-          <LogoutOutlined
-            style={{ fontSize: '1.5rem', cursor: 'pointer' }}
-            onClick={() => mutate()}
-          />
-        </Tooltip>
+        <Button onClick={() => mutate()}>{t('btn.logout')}</Button>
       </div>
     </Header>
   )

@@ -12,6 +12,7 @@ import { ROLES_QUERY_KEY, useQueryRoles } from '@/services/role'
 import { Role } from '@/services/role/type'
 import { formatRoleName, getRoleColor } from '@/utils/roleUtils'
 import { ROLES } from '@/constants/rbac'
+import { defaultPaginationMeta } from '@/constants/paginationMeta'
 
 const defaultFilters = {
   name: ''
@@ -49,14 +50,7 @@ export const useListRole = () => {
     handlePageChange(page, pageSize)
   }
 
-  const meta: PaginationMeta = data?.data?.meta || {
-    currentPage: 1,
-    itemsPerPage: 5,
-    totalItems: 0,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPreviousPage: false
-  }
+  const meta: PaginationMeta = data?.data?.meta || defaultPaginationMeta
 
   const columns: TableProps<Role>['columns'] = [
     {

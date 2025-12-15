@@ -1,11 +1,12 @@
 import { AppLayout } from '@/components/Layout'
 import { MENU_URL } from '@/constants/menuUrl'
-import { permissions, ROLES } from '@/constants/rbac'
+import { PERMISSIONS } from '@/constants/rbac'
 import { usePermission } from '@/hooks/usePermission'
 import { AccessDeniedPage } from '@/pages/AccessDenied'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
+import { ListOrganizationPage } from '@/pages/Organizations/list'
 import { RegisterPage } from '@/pages/Register'
 import { ListRolePage } from '@/pages/Role/list'
 import { ListSubscriptionPage } from '@/pages/Subscription/list'
@@ -59,20 +60,30 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path={MENU_URL.HOME} element={<HomePage />} />
 
-          <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_SUBSCRIPTIONS} />}>
+          {/* Gói dịch vụ */}
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_SUBSCRIPTIONS} />}>
             <Route path={MENU_URL.SUBSCRIPTIONS} element={<ListSubscriptionPage />} />
             <Route path={`${MENU_URL.SUBSCRIPTIONS}/addNew`} element={<SaveSubscriptionPage />} />
             <Route path={`${MENU_URL.SUBSCRIPTIONS}/:id`} element={<SaveSubscriptionPage />} />
           </Route>
 
-          <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_USERS} />}>
+          {/* Người dùng */}
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_USERS} />}>
             <Route path={MENU_URL.USERS} element={<ListUserPage />} />
             <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
             <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} />
           </Route>
 
-          <Route element={<RBACRoute requiredPermission={permissions.MANAGE_ALL_ROLES} />}>
+          {/* Vai trò */}
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_ROLES} />}>
             <Route path={MENU_URL.ROLES} element={<ListRolePage />} />
+            {/* <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
+            <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} /> */}
+          </Route>
+
+          {/* Tổ chức */}
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_ORGANIZATIONS} />}>
+            <Route path={MENU_URL.ORGANIZATIONS} element={<ListOrganizationPage />} />
             {/* <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
             <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} /> */}
           </Route>

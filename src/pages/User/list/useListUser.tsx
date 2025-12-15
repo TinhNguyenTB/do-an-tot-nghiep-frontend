@@ -1,4 +1,5 @@
 import { MENU_URL } from '@/constants/menuUrl'
+import { defaultPaginationMeta } from '@/constants/paginationMeta'
 import { UserStatus } from '@/enums'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
@@ -55,19 +56,12 @@ export const useListUser = () => {
   }
 
   // Cấu hình Bảng Ant Design
-  const meta: PaginationMeta = data?.data?.meta || {
-    currentPage: 1,
-    itemsPerPage: 5,
-    totalItems: 0,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPreviousPage: false
-  }
+  const meta: PaginationMeta = data?.data?.meta || defaultPaginationMeta
 
   const columns: TableProps<User>['columns'] = [
     {
       title: 'STT',
-      render: (value, record, index) => {
+      render: (_, record, index) => {
         return (meta.currentPage - 1) * meta.itemsPerPage + index + 1
       }
     },

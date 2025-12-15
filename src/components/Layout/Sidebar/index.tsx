@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePermission } from '@/hooks/usePermission'
-import { permissions } from '@/constants/rbac'
+import { PERMISSIONS } from '@/constants/rbac'
 import { MENU_URL } from '@/constants/menuUrl'
 import { useTranslation } from 'react-i18next'
 import { TRANSLATION } from '@/constants/translates'
@@ -75,13 +75,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
       label: t('menu.organizations'),
       key: MENU_URL.ORGANIZATIONS,
       icon: <TeamOutlined />,
-      permission: permissions.MANAGE_ALL_ORGANIZATIONS
+      permission: PERMISSIONS.READ_ORGANIZATIONS
     },
     {
       label: t('menu.users'),
       key: MENU_URL.USERS,
       icon: <ContactsOutlined />,
-      permission: permissions.MANAGE_ALL_USERS
+      permission: PERMISSIONS.READ_USERS
       // children: [
       //   {
       //     label: 'Nhóm 1',
@@ -99,13 +99,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
       label: t('menu.subscriptions'),
       key: MENU_URL.SUBSCRIPTIONS,
       icon: <OrderedListOutlined />,
-      permission: permissions.MANAGE_ALL_SUBSCRIPTIONS
+      permission: PERMISSIONS.READ_SUBSCRIPTIONS
     },
     {
       label: t('menu.roles'),
       key: MENU_URL.ROLES,
       icon: <ApartmentOutlined />,
-      permission: permissions.MANAGE_ALL_ROLES
+      permission: PERMISSIONS.READ_ROLES
     }
   ]
 
@@ -114,6 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
   // update selectedKey when URL change
   useEffect(() => {
     setSelectedKey(location.pathname)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
   const handleMenuClick = (e: { key: string }) => {

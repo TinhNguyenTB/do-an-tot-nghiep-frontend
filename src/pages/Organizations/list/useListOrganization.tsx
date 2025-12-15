@@ -1,16 +1,15 @@
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
 import axiosInstance from '@/libs/axiosInstance'
-import { SUBSCRIPTIONS_QUERY_KEY, useQuerySubscriptions } from '@/services/subscription'
-import { Subscription } from '@/services/subscription/type'
 import { PaginationMeta } from '@/services/types'
-import { formatVND } from '@/utils/formatVND'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Popconfirm, Space, TableProps } from 'antd'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
+import { ORGANIZATIONS_QUERY_KEY, useQueryOrganizations } from '@/services/organization'
+import { Organization } from '@/services/organization/type'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
 
 const defaultFilters = {
@@ -22,7 +21,7 @@ interface ISubscriptionFilters {
   name: string
 }
 
-export const useListSubscription = () => {
+export const useListOrganization = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { toastSuccess } = useGlobalMessage()
@@ -30,7 +29,7 @@ export const useListSubscription = () => {
   const { queryParams, handlePageChange, handleFilterSubmit, handleFilterReset } =
     usePaginationAndFilter(defaultFilters, 5) // Khai báo kích thước mặc định là 5
 
-  const { data, isLoading } = useQuerySubscriptions(queryParams)
+  const { data, isLoading } = useQueryOrganizations(queryParams)
 
   const { control, handleSubmit, reset } = useForm<ISubscriptionFilters>({
     defaultValues: defaultFilters
@@ -54,27 +53,25 @@ export const useListSubscription = () => {
   // Cấu hình Bảng Ant Design
   const meta: PaginationMeta = data?.data?.meta || defaultPaginationMeta
 
-  const columns: TableProps<Subscription>['columns'] = [
+  const columns: TableProps<Organization>['columns'] = [
     {
       title: 'STT',
-      render: (_, record, index) => {
+      render: (value, record, index) => {
         return (meta.currentPage - 1) * meta.itemsPerPage + index + 1
       }
     },
     {
       title: 'Tên',
-      dataIndex: 'name'
+      dataIndex: 'name',
       // Sắp xếp theo thứ tự bảng chữ cái (A-Z)
-      // sorter: (a, b) => a.name.localeCompare(b.name)
+      sorter: (a, b) => a.name.localeCompare(b.name)
     },
+    { title: 'Số lượng thành viên', dataIndex: 'userCount' },
     {
-      title: 'Giá',
-      dataIndex: 'price',
-      render: (value: string) => formatVND(value),
-      sorter: (a, b) => Number(a.price) - Number(b.price)
+      title: 'Mô tả',
+      dataIndex: 'description'
     },
-    { title: 'Số ngày sử dụng', dataIndex: 'duration' },
-    { title: 'Giới hạn người dùng', dataIndex: 'userLimit' },
+
     {
       title: 'Actions',
       render: (_, record) => {
@@ -82,13 +79,13 @@ export const useListSubscription = () => {
           <Space size={'large'}>
             <EditOutlined
               style={{ color: 'blue' }}
-              onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/${record.id}`)}
+              onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/${record.id}`)}
             />
 
             <Popconfirm
               placement='topLeft'
               title='Xác nhận xóa'
-              description={`Bạn có chắc muốn xóa gói dịch vụ: ${record.name}?`}
+              description={`Bạn có chắc muốn xóa tổ chức: ${record.name}?`}
               onConfirm={() => confirmDelete(record)}
               okText='Có'
               cancelText='Không'
@@ -101,22 +98,22 @@ export const useListSubscription = () => {
     }
   ]
 
-  const deleteSubscriptionMutation = useMutation({
+  const deleteOrganizationMutation = useMutation({
     mutationFn: async (subscriptionId: string) => {
-      await axiosInstance.delete(`${SUBSCRIPTIONS_QUERY_KEY}/${subscriptionId}`)
+      await axiosInstance.delete(`${ORGANIZATIONS_QUERY_KEY}/${subscriptionId}`)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTIONS_QUERY_KEY] })
-      toastSuccess('Xóa gói dịch vụ thành công')
+      queryClient.invalidateQueries({ queryKey: [ORGANIZATIONS_QUERY_KEY] })
+      toastSuccess('Xóa tổ chức thành công')
     }
   })
 
-  const confirmDelete = (subscription: Subscription) => {
-    deleteSubscriptionMutation.mutate(subscription.id.toString())
+  const confirmDelete = (org: Organization) => {
+    deleteOrganizationMutation.mutate(org.id.toString())
   }
 
   return [
-    { meta, listSubscriptions: data?.data?.content || [], isLoading, columns, control },
+    { meta, listOrganizations: data?.data?.content || [], isLoading, columns, control },
     { handleReset, handleSubmit, handleTableChange, onSubmit }
   ] as const
 }
