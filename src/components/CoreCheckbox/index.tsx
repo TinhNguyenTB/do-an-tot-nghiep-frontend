@@ -1,5 +1,6 @@
 import { Controller, Control, FieldValues, Path, RegisterOptions } from 'react-hook-form'
 import { Form, Checkbox } from 'antd'
+import { memo } from 'react'
 
 interface CoreCheckboxProps<T extends FieldValues> {
   name: Path<T>
@@ -10,7 +11,7 @@ interface CoreCheckboxProps<T extends FieldValues> {
   rules?: RegisterOptions<T, Path<T>>
 }
 
-export function CoreCheckbox<T extends FieldValues>({
+function CoreCheckboxComponent<T extends FieldValues>({
   name,
   control,
   label,
@@ -47,3 +48,5 @@ export function CoreCheckbox<T extends FieldValues>({
     />
   )
 }
+
+export const CoreCheckbox = memo(CoreCheckboxComponent) as typeof CoreCheckboxComponent

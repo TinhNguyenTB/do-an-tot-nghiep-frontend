@@ -1,6 +1,7 @@
 import { Control, Controller, Path, RegisterOptions, useFormState } from 'react-hook-form'
 import { Select, Form, SelectProps } from 'antd'
 import { get } from 'lodash'
+import { memo } from 'react'
 
 interface Props<TOption extends Record<string, any>, TFormValues extends Record<string, any>> {
   name: Path<TFormValues>
@@ -16,7 +17,7 @@ interface Props<TOption extends Record<string, any>, TFormValues extends Record<
   mode?: SelectProps['mode']
 }
 
-export function CoreSelect<
+function CoreSelectComponent<
   TOption extends Record<string, any>,
   TFormValues extends Record<string, any>
 >({
@@ -88,3 +89,5 @@ export function CoreSelect<
     </Form.Item>
   )
 }
+
+export const CoreSelect = memo(CoreSelectComponent) as typeof CoreSelectComponent

@@ -1,5 +1,6 @@
 import { Controller, Control, FieldValues, Path, RegisterOptions } from 'react-hook-form'
 import { Input, Form } from 'antd'
+import { memo } from 'react'
 
 interface CoreInputProps<T extends FieldValues> {
   name: Path<T>
@@ -16,7 +17,7 @@ interface CoreInputProps<T extends FieldValues> {
   required?: boolean
 }
 
-export function CoreInput<T extends FieldValues>({
+function CoreInputComponent<T extends FieldValues>({
   name,
   control,
   label,
@@ -74,3 +75,5 @@ export function CoreInput<T extends FieldValues>({
     />
   )
 }
+
+export const CoreInput = memo(CoreInputComponent) as typeof CoreInputComponent

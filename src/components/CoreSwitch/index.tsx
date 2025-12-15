@@ -1,5 +1,6 @@
 import { Controller, Control, FieldValues, Path, RegisterOptions } from 'react-hook-form'
 import { Form, Switch } from 'antd'
+import { memo } from 'react'
 
 interface CoreSwitchProps<T extends FieldValues> {
   name: Path<T>
@@ -10,7 +11,7 @@ interface CoreSwitchProps<T extends FieldValues> {
   rules?: RegisterOptions<T, Path<T>>
 }
 
-export function CoreSwitch<T extends FieldValues>({
+function CoreSwitchComponent<T extends FieldValues>({
   name,
   control,
   label,
@@ -47,3 +48,5 @@ export function CoreSwitch<T extends FieldValues>({
     />
   )
 }
+
+export const CoreSwitch = memo(CoreSwitchComponent) as typeof CoreSwitchComponent
