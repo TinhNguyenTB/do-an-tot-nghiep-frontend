@@ -67,7 +67,7 @@ export const useListSubscription = () => {
   const columns: TableProps<Subscription>['columns'] = [
     {
       title: 'STT',
-      render: (_, record, index) => {
+      render: (_, __, index) => {
         return (meta.currentPage - 1) * meta.itemsPerPage + index + 1
       }
     },

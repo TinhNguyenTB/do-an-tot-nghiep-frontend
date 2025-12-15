@@ -3,11 +3,20 @@ import { register } from '@/services/auth/register'
 import { RegisterFormValues } from '@/services/auth/register/type'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import type { FieldPath } from 'react-hook-form'
 
 export const useRegister = () => {
   const { toastSuccess, toastError } = useGlobalMessage()
-  const methodForm = useForm<RegisterFormValues>({ mode: 'onBlur' })
+  const methodForm = useForm<RegisterFormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+      name: '',
+      isOrganization: false,
+      organizationName: '',
+      subscriptionId: undefined
+    },
+    mode: 'onBlur'
+  })
   const { trigger, handleSubmit } = methodForm
 
   const validateFields = async (): Promise<boolean> => {
@@ -24,13 +33,14 @@ export const useRegister = () => {
       toastSuccess('Đăng ký thành công')
       location.href = data.data.redirectUrl
     },
-    onError: (err: any) => {
+    onError: () => {
       toastError('Có lỗi xảy ra')
     }
   })
 
   const onSubmit = handleSubmit((data) => {
-    mutate(data)
+    const { isOrganization, ...rest } = data
+    mutate(rest)
   })
 
   return [{ methodForm }, { validateFields, onSubmit }] as const

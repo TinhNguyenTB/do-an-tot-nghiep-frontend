@@ -56,7 +56,7 @@ export const useListOrganization = () => {
   const columns: TableProps<Organization>['columns'] = [
     {
       title: 'STT',
-      render: (value, record, index) => {
+      render: (_, __, index) => {
         return (meta.currentPage - 1) * meta.itemsPerPage + index + 1
       }
     },

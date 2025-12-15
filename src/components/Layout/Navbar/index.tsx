@@ -1,5 +1,4 @@
-import { Avatar, Button, Layout, theme, Tooltip } from 'antd'
-import { LogoutOutlined } from '@ant-design/icons'
+import { Avatar, Button, Layout, theme } from 'antd'
 import { MENU_URL } from '@/constants/menuUrl'
 import { logout } from '@/services/auth/logout'
 import { useMutation } from '@tanstack/react-query'
