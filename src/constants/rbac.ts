@@ -36,6 +36,7 @@ export const PERMISSIONS = {
   DELETE_USERS: 'delete_users',
 
   UPDATE_SELF_PROFILE: 'update_self_profile',
+  CHANGE_SELF_PASSWORD: 'change_self_password',
 
   /*
    |--------------------------------------------------------------------------

@@ -19,6 +19,8 @@
     "organizations": "Organizations",
     "users": "Users",
     "subscriptions": "Subscriptions",
-    "roles": "Roles"
+    "roles": "Roles",
+    "change-password": "Change Password",
+    "profile": "Profile"
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Layout, theme, Tooltip, Avatar, Button } from 'antd'
+import { Layout, theme, Button } from 'antd'
 import { LogoutOutlined, MenuOutlined } from '@ant-design/icons'
-import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
@@ -21,11 +20,8 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ onToggleSidebar }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken()
-  const { t } = useTranslation()
   const { toastSuccess } = useGlobalMessage()
   const navigate = useNavigate()
-
-  const username = useRbacStore((state) => state.name)
 
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -35,9 +31,6 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ onToggleSidebar }) => {
       navigate(MENU_URL.LOGIN)
     }
   })
-
-  // Xử lý trường hợp userInfo chưa load kịp hoặc null
-  const userNameInitial = username?.slice(0, 1).toUpperCase() || '?'
 
   return (
     <Header
@@ -57,24 +50,16 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ onToggleSidebar }) => {
           icon={<MenuOutlined style={{ fontSize: '1.2rem' }} />}
           onClick={onToggleSidebar}
         />
-
-        {/* Avatar và Tên User */}
-        <Avatar size={30} style={{ backgroundColor: '#f56a00', fontWeight: 'bold' }}>
-          {userNameInitial}
-        </Avatar>
-        <h1 className='text-base font-semibold'>{username}</h1>
       </div>
 
       {/* Controls bên phải */}
       <div className='flex items-center gap-2'>
         <ThemeSwitcher />
         <LanguageSwitcher />
-        <Tooltip title={t('btn.logout')}>
-          <LogoutOutlined
-            style={{ fontSize: '1.2rem', cursor: 'pointer' }}
-            onClick={() => mutate()}
-          />
-        </Tooltip>
+        <LogoutOutlined
+          style={{ fontSize: '1.2rem', cursor: 'pointer' }}
+          onClick={() => mutate()}
+        />
       </div>
     </Header>
   )

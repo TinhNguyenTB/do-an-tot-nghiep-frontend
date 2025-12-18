@@ -6,5 +6,7 @@ export const MENU_URL = {
   ORGANIZATIONS: '/organizations',
   USERS: '/users',
   ROLES: '/roles',
-  ACCESS_DENIED: '/access-denied'
+  ACCESS_DENIED: '/access-denied',
+  CHANGE_PASSWORD: '/change-password',
+  PROFILE: '/profile'
 }

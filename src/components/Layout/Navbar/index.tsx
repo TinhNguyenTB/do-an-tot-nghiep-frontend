@@ -1,4 +1,4 @@
-import { Avatar, Button, Layout, theme } from 'antd'
+import { Layout, theme } from 'antd'
 import { MENU_URL } from '@/constants/menuUrl'
 import { logout } from '@/services/auth/logout'
 import { useMutation } from '@tanstack/react-query'
@@ -6,8 +6,8 @@ import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { useNavigate } from 'react-router-dom'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
-import { useTranslation } from 'react-i18next'
 import { useRbacStore } from '@/store/rbacStore'
+import { UserDropdown } from '@/components/UserDropdown'
 
 const { Header } = Layout
 
@@ -18,7 +18,6 @@ const Navbar = () => {
 
   const { toastSuccess } = useGlobalMessage()
   const navigate = useNavigate()
-  const { t } = useTranslation()
 
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -29,8 +28,7 @@ const Navbar = () => {
     }
   })
 
-  const username = useRbacStore((state) => state.name)
-  const userNameInitial = username?.slice(0, 1).toUpperCase()
+  const email = useRbacStore((state) => state.email)
 
   return (
     <Header
@@ -40,29 +38,14 @@ const Navbar = () => {
         alignItems: 'center',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         background: colorBgContainer
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}
-      >
-        <Avatar
-          size={{ sm: 15, md: 30, lg: 40, xl: 50 }}
-          style={{ backgroundColor: '#f56a00', fontWeight: 'bold' }}
-        >
-          {userNameInitial}
-        </Avatar>
-        <h1>{username}</h1>
-      </div>
       <div className='flex items-center gap-2'>
         <ThemeSwitcher />
         <LanguageSwitcher />
-        <Button onClick={() => mutate()}>{t('btn.logout')}</Button>
+        <UserDropdown email={email} onLogout={() => mutate()} />
       </div>
     </Header>
   )

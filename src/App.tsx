@@ -3,6 +3,7 @@ import { MENU_URL } from '@/constants/menuUrl'
 import { PERMISSIONS } from '@/constants/rbac'
 import { usePermission } from '@/hooks/usePermission'
 import { AccessDeniedPage } from '@/pages/AccessDenied'
+import { ChangePasswordPage } from '@/pages/ChangePassword'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
@@ -58,6 +59,11 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route element={<AppLayout />}>
           <Route path={MENU_URL.HOME} element={<HomePage />} />
+
+          {/* Settings */}
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.CHANGE_SELF_PASSWORD} />}>
+            <Route path={MENU_URL.CHANGE_PASSWORD} element={<ChangePasswordPage />} />
+          </Route>
 
           {/* Gói dịch vụ */}
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_SUBSCRIPTIONS} />}>

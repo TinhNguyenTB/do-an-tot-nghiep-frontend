@@ -19,6 +19,8 @@
     "organizations": "Tổ chức",
     "users": "Người dùng",
     "subscriptions": "Gói dịch vụ",
-    "roles": "Vai trò"
+    "roles": "Vai trò",
+    "change-password": "Đổi mật khẩu",
+    "profile": "Hồ sơ"
   }
 }
