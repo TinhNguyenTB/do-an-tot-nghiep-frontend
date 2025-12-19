@@ -8,6 +8,7 @@ import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
 import { ListOrganizationPage } from '@/pages/Organizations/list'
+import { ProfilePage } from '@/pages/Profile'
 import { RegisterPage } from '@/pages/Register'
 import { ListRolePage } from '@/pages/Role/list'
 import { ListSubscriptionPage } from '@/pages/Subscription/list'
@@ -59,6 +60,8 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route element={<AppLayout />}>
           <Route path={MENU_URL.HOME} element={<HomePage />} />
+
+          <Route path={MENU_URL.PROFILE} element={<ProfilePage />} />
 
           {/* Settings */}
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.CHANGE_SELF_PASSWORD} />}>

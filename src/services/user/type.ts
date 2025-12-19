@@ -20,6 +20,7 @@ export interface User {
   organizationName: string | null
   createdAt: string
   roles: string[]
+  avatar?: string
 }
 
 export interface UserFormValues {
