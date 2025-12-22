@@ -3,7 +3,8 @@ import { CoreOtpInput } from '@/components/CoreOtpInput'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { TRANSLATION } from '@/constants/translates'
 import { useForgotPassword } from '@/pages/ForgotPassword/useForgotPassword'
-import { ArrowLeftOutlined, LoadingOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+import { formatCountdown } from '@/utils/formatCountdown'
+import { ArrowLeftOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -11,7 +12,7 @@ import { Link } from 'react-router-dom'
 export function ForgotPasswordPage() {
   const { t } = useTranslation(TRANSLATION.COMMON)
   const [values, handles] = useForgotPassword()
-  const { control, loadingSendOTP, MENU_URL } = values
+  const { control, loadingSendOTP, MENU_URL, countdown } = values
   const { onSubmit, onSendOTP, getValues } = handles
 
   return (
@@ -37,16 +38,20 @@ export function ForgotPasswordPage() {
             prefix={<MailOutlined />}
           />
           <div className='text-right mb-4'>
-            {loadingSendOTP ? (
-              <LoadingOutlined />
-            ) : (
-              <span
-                className='text-blue-500 cursor-pointer'
-                onClick={async () => await onSendOTP(getValues('email'))}
-              >
-                {t('auth:resetPassword.sendOtp')}
-              </span>
-            )}
+            <span
+              className={`cursor-pointer ${
+                loadingSendOTP || countdown > 0
+                  ? 'text-gray-400 cursor-not-allowed'
+                  : 'text-blue-500'
+              }`}
+              onClick={() => {
+                if (countdown === 0 && !loadingSendOTP) {
+                  onSendOTP(getValues('email'))
+                }
+              }}
+            >
+              {countdown > 0 ? `Gửi lại sau ${formatCountdown(countdown)}` : 'Gửi OTP'}
+            </span>
           </div>
           <CoreOtpInput
             control={control}
