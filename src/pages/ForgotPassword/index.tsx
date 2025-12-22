@@ -1,17 +1,18 @@
 import { CoreInput } from '@/components/CoreInput'
+import { CoreOtpInput } from '@/components/CoreOtpInput'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { TRANSLATION } from '@/constants/translates'
-import { useLogin } from '@/pages/Login/useLogin'
-import { LockOutlined, MailOutlined } from '@ant-design/icons'
+import { useForgotPassword } from '@/pages/ForgotPassword/useForgotPassword'
+import { ArrowLeftOutlined, LoadingOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-export function LoginPage() {
+export function ForgotPasswordPage() {
   const { t } = useTranslation(TRANSLATION.COMMON)
-  const [values, handles] = useLogin()
-  const { control, MENU_URL } = values
-  const { onSubmit, onRePayment } = handles
+  const [values, handles] = useForgotPassword()
+  const { control, loadingSendOTP, MENU_URL } = values
+  const { onSubmit, onSendOTP, getValues } = handles
 
   return (
     <main
@@ -26,7 +27,7 @@ export function LoginPage() {
           <CoreInput
             control={control}
             name='email'
-            label={t('auth:login.email')}
+            label={t('auth:resetPassword.email')}
             required
             size='large'
             rules={{
@@ -35,39 +36,50 @@ export function LoginPage() {
             }}
             prefix={<MailOutlined />}
           />
+          <div className='text-right mb-4'>
+            {loadingSendOTP ? (
+              <LoadingOutlined />
+            ) : (
+              <span
+                className='text-blue-500 cursor-pointer'
+                onClick={async () => await onSendOTP(getValues('email'))}
+              >
+                {t('auth:resetPassword.sendOtp')}
+              </span>
+            )}
+          </div>
+          <CoreOtpInput
+            control={control}
+            name='otp'
+            label={t('auth:resetPassword.otp')}
+            required
+            rules={{
+              required: t('validation.required')
+            }}
+          />
           <CoreInput
             control={control}
-            name='password'
-            label={t('auth:login.password')}
+            name='newPassword'
+            label={t('auth:resetPassword.newPassword')}
             password
             size='large'
             required
             rules={{ required: t('validation.required') }}
             prefix={<LockOutlined />}
           />
-          <div className='text-right -mt-2 mb-4'>
-            <Link to={MENU_URL.FORGOT_PASSWORD} className='text-sm text-blue-500 hover:underline'>
-              {t('auth:login.forgotPassword')}
-            </Link>
-          </div>
+
           <Form.Item>
             <Button type='primary' htmlType='submit' block>
-              {t('btn.login')}
+              {t('btn.confirm')}
             </Button>
           </Form.Item>
+          <span className='text-sm flex items-center gap-2 justify-center'>
+            <ArrowLeftOutlined style={{ color: 'blue' }} />
+            <Link className='text-blue-500' to={MENU_URL.LOGIN}>
+              {t('btn.login')}
+            </Link>
+          </span>
         </Form>
-        <span className='text-sm flex items-center gap-2 justify-center'>
-          Chưa có tài khoản?
-          <Link className='text-blue-500' to={MENU_URL.REGISTER}>
-            Đăng ký
-          </Link>
-        </span>
-        <span className='text-sm flex items-center justify-center gap-2'>
-          Tài khoản chưa kích hoạt?
-          <Button type='link' style={{ padding: 0 }} onClick={onRePayment}>
-            Kích hoạt ngay
-          </Button>
-        </span>
       </div>
     </main>
   )

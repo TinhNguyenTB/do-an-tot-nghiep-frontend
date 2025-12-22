@@ -4,6 +4,7 @@ import { PERMISSIONS } from '@/constants/rbac'
 import { usePermission } from '@/hooks/usePermission'
 import { AccessDeniedPage } from '@/pages/AccessDenied'
 import { ChangePasswordPage } from '@/pages/ChangePassword'
+import { ForgotPasswordPage } from '@/pages/ForgotPassword'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
@@ -102,6 +103,7 @@ function App() {
       <Route element={<UnauthorizedRoutes />}>
         <Route path={MENU_URL.LOGIN} element={<LoginPage />} />
         <Route path={MENU_URL.REGISTER} element={<RegisterPage />} />
+        <Route path={MENU_URL.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
       </Route>
 
       <Route path={MENU_URL.ACCESS_DENIED} element={<AccessDeniedPage />} />

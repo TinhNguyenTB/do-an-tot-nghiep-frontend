@@ -13,7 +13,8 @@
     "edit": "Edit",
     "search": "Search",
     "cancel": "Cancel",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "confirm": "Confirm"
   },
   "menu": {
     "organizations": "Organizations",

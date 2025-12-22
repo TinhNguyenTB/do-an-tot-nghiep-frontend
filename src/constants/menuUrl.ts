@@ -8,5 +8,6 @@ export const MENU_URL = {
   ROLES: '/roles',
   ACCESS_DENIED: '/access-denied',
   CHANGE_PASSWORD: '/change-password',
-  PROFILE: '/profile'
+  PROFILE: '/profile',
+  FORGOT_PASSWORD: '/forgot-password'
 }
