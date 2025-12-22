@@ -23,7 +23,7 @@ export const ProfilePage = () => {
     <main className='mx-auto'>
       <Typography.Title level={3}>Hồ sơ cá nhân</Typography.Title>
 
-      <div className='p-6 flex gap-8'>
+      <div className='p-6 flex gap-8 max-sm:flex-col md:flex-row'>
         {/* AVATAR */}
         <div className='flex flex-col items-center gap-2'>
           <Avatar size={120} src={data?.data.avatar} icon={<UserOutlined />} />

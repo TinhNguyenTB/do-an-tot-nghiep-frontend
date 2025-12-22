@@ -1,6 +1,6 @@
 import axiosInstance from '@/libs/axiosInstance'
 import { ProfileFormValues, UserProfile } from '@/services/auth/profile/type'
-import { BaseResponse, QueryParams } from '@/services/types'
+import { BaseResponse } from '@/services/types'
 import { useQuery } from '@tanstack/react-query'
 
 export const PROFILE_QUERY_KEY = '/api/auth/profile'
