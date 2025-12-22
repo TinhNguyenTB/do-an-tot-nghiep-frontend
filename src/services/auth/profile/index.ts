@@ -1,5 +1,5 @@
 import axiosInstance from '@/libs/axiosInstance'
-import { ProfileFormValues, UserProfile } from '@/services/auth/profile/type'
+import { Profile, ProfileFormValues, UserProfile } from '@/services/auth/profile/type'
 import { BaseResponse } from '@/services/types'
 import { useQuery } from '@tanstack/react-query'
 
@@ -33,6 +33,6 @@ export const uploadAvatar = async (file: File) => {
 }
 
 export const updateProfile = async (body: ProfileFormValues) => {
-  const { data } = await axiosInstance.patch(PROFILE_QUERY_KEY, body)
+  const { data } = await axiosInstance.patch<BaseResponse<Profile>>(PROFILE_QUERY_KEY, body)
   return data
 }

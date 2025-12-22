@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { ProfileFormValues } from '@/services/auth/profile/type'
 import { useForm } from 'react-hook-form'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
+import { useRbacStore } from '@/store/rbacStore'
 
 export const useProfile = () => {
   const queryClient = useQueryClient()
@@ -26,6 +27,7 @@ export const useProfile = () => {
     mutationFn: updateProfile,
     onSuccess: (res) => {
       toastSuccess(res.message ?? 'Cập nhật thành công')
+      useRbacStore.getState().updateProfile({ name: res.data.name })
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: [PROFILE_QUERY_KEY] })
   })
@@ -34,6 +36,7 @@ export const useProfile = () => {
     mutationFn: uploadAvatar,
     onSuccess: (res) => {
       toastSuccess(res.message ?? 'Đổi avatar thành công')
+      useRbacStore.getState().updateProfile({ avatar: res.data.avatar })
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: [PROFILE_QUERY_KEY] })
   })

@@ -16,3 +16,10 @@ export interface UserProfile {
 export interface ProfileFormValues {
   name: string
 }
+
+export interface Profile {
+  id: number
+  name: string
+  email: string
+  organizationId: number | null
+}

@@ -18,26 +18,26 @@ export function useLogin() {
 
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess(data) {
+    onSuccess(res) {
       // Lưu userInfo vào localStorage
-      useRbacStore.getState().login(data.data.userInfo)
-      toastSuccess(data.message ?? t('login.success'))
+      useRbacStore.getState().login(res.data.userInfo)
+      toastSuccess(res.message ?? t('login.success'))
       navigate(MENU_URL.HOME)
     }
   })
 
   const { mutate: handleRePayment } = useMutation({
     mutationFn: rePayment,
-    onSuccess: (data) => {
-      location.href = data.data.redirectUrl
+    onSuccess: (res) => {
+      location.href = res.data.redirectUrl
     }
   })
 
-  const onSubmit = handleSubmit((data: LoginFormValues) => {
+  const onSubmit = handleSubmit((data) => {
     mutate(data)
   })
 
-  const onRePayment = handleSubmit((data: LoginFormValues) => {
+  const onRePayment = handleSubmit((data) => {
     handleRePayment(data)
   })
 

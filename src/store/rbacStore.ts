@@ -7,6 +7,7 @@ interface RbacStoreActions {
   logout: () => void
   isLoggedIn: () => boolean
   getPermissions: () => string[]
+  updateProfile: (payload: Partial<Pick<UserInfo, 'name' | 'avatar'>>) => void
 }
 
 export type RbacStoreType = UserInfo & RbacStoreActions
@@ -17,7 +18,8 @@ const initialState: UserInfo = {
   name: '',
   organizationId: null,
   permissions: [],
-  roles: []
+  roles: [],
+  avatar: null
 }
 
 export const useRbacStore = create<RbacStoreType>()(
@@ -45,6 +47,13 @@ export const useRbacStore = create<RbacStoreType>()(
 
       getPermissions: () => {
         return get().permissions
+      },
+
+      updateProfile: (payload) => {
+        set((state) => ({
+          ...state,
+          ...payload
+        }))
       }
     }),
     {
@@ -53,7 +62,8 @@ export const useRbacStore = create<RbacStoreType>()(
       partialize: (state) =>
         Object.fromEntries(
           Object.entries(state as RbacStoreType).filter(
-            ([key]) => !['login', 'logout', 'isLoggedIn', 'getPermissions'].includes(key)
+            ([key]) =>
+              !['login', 'logout', 'isLoggedIn', 'getPermissions', 'updateProfile'].includes(key)
           )
         ) as UserInfo
     }

@@ -1,5 +1,6 @@
 import { MENU_URL } from '@/constants/menuUrl'
 import { TRANSLATION } from '@/constants/translates'
+import { useRbacStore } from '@/store/rbacStore'
 import { DownOutlined, UserOutlined, LockOutlined, LogoutOutlined } from '@ant-design/icons'
 import { Dropdown, Space, Avatar } from 'antd'
 import type { MenuProps } from 'antd'
@@ -15,6 +16,7 @@ interface UserDropdownProps {
 const UserDropdownComponent: React.FC<UserDropdownProps> = ({ email, onLogout }) => {
   const navigate = useNavigate()
   const { t } = useTranslation(TRANSLATION.COMMON)
+  const avatar = useRbacStore((state) => state.avatar)
 
   const items: MenuProps['items'] = [
     {
@@ -45,7 +47,7 @@ const UserDropdownComponent: React.FC<UserDropdownProps> = ({ email, onLogout })
     <Dropdown menu={{ items }} trigger={['click']} placement='bottomLeft'>
       <div style={{ cursor: 'pointer' }}>
         <Space>
-          <Avatar icon={<UserOutlined />} />
+          <Avatar icon={<UserOutlined />} src={avatar} />
           <span>{email}</span>
           <DownOutlined />
         </Space>
