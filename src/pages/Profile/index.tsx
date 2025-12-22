@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Form, Input, Row, Spin, Typography, Upload } from 'antd'
+import { Avatar, Button, Col, Form, Image, Input, Row, Spin, Typography, Upload } from 'antd'
 import { UploadOutlined, UserOutlined } from '@ant-design/icons'
 import { useProfile } from '@/pages/Profile/useProfile'
 import { CoreInput } from '@/components/CoreInput'
@@ -26,7 +26,19 @@ export const ProfilePage = () => {
       <div className='p-6 flex gap-8 max-sm:flex-col md:flex-row'>
         {/* AVATAR */}
         <div className='flex flex-col items-center gap-2'>
-          <Avatar size={120} src={data?.data.avatar} icon={<UserOutlined />} />
+          {data?.data.avatar ? (
+            <Image
+              src={data.data.avatar}
+              width={120}
+              height={120}
+              className='rounded-full object-cover'
+              preview={{
+                mask: 'Xem ảnh'
+              }}
+            />
+          ) : (
+            <Avatar size={120} icon={<UserOutlined />} />
+          )}
           <Upload showUploadList={false} beforeUpload={handleUploadAvatar} accept='image/*'>
             <Button
               className='mt-3'
