@@ -44,6 +44,7 @@ export const ProfilePage = () => {
               className='mt-3'
               icon={<UploadOutlined />}
               loading={uploadAvatarMutation.isPending}
+              disabled={uploadAvatarMutation.isPending}
             >
               Đổi ảnh
             </Button>

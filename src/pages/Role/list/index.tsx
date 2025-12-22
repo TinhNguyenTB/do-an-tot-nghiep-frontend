@@ -43,7 +43,7 @@ export const ListRolePage = () => {
         scroll={{ x: 'max-content' }}
         columns={columns}
         dataSource={listSubscriptions}
-        rowKey={'id'}
+        rowKey={'name'}
         loading={isLoading}
         pagination={{
           current: meta.currentPage,

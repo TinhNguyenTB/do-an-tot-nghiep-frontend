@@ -20,3 +20,10 @@ interface InheritedBy {
 interface Child {
   name: string
 }
+
+export interface RoleFormValues {
+  name: string
+  description: string
+  inheritsFrom: InheritsFrom[]
+  permissions: string[]
+}
