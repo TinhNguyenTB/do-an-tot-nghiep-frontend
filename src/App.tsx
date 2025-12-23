@@ -12,6 +12,7 @@ import { ListOrganizationPage } from '@/pages/Organizations/list'
 import { ProfilePage } from '@/pages/Profile'
 import { RegisterPage } from '@/pages/Register'
 import { ListRolePage } from '@/pages/Role/list'
+import { SaveRolePage } from '@/pages/Role/save'
 import { ListSubscriptionPage } from '@/pages/Subscription/list'
 import { SaveSubscriptionPage } from '@/pages/Subscription/save'
 import { ListUserPage } from '@/pages/User/list'
@@ -86,8 +87,8 @@ function App() {
           {/* Vai trò */}
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_ROLES} />}>
             <Route path={MENU_URL.ROLES} element={<ListRolePage />} />
-            {/* <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
-            <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} /> */}
+            <Route path={`${MENU_URL.ROLES}/addNew`} element={<SaveRolePage />} />
+            <Route path={`${MENU_URL.ROLES}/:name`} element={<SaveRolePage />} />
           </Route>
 
           {/* Tổ chức */}

@@ -1,29 +1,12 @@
+import { Permission } from '@/services/permission/type'
+
 export interface Role {
   name: string
-  description: string
-  inheritsFrom: InheritsFrom[] // Role này kế thừa từ role nào?
-  inheritedBy: InheritedBy[] // Những role nào kế thừa role này?
+  description: string | null
+  inheritsFrom?: { name: string }[] // Role này kế thừa từ role nào?
+  inheritedBy?: { name: string }[] // Những role nào kế thừa role này?
 }
 
-interface InheritsFrom {
-  parent: Parent
-}
-
-interface Parent {
-  name: string
-}
-
-interface InheritedBy {
-  child: Child
-}
-
-interface Child {
-  name: string
-}
-
-export interface RoleFormValues {
-  name: string
-  description: string
-  inheritsFrom: InheritsFrom[]
-  permissions: string[]
+export interface RoleFormValues extends Role {
+  permissions: Permission[]
 }

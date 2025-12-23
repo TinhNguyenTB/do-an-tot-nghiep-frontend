@@ -1,66 +1,58 @@
 import { MENU_URL } from '@/constants/menuUrl'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
-import {
-  createSubscription,
-  SUBSCRIPTIONS_QUERY_KEY,
-  updateSubscription,
-  useQuerySubscriptionById
-} from '@/services/subscription'
-import { SubscriptionFormValues } from '@/services/subscription/type'
-import { convertType } from '@/utils/convertType'
+import { createRole, ROLES_QUERY_KEY, updateRole, useQueryRoleByName } from '@/services/role'
+import { RoleFormValues } from '@/services/role/type'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 
-const defaultValues: SubscriptionFormValues = {
+const defaultValues: RoleFormValues = {
   name: '',
-  duration: 30,
-  price: '1000',
-  userLimit: 1
+  description: null,
+  permissions: []
 }
 
 export const useSaveRole = () => {
   const { toastSuccess } = useGlobalMessage()
-  const { id } = useParams()
+  const { name } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const methodForm = useForm<SubscriptionFormValues>({ defaultValues })
+  const methodForm = useForm<RoleFormValues>({ defaultValues })
   const { handleSubmit, reset } = methodForm
 
   const { mutate: create } = useMutation({
-    mutationFn: createSubscription,
-    onSuccess(data) {
-      toastSuccess(data.message ?? 'Đã tạo gói dịch vụ mới.')
-      navigate(MENU_URL.SUBSCRIPTIONS)
+    mutationFn: createRole,
+    onSuccess(res) {
+      toastSuccess(res.message ?? 'Thành công')
+      navigate(MENU_URL.ROLES)
     },
     onSettled() {
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTIONS_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [ROLES_QUERY_KEY] })
     }
   })
 
   const { mutate: update } = useMutation({
-    mutationFn: updateSubscription,
-    onSuccess(data) {
-      toastSuccess(data.message ?? 'Đã cập nhật gói dịch vụ')
-      navigate(MENU_URL.SUBSCRIPTIONS)
+    mutationFn: updateRole,
+    onSuccess(res) {
+      toastSuccess(res.message ?? 'Thành công')
+      navigate(MENU_URL.ROLES)
     },
     onSettled() {
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTIONS_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [ROLES_QUERY_KEY] })
     }
   })
 
   const onSubmit = handleSubmit((data) => {
-    const result = convertType(data, defaultValues)
-    if (id) {
-      update({ ...result, id })
-    } else create(result)
+    if (name) {
+      update({ ...data, name })
+    } else create(data)
   })
 
-  const onCancel = () => navigate(MENU_URL.SUBSCRIPTIONS)
+  const onCancel = () => navigate(MENU_URL.ROLES)
 
-  const { data } = useQuerySubscriptionById(id as string, { enabled: !!id })
+  const { data } = useQueryRoleByName(name as string, { enabled: !!name })
 
   useEffect(() => {
     if (data) {
@@ -69,7 +61,7 @@ export const useSaveRole = () => {
   }, [reset, data])
 
   return [
-    { methodForm, id },
+    { methodForm, name, data },
     { onSubmit, onCancel }
   ] as const
 }

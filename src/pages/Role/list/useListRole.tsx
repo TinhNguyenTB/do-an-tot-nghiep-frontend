@@ -5,7 +5,7 @@ import { PaginationMeta } from '@/services/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Popconfirm, Space, TableProps, Tag } from 'antd'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { CloseCircleOutlined, CloseOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { ROLES_QUERY_KEY, useQueryRoles } from '@/services/role'
@@ -13,7 +13,6 @@ import { Role } from '@/services/role/type'
 import { formatRoleName, getRoleColor } from '@/utils/roleUtils'
 import { ROLES } from '@/constants/rbac'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
-import { CoreBadge } from '@/components/CoreBadge'
 
 const defaultFilters = {
   name: ''
@@ -64,14 +63,6 @@ export const useListRole = () => {
       title: 'Tên',
       render(_, record) {
         return <Tag color={getRoleColor(record.name)}>{formatRoleName(record.name)}</Tag>
-        // return (
-        //   <CoreBadge
-        //     count={<CloseCircleOutlined className='bg-slate-200 rounded-full text-xl' />}
-        //     onClick={() => console.log(11111)}
-        //   >
-        //     <div className='bg-slate-200 p-2 rounded-full'> {formatRoleName(record.name)}</div>
-        //   </CoreBadge>
-        // )
       }
     },
     { title: 'Mô tả', dataIndex: 'description' },
@@ -80,9 +71,9 @@ export const useListRole = () => {
       render(_, record) {
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {record.inheritsFrom.map((item) => (
-              <Tag key={item.parent.name} color={getRoleColor(item.parent.name)}>
-                {formatRoleName(item.parent.name)}
+            {record?.inheritsFrom?.map((item) => (
+              <Tag key={item.name} color={getRoleColor(item.name)}>
+                {formatRoleName(item.name)}
               </Tag>
             ))}
           </div>
@@ -94,9 +85,9 @@ export const useListRole = () => {
       render(_, record) {
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {record.inheritedBy.map((item) => (
-              <Tag key={item.child.name} color={getRoleColor(item.child.name)}>
-                {formatRoleName(item.child.name)}
+            {record?.inheritedBy?.map((item) => (
+              <Tag key={item.name} color={getRoleColor(item.name)}>
+                {formatRoleName(item.name)}
               </Tag>
             ))}
           </div>
