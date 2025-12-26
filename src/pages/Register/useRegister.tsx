@@ -1,11 +1,11 @@
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
-import { register } from '@/services/auth/register'
+import { register, validateEmail } from '@/services/auth/register'
 import { RegisterFormValues } from '@/services/auth/register/type'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
 export const useRegister = () => {
-  const { toastSuccess, toastError } = useGlobalMessage()
+  const { toastSuccess } = useGlobalMessage()
   const methodForm = useForm<RegisterFormValues>({
     defaultValues: {
       email: '',
@@ -17,13 +17,23 @@ export const useRegister = () => {
     },
     mode: 'onBlur'
   })
-  const { trigger, handleSubmit } = methodForm
+  const { trigger, handleSubmit, getValues } = methodForm
+
+  const { mutateAsync: validateAsync } = useMutation({
+    mutationFn: validateEmail,
+    onSuccess: (res) => toastSuccess(res.message ?? 'Success')
+  })
 
   const validateFields = async (): Promise<boolean> => {
-    // Kích hoạt validation cho các trường cần thiết
     const isValid = await trigger(['name', 'email', 'password'])
 
-    if (isValid) return true
+    if (isValid) {
+      const validationResponse = await validateAsync({
+        email: getValues('email')
+      })
+
+      return validationResponse.data.isAvailable
+    }
     return false
   }
 
@@ -32,9 +42,6 @@ export const useRegister = () => {
     onSuccess: (data) => {
       toastSuccess('Đăng ký thành công')
       location.href = data.data.redirectUrl
-    },
-    onError: () => {
-      toastError('Có lỗi xảy ra')
     }
   })
 

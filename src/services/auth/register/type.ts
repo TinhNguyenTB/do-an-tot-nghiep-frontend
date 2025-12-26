@@ -14,3 +14,7 @@ export type RegisterResponse = BaseResponse<{
   paymentId: number
   redirectUrl: string
 }>
+
+export type ValidateEmailResponse = BaseResponse<{
+  isAvailable: boolean
+}>

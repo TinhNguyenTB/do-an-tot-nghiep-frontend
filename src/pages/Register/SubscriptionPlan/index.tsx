@@ -18,7 +18,7 @@ export const SubscriptionPlan = () => {
   const subscriptions = data?.data.content || []
   const filteredSubscriptions = isOrganization
     ? subscriptions.filter((sub) => sub.userLimit > 1)
-    : subscriptions
+    : subscriptions.filter((sub) => sub.userLimit === 1)
 
   if (isLoading) {
     return (
