@@ -1,7 +1,7 @@
 import { Control, Controller, Path, RegisterOptions, useFormState } from 'react-hook-form'
 import { Select, Form, SelectProps } from 'antd'
 import { get } from 'lodash'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 
 interface Props<TOption extends Record<string, any>, TFormValues extends Record<string, any>> {
   name: Path<TFormValues>
@@ -33,10 +33,15 @@ function CoreSelectComponent<
   disabled = false,
   mode
 }: Props<TOption, TFormValues>) {
-  const mappedOptions = options.map((item) => ({
-    label: get(item, labelPath),
-    value: get(item, valuePath)
-  }))
+  const mappedOptions = useMemo(
+    () =>
+      options.map((item) => ({
+        label: get(item, labelPath),
+        value: get(item, valuePath)
+      })),
+    [options, labelPath, valuePath]
+  )
+
   const { errors } = useFormState({ control })
   const errorMessage = get(errors, name)?.message
 
@@ -59,8 +64,6 @@ function CoreSelectComponent<
             placeholder={placeholder}
             disabled={disabled}
             showSearch
-            // value={mappedOptions.some((opt) => opt.value === field.value) ? field.value : undefined}
-            // onChange={(value) => field.onChange(value || undefined)}
             value={
               mode === 'multiple' || mode === 'tags'
                 ? Array.isArray(field.value)
@@ -74,7 +77,7 @@ function CoreSelectComponent<
             onChange={(value) => {
               if (mode === 'multiple' || mode === 'tags') {
                 // Nếu chọn nhiều, Ant Design Select trả về mảng (hoặc [] nếu clear hết)
-                field.onChange(value)
+                field.onChange(Array.isArray(value) ? value : [])
               } else {
                 // Nếu chọn đơn, giá trị có thể là undefined khi clear
                 field.onChange(value || undefined)

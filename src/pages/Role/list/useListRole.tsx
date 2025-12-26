@@ -127,7 +127,7 @@ export const useListRole = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ROLES_QUERY_KEY] })
-      toastSuccess('Xóa gói vai trò thành công')
+      toastSuccess('Xóa vai trò thành công')
     }
   })
 

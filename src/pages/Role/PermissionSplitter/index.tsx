@@ -48,7 +48,7 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
   return (
     <Splitter style={{ height: 450 }} className='border border-dashed border-blue-500'>
       {/* ===== LEFT ===== */}
-      <Splitter.Panel defaultSize='51%' min='30%'>
+      <Splitter.Panel defaultSize='50%' min='30%'>
         <Typography.Title level={5} className='text-center'>
           Danh sách quyền
         </Typography.Title>
@@ -69,9 +69,8 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
           {permissions.map((p) => (
             <div key={p.name} className='block'>
               <Checkbox
-                disabled={isFetchingNextPage}
                 checked={selected.some((s) => s.name === p.name)}
-                onChange={() => togglePermission({ name: p.name, description: p.description })}
+                onChange={() => togglePermission(p)}
               >
                 {p.description}
               </Checkbox>
@@ -100,7 +99,10 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
               key={p.name}
               closable
               onClose={() => togglePermission(p)}
-              style={{ margin: '0.2rem', padding: '0.2rem' }}
+              style={{
+                margin: '0.2rem',
+                padding: '0.2rem'
+              }}
             >
               {p.description}
             </Tag>
