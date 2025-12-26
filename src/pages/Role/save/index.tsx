@@ -4,10 +4,7 @@ import { CoreTextArea } from '@/components/CoreTextArea'
 import { TRANSLATION } from '@/constants/translates'
 import { PermissionSplitter } from '@/pages/Role/PermissionSplitter'
 import { useSaveRole } from '@/pages/Role/save/useSaveRole'
-import { Permission } from '@/services/permission/type'
-import { fetchRoleByName } from '@/services/role'
 import { Button, Col, Form, Row } from 'antd'
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const SaveRolePage = () => {

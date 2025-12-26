@@ -72,8 +72,8 @@ export const useListRole = () => {
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {record?.inheritsFrom?.map((item) => (
-              <Tag key={item.name} color={getRoleColor(item.name)}>
-                {formatRoleName(item.name)}
+              <Tag key={item} color={getRoleColor(item)}>
+                {formatRoleName(item)}
               </Tag>
             ))}
           </div>
@@ -86,8 +86,8 @@ export const useListRole = () => {
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {record?.inheritedBy?.map((item) => (
-              <Tag key={item.name} color={getRoleColor(item.name)}>
-                {formatRoleName(item.name)}
+              <Tag key={item} color={getRoleColor(item)}>
+                {formatRoleName(item)}
               </Tag>
             ))}
           </div>

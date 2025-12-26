@@ -8,7 +8,6 @@ import {
   useQueryRoles
 } from '@/services/role'
 import { RoleFormValues } from '@/services/role/type'
-import { convertArrayToArrayObject } from '@/utils/convertArrayToArrayObject'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -53,20 +52,9 @@ export const useSaveRole = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    let outPutInheritsFrom = []
-    const { inheritsFrom } = data
-    if (inheritsFrom && inheritsFrom?.length > 0) {
-      outPutInheritsFrom = convertArrayToArrayObject(inheritsFrom, 'name')
-      if (name) {
-        // @ts-ignore
-        update({ ...data, name, inheritsFrom: outPutInheritsFrom })
-        // @ts-ignore
-      } else create({ ...data, inheritsFrom: outPutInheritsFrom })
-    } else {
-      if (name) {
-        update({ ...data, name })
-      } else create(data)
-    }
+    if (name) {
+      update({ ...data, name })
+    } else create(data)
   })
 
   const onCancel = () => navigate(MENU_URL.ROLES)
@@ -78,11 +66,7 @@ export const useSaveRole = () => {
     if (!data?.data) return
 
     reset({
-      name: data.data.name,
-      description: data.data.description,
-      permissions: data.data.permissions ?? [],
-      //@ts-ignore
-      inheritsFrom: data.data.inheritsFrom?.map((p) => p.name) ?? []
+      ...data.data
     })
   }, [data, reset])
 
