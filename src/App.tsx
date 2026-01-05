@@ -88,7 +88,7 @@ function App() {
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_ROLES} />}>
             <Route path={MENU_URL.ROLES} element={<ListRolePage />} />
             <Route path={`${MENU_URL.ROLES}/addNew`} element={<SaveRolePage />} />
-            <Route path={`${MENU_URL.ROLES}/:name`} element={<SaveRolePage />} />
+            <Route path={`${MENU_URL.ROLES}/:id`} element={<SaveRolePage />} />
           </Route>
 
           {/* Tổ chức */}

@@ -58,7 +58,7 @@ export const createUser = async (body: UserFormValues) => {
 }
 
 export const updateUser = async (body: UserFormValues & { id: string }) => {
-  const { id, ...requestBody } = body
+  const { id, email, organizationId, ...requestBody } = body
   const { data } = await axiosInstance<BaseResponse<User>>({
     url: `${USERS_QUERY_KEY}/${body.id}`,
     method: 'PATCH',

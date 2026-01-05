@@ -22,7 +22,7 @@ const defaultValues: RoleFormValues = {
 
 export const useSaveRole = () => {
   const { toastSuccess } = useGlobalMessage()
-  const { name } = useParams()
+  const { id } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -52,15 +52,15 @@ export const useSaveRole = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    if (name) {
-      update({ ...data, name })
+    if (id) {
+      update({ ...data, id })
     } else create(data)
   })
 
   const onCancel = () => navigate(MENU_URL.ROLES)
   const { data: roles } = useQueryRoles({ page: 1, size: 20 })
 
-  const { data } = useQueryRoleByName(name as string, { enabled: !!name })
+  const { data } = useQueryRoleByName(id as string, { enabled: !!id })
 
   useEffect(() => {
     if (!data?.data) return
@@ -71,7 +71,7 @@ export const useSaveRole = () => {
   }, [data, reset])
 
   return [
-    { methodForm, name, roleOptions: roles?.data.content, data },
+    { methodForm, id, roleOptions: roles?.data.content, data },
     { onSubmit, onCancel }
   ] as const
 }

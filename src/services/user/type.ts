@@ -26,6 +26,7 @@ export interface User {
 export interface UserFormValues {
   name: string
   email: string
+  status: string
   organizationId: number | null
   roles: string[]
 }

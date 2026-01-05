@@ -10,9 +10,10 @@ import { useTranslation } from 'react-i18next'
 export const SaveRolePage = () => {
   const { t } = useTranslation(TRANSLATION.COMMON)
   const [values, handles] = useSaveRole()
-  const { methodForm, name, data, roleOptions } = values
+  const { methodForm, id, data, roleOptions } = values
   const { onSubmit, onCancel } = handles
-  const { control, setValue } = methodForm
+  const { control, setValue, watch } = methodForm
+  const permissions = watch('permissions')
 
   return (
     <Form layout='vertical' onFinish={onSubmit}>
@@ -33,7 +34,7 @@ export const SaveRolePage = () => {
             label='Kế thừa quyền từ'
             placeholder='Chọn vai trò'
             labelPath='name'
-            valuePath='name'
+            valuePath='id'
             mode='multiple'
             options={roleOptions || []}
           />
@@ -43,7 +44,7 @@ export const SaveRolePage = () => {
         </Col>
         <Col xs={24}>
           <PermissionSplitter
-            value={data?.data.permissions || []} // optional khi edit
+            value={permissions} // optional khi edit
             onChange={(permissions) => {
               setValue('permissions', permissions, { shouldDirty: true })
             }}
@@ -57,7 +58,7 @@ export const SaveRolePage = () => {
             {t('btn.cancel')}
           </Button>
           <Button type='primary' htmlType='submit'>
-            {name ? t('btn.saveChanges') : t('btn.addNew')}
+            {id ? t('btn.saveChanges') : t('btn.addNew')}
           </Button>
         </Col>
       </Row>

@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { ROLES_QUERY_KEY, useQueryRoles } from '@/services/role'
 import { Role } from '@/services/role/type'
-import { formatRoleName, getRoleColor } from '@/utils/roleUtils'
 import { ROLES } from '@/constants/rbac'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
 
@@ -61,9 +60,7 @@ export const useListRole = () => {
     },
     {
       title: 'Tên',
-      render(_, record) {
-        return <Tag color={getRoleColor(record.name)}>{formatRoleName(record.name)}</Tag>
-      }
+      dataIndex: 'name'
     },
     { title: 'Mô tả', dataIndex: 'description' },
     {
@@ -72,9 +69,7 @@ export const useListRole = () => {
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {record?.inheritsFrom?.map((item) => (
-              <Tag key={item} color={getRoleColor(item)}>
-                {formatRoleName(item)}
-              </Tag>
+              <Tag key={item.id}>{item.name}</Tag>
             ))}
           </div>
         )
@@ -86,9 +81,7 @@ export const useListRole = () => {
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {record?.inheritedBy?.map((item) => (
-              <Tag key={item} color={getRoleColor(item)}>
-                {formatRoleName(item)}
-              </Tag>
+              <Tag key={item.id}>{item.name}</Tag>
             ))}
           </div>
         )
@@ -101,13 +94,13 @@ export const useListRole = () => {
           <Space size={'large'}>
             <EditOutlined
               style={{ color: 'blue' }}
-              onClick={() => navigate(`${MENU_URL.ROLES}/${record.name}`)}
+              onClick={() => navigate(`${MENU_URL.ROLES}/${record.id}`)}
             />
             {record.name !== ROLES.SUPER_ADMIN && (
               <Popconfirm
                 placement='topLeft'
                 title='Xác nhận xóa'
-                description={`Bạn có chắc muốn xóa vai trò: ${formatRoleName(record.name)}?`}
+                description={`Bạn có chắc muốn xóa vai trò: ${record.name}?`}
                 onConfirm={() => confirmDelete(record)}
                 okText='Có'
                 cancelText='Không'

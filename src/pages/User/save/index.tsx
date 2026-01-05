@@ -1,5 +1,6 @@
 import { CoreInput } from '@/components/CoreInput'
 import { CoreSelect } from '@/components/CoreSelect'
+import { userStatusOption } from '@/constants/option'
 import { TRANSLATION } from '@/constants/translates'
 import { useSaveUser } from '@/pages/User/save/useSaveUser'
 import { Button, Col, Form, Row } from 'antd'
@@ -29,6 +30,7 @@ export const SaveUserPage = () => {
             control={control}
             name='email'
             label='Email'
+            disabled={!!id}
             required
             rules={{
               required: t('validation.required'),
@@ -51,9 +53,21 @@ export const SaveUserPage = () => {
             label='Vai trò'
             required
             mode='multiple'
-            labelPath='label'
-            valuePath='name'
+            labelPath='name'
+            valuePath='id'
             options={roleOptions || []}
+            rules={{ required: t('validation.required') }}
+          />
+        </Col>
+        <Col xs={24} md={12} lg={6}>
+          <CoreSelect
+            control={control}
+            name='status'
+            label='Trạng thái'
+            required
+            labelPath='label'
+            valuePath='value'
+            options={userStatusOption}
             rules={{ required: t('validation.required') }}
           />
         </Col>

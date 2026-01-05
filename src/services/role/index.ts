@@ -51,10 +51,10 @@ export const useQueryRoleByName = (name: string, options?: RoleQueryOptions) => 
   })
 }
 
-export const updateRole = async (body: RoleFormValues & { name: string }) => {
-  const { name, ...requestBody } = body
+export const updateRole = async (body: RoleFormValues & { id: string }) => {
+  const { id, ...requestBody } = body
   const { data } = await axiosInstance<BaseResponse<RoleFormValues>>({
-    url: `${ROLES_QUERY_KEY}/${body.name}`,
+    url: `${ROLES_QUERY_KEY}/${body.id}`,
     method: 'PATCH',
     data: requestBody
   })

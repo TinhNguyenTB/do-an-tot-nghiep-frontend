@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Checkbox, Typography, Spin, Tag, Input } from 'antd'
 import { Splitter } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { fetchPermissionInfinite, PERMISSIONS_QUERY_KEY } from '@/services/permission'
 import { Permission } from '@/services/permission/type'
@@ -15,7 +15,7 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
   const [selected, setSelected] = useState<Permission[]>([])
   const [search, setSearch] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-
+  console.log(value, 'hihi')
   useEffect(() => {
     setSelected(value)
   }, [value])
@@ -36,9 +36,8 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
 
   const togglePermission = (permission: Permission) => {
     setSelected((prev) => {
-      const existed = prev.find((p) => p.name === permission.name)
-
-      const next = existed ? prev.filter((p) => p.name !== permission.name) : [...prev, permission]
+      const exists = prev.some((p) => p.id === permission.id)
+      const next = exists ? prev.filter((p) => p.id !== permission.id) : [...prev, permission]
 
       onChange(next)
       return next
@@ -67,12 +66,12 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
 
         <div className='overflow-auto h-[350px] px-4 space-y-2'>
           {permissions.map((p) => (
-            <div key={p.name} className='block'>
+            <div key={p.id} className='block'>
               <Checkbox
-                checked={selected.some((s) => s.name === p.name)}
+                checked={selected.some((s) => s.id === p.id)}
                 onChange={() => togglePermission(p)}
               >
-                {p.description}
+                {p.name}
               </Checkbox>
             </div>
           ))}
@@ -104,7 +103,7 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
                 padding: '0.2rem'
               }}
             >
-              {p.description}
+              {p.name}
             </Tag>
           ))}
         </div>

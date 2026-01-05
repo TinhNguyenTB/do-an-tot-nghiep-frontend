@@ -15,6 +15,7 @@ interface Props<TOption extends Record<string, any>, TFormValues extends Record<
   rules?: RegisterOptions<TFormValues, Path<TFormValues>>
   disabled?: boolean
   mode?: SelectProps['mode']
+  onChangeValue?: (value: any, option: any) => void
 }
 
 function CoreSelectComponent<
@@ -31,7 +32,8 @@ function CoreSelectComponent<
   required = false,
   rules = {},
   disabled = false,
-  mode
+  mode,
+  onChangeValue
 }: Props<TOption, TFormValues>) {
   const mappedOptions = useMemo(
     () =>
@@ -71,16 +73,19 @@ function CoreSelectComponent<
                   : []
                 : field.value
             }
-            // THAY ĐỔI 3: Điều chỉnh onChange để xử lý giá trị khi chọn nhiều
-            // Khi mode='multiple', value luôn là mảng (hoặc []).
-            // field.onChange xử lý mảng này trực tiếp.
-            onChange={(value) => {
+            onChange={(value, option) => {
+              let nextValue: any
+
               if (mode === 'multiple' || mode === 'tags') {
-                // Nếu chọn nhiều, Ant Design Select trả về mảng (hoặc [] nếu clear hết)
-                field.onChange(Array.isArray(value) ? value : [])
+                nextValue = Array.isArray(value) ? value : []
               } else {
-                // Nếu chọn đơn, giá trị có thể là undefined khi clear
-                field.onChange(value || undefined)
+                nextValue = value || undefined
+              }
+
+              field.onChange(nextValue)
+
+              if (onChangeValue) {
+                onChangeValue(nextValue, option)
               }
             }}
             filterOption={(input, option) =>

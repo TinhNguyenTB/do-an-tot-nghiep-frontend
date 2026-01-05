@@ -1,12 +1,11 @@
 import { MENU_URL } from '@/constants/menuUrl'
 import { ROLES } from '@/constants/rbac'
+import { UserStatus } from '@/enums'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { useQueryOrganizations } from '@/services/organization'
 import { useQueryRoles } from '@/services/role'
 import { createUser, updateUser, useQueryUserById, USERS_QUERY_KEY } from '@/services/user'
 import { UserFormValues } from '@/services/user/type'
-import { convertType } from '@/utils/convertType'
-import { formatRoleName } from '@/utils/roleUtils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -16,6 +15,7 @@ const defaultValues: UserFormValues = {
   name: '',
   email: '',
   organizationId: null,
+  status: UserStatus.ACTIVE,
   roles: [ROLES.CLIENT]
 }
 
@@ -26,13 +26,6 @@ export const useSaveUser = () => {
   const queryClient = useQueryClient()
 
   const { data: roles } = useQueryRoles({ page: 1, size: 20 })
-  const roleOptions = roles?.data.content.map((item) => {
-    const label = formatRoleName(item.name)
-    return {
-      ...item,
-      label
-    }
-  })
 
   const { data: organization } = useQueryOrganizations({ page: 1, size: 20 })
 
@@ -62,10 +55,9 @@ export const useSaveUser = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    const result = convertType(data, defaultValues)
     if (id) {
-      update({ ...result, id })
-    } else create(result)
+      update({ ...data, id })
+    } else create(data)
   })
 
   const onCancel = () => navigate(MENU_URL.SUBSCRIPTIONS)
@@ -79,7 +71,12 @@ export const useSaveUser = () => {
   }, [reset, data])
 
   return [
-    { methodForm, id, roleOptions, organizationOptions: organization?.data.content ?? [] },
+    {
+      methodForm,
+      id,
+      roleOptions: roles?.data.content ?? [],
+      organizationOptions: organization?.data.content ?? []
+    },
     { onSubmit, onCancel }
   ] as const
 }
