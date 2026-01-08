@@ -9,6 +9,8 @@ import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
 import { ListOrganizationPage } from '@/pages/Organizations/list'
+import { ListPermissionPage } from '@/pages/Permission/list'
+import { SavePermissionPage } from '@/pages/Permission/save'
 import { ProfilePage } from '@/pages/Profile'
 import { RegisterPage } from '@/pages/Register'
 import { ListRolePage } from '@/pages/Role/list'
@@ -89,6 +91,13 @@ function App() {
             <Route path={MENU_URL.ROLES} element={<ListRolePage />} />
             <Route path={`${MENU_URL.ROLES}/addNew`} element={<SaveRolePage />} />
             <Route path={`${MENU_URL.ROLES}/:id`} element={<SaveRolePage />} />
+          </Route>
+
+          {/* Quyền */}
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_PERMISSIONS} />}>
+            <Route path={MENU_URL.PERMISSIONS} element={<ListPermissionPage />} />
+            <Route path={`${MENU_URL.PERMISSIONS}/addNew`} element={<SavePermissionPage />} />
+            <Route path={`${MENU_URL.PERMISSIONS}/:id`} element={<SavePermissionPage />} />
           </Route>
 
           {/* Tổ chức */}

@@ -9,9 +9,9 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { ORGANIZATIONS_QUERY_KEY, useQueryOrganizations } from '@/services/organization'
-import { Organization } from '@/services/organization/type'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
 import { Permission } from '@/services/permission/type'
+import { PERMISSIONS_QUERY_KEY, useQueryPermissions } from '@/services/permission'
 
 const defaultFilters = {
   name: ''
@@ -29,7 +29,7 @@ export const useListPermission = () => {
   const { queryParams, handlePageChange, handleFilterSubmit, handleFilterReset } =
     usePaginationAndFilter(defaultFilters, 5) // Khai báo kích thước mặc định là 5
 
-  const { data, isLoading } = useQueryOrganizations(queryParams)
+  const { data, isLoading } = useQueryPermissions(queryParams)
 
   const { control, handleSubmit, reset } = useForm<IPermissionFilters>({
     defaultValues: defaultFilters
@@ -78,13 +78,13 @@ export const useListPermission = () => {
           <Space size={'large'}>
             <EditOutlined
               style={{ color: 'blue' }}
-              onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/${record.id}`)}
+              onClick={() => navigate(`${MENU_URL.PERMISSIONS}/${record.id}`)}
             />
 
             <Popconfirm
               placement='topLeft'
               title='Xác nhận xóa'
-              description={`Bạn có chắc muốn xóa tổ chức: ${record.name}?`}
+              description={`Bạn có chắc muốn xóa quyền: ${record.name}?`}
               onConfirm={() => confirmDelete(record)}
               okText='Có'
               cancelText='Không'
@@ -97,22 +97,22 @@ export const useListPermission = () => {
     }
   ]
 
-  const deleteOrganizationMutation = useMutation({
-    mutationFn: async (subscriptionId: string) => {
-      await axiosInstance.delete(`${ORGANIZATIONS_QUERY_KEY}/${subscriptionId}`)
+  const deletePermissionMutation = useMutation({
+    mutationFn: async (permissionId: number) => {
+      await axiosInstance.delete(`${PERMISSIONS_QUERY_KEY}/${permissionId}`)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ORGANIZATIONS_QUERY_KEY] })
-      toastSuccess('Xóa tổ chức thành công')
+      queryClient.invalidateQueries({ queryKey: [PERMISSIONS_QUERY_KEY] })
+      toastSuccess('Xóa quyền thành công')
     }
   })
 
   const confirmDelete = (permission: Permission) => {
-    deleteOrganizationMutation.mutate(permission.name)
+    deletePermissionMutation.mutate(permission.id)
   }
 
   return [
-    { meta, listOrganizations: data?.data?.content || [], isLoading, columns, control },
+    { meta, listPermissions: data?.data?.content || [], isLoading, columns, control },
     { handleReset, handleSubmit, handleTableChange, onSubmit }
   ] as const
 }

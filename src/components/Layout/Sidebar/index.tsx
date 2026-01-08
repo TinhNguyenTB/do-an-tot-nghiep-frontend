@@ -4,7 +4,8 @@ import {
   TeamOutlined,
   OrderedListOutlined,
   ApartmentOutlined,
-  ContactsOutlined
+  ContactsOutlined,
+  IssuesCloseOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePermission } from '@/hooks/usePermission'
@@ -82,24 +83,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
       key: MENU_URL.USERS,
       icon: <ContactsOutlined />,
       permission: PERMISSIONS.READ_USERS
-      // children: [
-      //   {
-      //     label: 'Nhóm 1',
-      //     key: '/users/group1',
-      //     permission: 'view_group1',
-      //   },
-      //   {
-      //     label: 'Nhóm 2',
-      //     key: '/users/group2',
-      //     permission: 'view_group2',
-      //   },
-      // ],
     },
     {
       label: t('menu.subscriptions'),
       key: MENU_URL.SUBSCRIPTIONS,
       icon: <OrderedListOutlined />,
       permission: PERMISSIONS.READ_SUBSCRIPTIONS
+    },
+    {
+      label: t('menu.permissions'),
+      key: MENU_URL.PERMISSIONS,
+      icon: <IssuesCloseOutlined />,
+      permission: PERMISSIONS.READ_PERMISSIONS
     },
     {
       label: t('menu.roles'),

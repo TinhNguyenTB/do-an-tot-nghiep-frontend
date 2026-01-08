@@ -9,7 +9,7 @@ import { useListPermission } from '@/pages/Permission/list/useListPermission'
 
 export const ListPermissionPage = () => {
   const [values, handles] = useListPermission()
-  const { isLoading, listOrganizations, columns, control, meta } = values
+  const { isLoading, listPermissions, columns, control, meta } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
   const navigate = useNavigate()
   const { t } = useTranslation(TRANSLATION.COMMON)
@@ -21,7 +21,7 @@ export const ListPermissionPage = () => {
           control={control}
           name='name'
           prefix={<SearchOutlined />}
-          placeholder='Nhập tên tổ chức'
+          placeholder='Nhập tên quyền'
         />
         <Form.Item>
           <Space>
@@ -34,7 +34,7 @@ export const ListPermissionPage = () => {
       </Form>
       <Button
         type='primary'
-        onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}
+        onClick={() => navigate(`${MENU_URL.PERMISSIONS}/addNew`)}
         style={{ marginBottom: 20 }}
       >
         {t('btn.addNew')}
@@ -42,7 +42,7 @@ export const ListPermissionPage = () => {
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}
-        dataSource={listOrganizations}
+        dataSource={listPermissions}
         rowKey={'id'}
         loading={isLoading}
         pagination={{

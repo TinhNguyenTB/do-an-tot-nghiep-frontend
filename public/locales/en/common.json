@@ -21,6 +21,7 @@
     "users": "Users",
     "subscriptions": "Subscriptions",
     "roles": "Roles",
+    "permissions": "Permissions",
     "change-password": "Change Password",
     "profile": "Profile"
   }
