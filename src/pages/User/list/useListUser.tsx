@@ -3,13 +3,16 @@ import { defaultPaginationMeta } from '@/constants/paginationMeta'
 import { UserStatus } from '@/enums'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
+import { usePermission } from '@/hooks/usePermission'
 import axiosInstance from '@/libs/axiosInstance'
 import { PaginationMeta } from '@/services/types'
 import { useQueryUsers, USERS_QUERY_KEY } from '@/services/user'
 import { User } from '@/services/user/type'
+import { useRbacStore } from '@/store/rbacStore'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Popconfirm, Space, TableProps, Tag } from 'antd'
+import { useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -25,6 +28,8 @@ interface IUserFilters {
 }
 
 export const useListUser = () => {
+  const roles = useRbacStore((state) => state.roles)
+  const { isSuperAdmin } = usePermission(roles)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { toastSuccess } = useGlobalMessage()
@@ -56,45 +61,49 @@ export const useListUser = () => {
   // Cấu hình Bảng Ant Design
   const meta: PaginationMeta = data?.data?.meta || defaultPaginationMeta
 
-  const columns: TableProps<User>['columns'] = [
-    {
-      title: 'STT',
-      render: (_, __, index) => {
-        return (meta.currentPage - 1) * meta.itemsPerPage + index + 1
+  const columns: TableProps<User>['columns'] = useMemo(() => {
+    const baseColumn: TableProps<User>['columns'] = [
+      {
+        title: 'STT',
+        render: (_, __, index) => {
+          return (meta.currentPage - 1) * meta.itemsPerPage + index + 1
+        }
+      },
+      {
+        title: 'Tên',
+        dataIndex: 'name'
+        // Sắp xếp theo thứ tự bảng chữ cái (A-Z)
+        // sorter: (a, b) => a.name.localeCompare(b.name)
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email'
+      },
+      { title: 'Tổ chức', dataIndex: 'organizationName' },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        render: (status: UserStatus) => {
+          return <Tag key={status}>{status}</Tag>
+        }
       }
-    },
-    {
-      title: 'Tên',
-      dataIndex: 'name'
-      // Sắp xếp theo thứ tự bảng chữ cái (A-Z)
-      // sorter: (a, b) => a.name.localeCompare(b.name)
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email'
-    },
-    { title: 'Tổ chức', dataIndex: 'organizationName' },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      render: (status: UserStatus) => {
-        return <Tag key={status}>{status}</Tag>
-      }
-    },
-    {
-      title: 'Vai trò',
-      dataIndex: 'roles',
-      render: (roles: string[]) => {
-        return (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {roles.map((roleName) => (
-              <Tag key={roleName}>{roleName}</Tag>
-            ))}
-          </div>
-        )
-      }
-    },
-    {
+    ]
+    if (!isSuperAdmin) {
+      baseColumn.push({
+        title: 'Vai trò',
+        dataIndex: 'roles',
+        render: (roles: string[]) => {
+          return (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {roles.map((roleName) => (
+                <Tag key={roleName}>{roleName}</Tag>
+              ))}
+            </div>
+          )
+        }
+      })
+    }
+    baseColumn.push({
       title: 'Actions',
       render: (_, record) => {
         return (
@@ -117,8 +126,9 @@ export const useListUser = () => {
           </Space>
         )
       }
-    }
-  ]
+    })
+    return baseColumn
+  }, [isSuperAdmin])
 
   const deleteUserMutation = useMutation({
     mutationFn: async (userId: string) => {
@@ -126,7 +136,7 @@ export const useListUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEY] })
-      toastSuccess('Xóa gói dịch vụ thành công')
+      toastSuccess('Xóa gói người dùng thành công')
     }
   })
 

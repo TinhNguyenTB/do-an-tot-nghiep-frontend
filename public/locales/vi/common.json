@@ -23,6 +23,7 @@
     "roles": "Vai trò",
     "permissions": "Quyền",
     "change-password": "Đổi mật khẩu",
-    "profile": "Hồ sơ"
+    "profile": "Hồ sơ",
+    "payment-history": "Lịch sử thanh toán"
   }
 }

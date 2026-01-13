@@ -10,5 +10,7 @@ export const MENU_URL = {
   ACCESS_DENIED: '/access-denied',
   CHANGE_PASSWORD: '/change-password',
   PROFILE: '/profile',
-  FORGOT_PASSWORD: '/forgot-password'
+  FORGOT_PASSWORD: '/forgot-password',
+  ANALYTICS: '/analytics',
+  PAYMENT_HISTORY: '/payment-history'
 }

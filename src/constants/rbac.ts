@@ -16,6 +16,7 @@ export const PERMISSIONS = {
   DELETE_SUBSCRIPTIONS: 'delete_subscriptions',
 
   READ_SELF_SUBSCRIPTION: 'read_self_subscription',
+  READ_PAYMENT_HISTORY: 'read_payment_history',
 
   /*
    |--------------------------------------------------------------------------
@@ -84,5 +85,7 @@ export const PERMISSIONS = {
   READ_ENDPOINT_PERMISSION_DETAILS: 'read_endpoint_permissions_details',
   CREATE_ENDPOINT_PERMISSIONS: 'create_endpoint_permissions',
   UPDATE_ENDPOINT_PERMISSIONS: 'update_endpoint_permissions',
-  DELETE_ENDPOINT_PERMISSIONS: 'delete_endpoint_permissions'
+  DELETE_ENDPOINT_PERMISSIONS: 'delete_endpoint_permissions',
+
+  READ_ANALYTICS: 'read_analytics'
 } as const

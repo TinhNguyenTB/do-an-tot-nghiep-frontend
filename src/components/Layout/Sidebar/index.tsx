@@ -1,11 +1,13 @@
 import { Drawer, Layout, Menu } from 'antd'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   TeamOutlined,
   OrderedListOutlined,
   ApartmentOutlined,
   ContactsOutlined,
-  IssuesCloseOutlined
+  IssuesCloseOutlined,
+  BarChartOutlined,
+  HistoryOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePermission } from '@/hooks/usePermission'
@@ -71,38 +73,57 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
   const roles = useRbacStore((state) => state.roles)
   const { hasPermission, isSuperAdmin } = usePermission(roles, userPermissions)
 
-  const menuItems: AppMenuItem[] = [
-    {
-      label: t('menu.organizations'),
-      key: MENU_URL.ORGANIZATIONS,
-      icon: <TeamOutlined />,
-      permission: PERMISSIONS.READ_ORGANIZATIONS
-    },
-    {
-      label: t('menu.users'),
-      key: MENU_URL.USERS,
-      icon: <ContactsOutlined />,
-      permission: PERMISSIONS.READ_USERS
-    },
-    {
-      label: t('menu.subscriptions'),
-      key: MENU_URL.SUBSCRIPTIONS,
-      icon: <OrderedListOutlined />,
-      permission: PERMISSIONS.READ_SUBSCRIPTIONS
-    },
-    {
-      label: t('menu.permissions'),
-      key: MENU_URL.PERMISSIONS,
-      icon: <IssuesCloseOutlined />,
-      permission: PERMISSIONS.READ_PERMISSIONS
-    },
-    {
-      label: t('menu.roles'),
-      key: MENU_URL.ROLES,
-      icon: <ApartmentOutlined />,
-      permission: PERMISSIONS.READ_ROLES
+  const menuItems: AppMenuItem[] = useMemo(() => {
+    const baseMenu: AppMenuItem[] = [
+      {
+        label: t('menu.organizations'),
+        key: MENU_URL.ORGANIZATIONS,
+        icon: <TeamOutlined />,
+        permission: PERMISSIONS.READ_ORGANIZATIONS
+      },
+      {
+        label: t('menu.users'),
+        key: MENU_URL.USERS,
+        icon: <ContactsOutlined />,
+        permission: PERMISSIONS.READ_USERS
+      },
+      {
+        label: t('menu.subscriptions'),
+        key: MENU_URL.SUBSCRIPTIONS,
+        icon: <OrderedListOutlined />,
+        permission: PERMISSIONS.READ_SUBSCRIPTIONS
+      },
+      {
+        label: 'Thống kê',
+        key: MENU_URL.ANALYTICS,
+        icon: <BarChartOutlined />,
+        permission: PERMISSIONS.READ_SUBSCRIPTIONS
+      }
+    ]
+    if (!isSuperAdmin) {
+      baseMenu.push(
+        {
+          label: t('menu.permissions'),
+          key: MENU_URL.PERMISSIONS,
+          icon: <IssuesCloseOutlined />,
+          permission: PERMISSIONS.READ_PERMISSIONS
+        },
+        {
+          label: t('menu.roles'),
+          key: MENU_URL.ROLES,
+          icon: <ApartmentOutlined />,
+          permission: PERMISSIONS.READ_ROLES
+        },
+        {
+          label: t('menu.payment-history'),
+          key: MENU_URL.PAYMENT_HISTORY,
+          icon: <HistoryOutlined />,
+          permission: PERMISSIONS.READ_PAYMENT_HISTORY
+        }
+      )
     }
-  ]
+    return baseMenu
+  }, [isSuperAdmin, t])
 
   const filteredItems = filterMenuByPermission(menuItems, hasPermission, isSuperAdmin)
 
@@ -145,8 +166,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
             display: 'flex',
             alignItems: 'center',
             gap: 12,
-            paddingLeft: 16
+            paddingLeft: 16,
+            cursor: 'pointer'
           }}
+          onClick={() => navigate(MENU_URL.HOME)}
         >
           <img src={logoUrl} alt='logo' style={{ height: 40, width: 40, objectFit: 'contain' }} />
           <span style={{ fontWeight: 700, fontSize: 17 }}>Dashboard</span>
@@ -172,8 +195,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
           alignItems: 'center',
           justifyContent: collapsed ? 'center' : 'flex-start',
           paddingLeft: collapsed ? 0 : 16,
-          transition: 'all 0.3s'
+          transition: 'all 0.3s',
+          cursor: 'pointer'
         }}
+        onClick={() => navigate(MENU_URL.HOME)}
       >
         <img src={logoUrl} alt='logo' style={{ height: 40, width: 40, objectFit: 'contain' }} />
         {!collapsed && (

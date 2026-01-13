@@ -115,8 +115,8 @@ export const useListRole = () => {
   ]
 
   const deleteRoleMutation = useMutation({
-    mutationFn: async (name: string) => {
-      await axiosInstance.delete(`${ROLES_QUERY_KEY}/${name}`)
+    mutationFn: async (id: number) => {
+      await axiosInstance.delete(`${ROLES_QUERY_KEY}/${id}`)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ROLES_QUERY_KEY] })
@@ -125,7 +125,7 @@ export const useListRole = () => {
   })
 
   const confirmDelete = (role: Role) => {
-    deleteRoleMutation.mutate(role.name)
+    deleteRoleMutation.mutate(role.id)
   }
 
   return [

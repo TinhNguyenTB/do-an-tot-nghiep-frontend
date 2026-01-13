@@ -34,7 +34,7 @@ export const ListOrganizationPage = () => {
       </Form>
       <Button
         type='primary'
-        onClick={() => navigate(`${MENU_URL.SUBSCRIPTIONS}/addNew`)}
+        onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/addNew`)}
         style={{ marginBottom: 20 }}
       >
         {t('btn.addNew')}
@@ -52,6 +52,7 @@ export const ListOrganizationPage = () => {
           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           onChange: handleTableChange,
           showSizeChanger: true,
+          onShowSizeChange: handleTableChange,
           pageSizeOptions: ['5', '10', '20']
         }}
       />

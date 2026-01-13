@@ -23,6 +23,7 @@
     "roles": "Roles",
     "permissions": "Permissions",
     "change-password": "Change Password",
-    "profile": "Profile"
+    "profile": "Profile",
+    "payment-history": "Payment History"
   }
 }

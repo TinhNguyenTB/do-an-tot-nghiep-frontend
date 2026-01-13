@@ -28,5 +28,5 @@ export interface UserFormValues {
   email: string
   status: string
   organizationId: number | null
-  roles: string[]
+  roles: string[] | null
 }

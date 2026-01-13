@@ -2,7 +2,9 @@ import { CoreInput } from '@/components/CoreInput'
 import { CoreSelect } from '@/components/CoreSelect'
 import { userStatusOption } from '@/constants/option'
 import { TRANSLATION } from '@/constants/translates'
+import { usePermission } from '@/hooks/usePermission'
 import { useSaveUser } from '@/pages/User/save/useSaveUser'
+import { useRbacStore } from '@/store/rbacStore'
 import { Button, Col, Form, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
 
@@ -12,6 +14,8 @@ export const SaveUserPage = () => {
   const { methodForm, id, roleOptions, organizationOptions } = values
   const { onSubmit, onCancel } = handles
   const { control } = methodForm
+  const roles = useRbacStore((state) => state.roles)
+  const { isSuperAdmin } = usePermission(roles)
 
   return (
     <Form layout='vertical' onFinish={onSubmit}>
@@ -38,33 +42,39 @@ export const SaveUserPage = () => {
             }}
           />
         </Col>
-        <Col xs={24} md={12} lg={6}>
-          <CoreSelect
-            control={control}
-            name='organizationId'
-            label='Tổ chức'
-            options={organizationOptions}
-          />
-        </Col>
-        <Col xs={24} md={12} lg={6}>
-          <CoreSelect
-            control={control}
-            name='roles'
-            label='Vai trò'
-            required
-            mode='multiple'
-            labelPath='name'
-            valuePath='id'
-            options={roleOptions || []}
-            rules={{ required: t('validation.required') }}
-          />
-        </Col>
+        {isSuperAdmin && (
+          <Col xs={24} md={12} lg={6}>
+            <CoreSelect
+              control={control}
+              name='organizationId'
+              label='Tổ chức'
+              disabled
+              options={organizationOptions}
+            />
+          </Col>
+        )}
+        {!isSuperAdmin && (
+          <Col xs={24} md={12} lg={6}>
+            <CoreSelect
+              control={control}
+              name='roles'
+              label='Vai trò'
+              required
+              mode='multiple'
+              labelPath='name'
+              valuePath='id'
+              options={roleOptions || []}
+              rules={{ required: t('validation.required') }}
+            />
+          </Col>
+        )}
         <Col xs={24} md={12} lg={6}>
           <CoreSelect
             control={control}
             name='status'
             label='Trạng thái'
             required
+            disabled={!isSuperAdmin}
             labelPath='label'
             valuePath='value'
             options={userStatusOption}

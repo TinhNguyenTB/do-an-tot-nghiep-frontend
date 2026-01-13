@@ -52,6 +52,7 @@ export const ListPermissionPage = () => {
           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           onChange: handleTableChange,
           showSizeChanger: true,
+          onShowSizeChange: handleTableChange,
           pageSizeOptions: ['5', '10', '20']
         }}
       />

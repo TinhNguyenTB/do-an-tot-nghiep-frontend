@@ -47,19 +47,19 @@ export function RegisterForm() {
           rules={{ required: t('validation.required') }}
           prefix={<LockOutlined />}
         />
-        <CoreCheckbox control={control} name='isOrganization' label='Là tổ chức' />
-        {isOrganization && (
-          <CoreInput
-            control={control}
-            name='organizationName'
-            label={'Tên tổ chức'}
-            required
-            size='large'
-            rules={{
-              required: t('validation.required')
-            }}
-          />
-        )}
+        {/* <CoreCheckbox control={control} name='isOrganization' label='Là tổ chức' /> */}
+        {/* {isOrganization && ( */}
+        <CoreInput
+          control={control}
+          name='organizationName'
+          label={'Tên tổ chức'}
+          required
+          size='large'
+          rules={{
+            required: t('validation.required')
+          }}
+        />
+        {/* )} */}
       </Form>
     </main>
   )

@@ -16,9 +16,10 @@ export const SubscriptionPlan = () => {
   const { data, isLoading, isError } = useQuerySubscriptions({ page: 1, size: 20 })
 
   const subscriptions = data?.data.content || []
-  const filteredSubscriptions = isOrganization
-    ? subscriptions.filter((sub) => sub.userLimit > 1)
-    : subscriptions.filter((sub) => sub.userLimit === 1)
+  const filteredSubscriptions =
+    isOrganization === false
+      ? subscriptions.filter((sub) => sub.userLimit > 1)
+      : subscriptions.filter((sub) => sub.userLimit === 1)
 
   if (isLoading) {
     return (

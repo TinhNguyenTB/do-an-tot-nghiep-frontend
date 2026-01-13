@@ -6,6 +6,7 @@ import { useQueryOrganizations } from '@/services/organization'
 import { useQueryRoles } from '@/services/role'
 import { createUser, updateUser, useQueryUserById, USERS_QUERY_KEY } from '@/services/user'
 import { UserFormValues } from '@/services/user/type'
+import { useRbacStore } from '@/store/rbacStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -16,7 +17,7 @@ const defaultValues: UserFormValues = {
   email: '',
   organizationId: null,
   status: UserStatus.ACTIVE,
-  roles: [ROLES.CLIENT]
+  roles: null
 }
 
 export const useSaveUser = () => {
@@ -24,6 +25,7 @@ export const useSaveUser = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const organizationId = useRbacStore((state) => state.organizationId)
 
   const { data: roles } = useQueryRoles({ page: 1, size: 20 })
 
@@ -35,7 +37,7 @@ export const useSaveUser = () => {
   const { mutate: create } = useMutation({
     mutationFn: createUser,
     onSuccess(data) {
-      toastSuccess(data.message ?? 'Đã tạo người dùng mới.')
+      toastSuccess(data.message ?? 'Đã tạo người dùng mới')
       navigate(MENU_URL.USERS)
     },
     onSettled() {
@@ -56,11 +58,11 @@ export const useSaveUser = () => {
 
   const onSubmit = handleSubmit((data) => {
     if (id) {
-      update({ ...data, id })
-    } else create(data)
+      update({ ...data, organizationId, id })
+    } else create({ ...data, organizationId })
   })
 
-  const onCancel = () => navigate(MENU_URL.SUBSCRIPTIONS)
+  const onCancel = () => navigate(MENU_URL.USERS)
 
   const { data } = useQueryUserById(id as string, { enabled: !!id })
 

@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Checkbox, Typography, Spin, Tag, Input } from 'antd'
 import { Splitter } from 'antd'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { fetchPermissionInfinite, PERMISSIONS_QUERY_KEY } from '@/services/permission'
 import { Permission } from '@/services/permission/type'
@@ -15,7 +15,7 @@ export function PermissionSplitter({ value = [], onChange }: PermissionSplitterP
   const [selected, setSelected] = useState<Permission[]>([])
   const [search, setSearch] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-  console.log(value, 'hihi')
+
   useEffect(() => {
     setSelected(value)
   }, [value])

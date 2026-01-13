@@ -3,12 +3,14 @@ import { MENU_URL } from '@/constants/menuUrl'
 import { PERMISSIONS } from '@/constants/rbac'
 import { usePermission } from '@/hooks/usePermission'
 import { AccessDeniedPage } from '@/pages/AccessDenied'
+import { AnalyticPage } from '@/pages/Analytic'
 import { ChangePasswordPage } from '@/pages/ChangePassword'
 import { ForgotPasswordPage } from '@/pages/ForgotPassword'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
 import { NotFoundPage } from '@/pages/NotFound'
 import { ListOrganizationPage } from '@/pages/Organizations/list'
+import { PaymentHistoryPage } from '@/pages/PaymentHistory'
 import { ListPermissionPage } from '@/pages/Permission/list'
 import { SavePermissionPage } from '@/pages/Permission/save'
 import { ProfilePage } from '@/pages/Profile'
@@ -105,6 +107,13 @@ function App() {
             <Route path={MENU_URL.ORGANIZATIONS} element={<ListOrganizationPage />} />
             {/* <Route path={`${MENU_URL.USERS}/addNew`} element={<SaveUserPage />} />
             <Route path={`${MENU_URL.USERS}/:id`} element={<SaveUserPage />} /> */}
+          </Route>
+
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_USERS} />}>
+            <Route path={MENU_URL.PAYMENT_HISTORY} element={<PaymentHistoryPage />} />
+          </Route>
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_ANALYTICS} />}>
+            <Route path={MENU_URL.ANALYTICS} element={<AnalyticPage />} />
           </Route>
         </Route>
       </Route>

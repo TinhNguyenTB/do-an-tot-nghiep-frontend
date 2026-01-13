@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
 export const useRegister = () => {
-  const { toastSuccess } = useGlobalMessage()
+  const { toastSuccess, toastError } = useGlobalMessage()
   const methodForm = useForm<RegisterFormValues>({
     defaultValues: {
       email: '',
@@ -47,6 +47,10 @@ export const useRegister = () => {
 
   const onSubmit = handleSubmit((data) => {
     const { isOrganization, ...rest } = data
+    if (!data.subscriptionId) {
+      toastError('Vui lòng chọn gói dịch vụ')
+      return
+    }
     mutate(rest)
   })
 
