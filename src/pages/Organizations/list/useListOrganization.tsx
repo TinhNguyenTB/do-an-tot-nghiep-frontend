@@ -66,36 +66,36 @@ export const useListOrganization = () => {
       // Sắp xếp theo thứ tự bảng chữ cái (A-Z)
       sorter: (a, b) => a.name.localeCompare(b.name)
     },
-    { title: 'Số lượng thành viên', dataIndex: 'userCount' },
-    {
-      title: 'Mô tả',
-      dataIndex: 'description'
-    },
+    { title: 'Số lượng thành viên', dataIndex: 'userCount' }
+    // {
+    //   title: 'Mô tả',
+    //   dataIndex: 'description'
+    // },
 
-    {
-      title: 'Actions',
-      render: (_, record) => {
-        return (
-          <Space size={'large'}>
-            <EditOutlined
-              style={{ color: 'blue' }}
-              onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/${record.id}`)}
-            />
+    // {
+    //   title: 'Actions',
+    //   render: (_, record) => {
+    //     return (
+    //       <Space size={'large'}>
+    //         <EditOutlined
+    //           style={{ color: 'blue' }}
+    //           onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/${record.id}`)}
+    //         />
 
-            <Popconfirm
-              placement='topLeft'
-              title='Xác nhận xóa'
-              description={`Bạn có chắc muốn xóa tổ chức: ${record.name}?`}
-              onConfirm={() => confirmDelete(record)}
-              okText='Có'
-              cancelText='Không'
-            >
-              <DeleteOutlined style={{ color: 'red' }} />
-            </Popconfirm>
-          </Space>
-        )
-      }
-    }
+    //         <Popconfirm
+    //           placement='topLeft'
+    //           title='Xác nhận xóa'
+    //           description={`Bạn có chắc muốn xóa tổ chức: ${record.name}?`}
+    //           onConfirm={() => confirmDelete(record)}
+    //           okText='Có'
+    //           cancelText='Không'
+    //         >
+    //           <DeleteOutlined style={{ color: 'red' }} />
+    //         </Popconfirm>
+    //       </Space>
+    //     )
+    //   }
+    // }
   ]
 
   const deleteOrganizationMutation = useMutation({
