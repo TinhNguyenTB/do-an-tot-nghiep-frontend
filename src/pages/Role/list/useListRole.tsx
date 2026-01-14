@@ -64,30 +64,6 @@ export const useListRole = () => {
     },
     { title: 'Mô tả', dataIndex: 'description' },
     {
-      title: 'Kế thừa từ',
-      render(_, record) {
-        return (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {record?.inheritsFrom?.map((item) => (
-              <Tag key={item.id}>{item.name}</Tag>
-            ))}
-          </div>
-        )
-      }
-    },
-    {
-      title: 'Kế thừa bởi',
-      render(_, record) {
-        return (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {record?.inheritedBy?.map((item) => (
-              <Tag key={item.id}>{item.name}</Tag>
-            ))}
-          </div>
-        )
-      }
-    },
-    {
       title: 'Actions',
       render: (_, record) => {
         return (

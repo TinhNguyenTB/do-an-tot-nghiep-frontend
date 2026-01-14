@@ -1,5 +1,4 @@
 import { CoreInput } from '@/components/CoreInput'
-import { CoreSelect } from '@/components/CoreSelect'
 import { CoreTextArea } from '@/components/CoreTextArea'
 import { TRANSLATION } from '@/constants/translates'
 import { PermissionSplitter } from '@/pages/Role/PermissionSplitter'
@@ -10,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 export const SaveRolePage = () => {
   const { t } = useTranslation(TRANSLATION.COMMON)
   const [values, handles] = useSaveRole()
-  const { methodForm, id, data, roleOptions } = values
+  const { methodForm, id } = values
   const { onSubmit, onCancel } = handles
   const { control, setValue, watch } = methodForm
   const permissions = watch('permissions')
@@ -27,18 +26,7 @@ export const SaveRolePage = () => {
             rules={{ required: t('validation.required') }}
           />
         </Col>
-        <Col xs={24} md={12}>
-          <CoreSelect
-            control={control}
-            name='inheritsFrom'
-            label='Kế thừa quyền từ'
-            placeholder='Chọn vai trò'
-            labelPath='name'
-            valuePath='id'
-            mode='multiple'
-            options={roleOptions || []}
-          />
-        </Col>
+
         <Col xs={24} md={12}>
           <CoreTextArea control={control} name='description' label='Mô tả' />
         </Col>

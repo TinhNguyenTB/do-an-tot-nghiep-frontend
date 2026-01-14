@@ -1,13 +1,8 @@
 import { MENU_URL } from '@/constants/menuUrl'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
-import {
-  createRole,
-  ROLES_QUERY_KEY,
-  updateRole,
-  useQueryRoleByName,
-  useQueryRoles
-} from '@/services/role'
+import { createRole, ROLES_QUERY_KEY, updateRole, useQueryRoleByName } from '@/services/role'
 import { RoleFormValues } from '@/services/role/type'
+import { useRbacStore } from '@/store/rbacStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,7 +12,8 @@ const defaultValues: RoleFormValues = {
   name: '',
   description: null,
   permissions: [],
-  inheritsFrom: []
+  inheritsFrom: undefined,
+  organizationId: null
 }
 
 export const useSaveRole = () => {
@@ -25,6 +21,7 @@ export const useSaveRole = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const organizationId = useRbacStore((state) => state.organizationId)
 
   const methodForm = useForm<RoleFormValues>({ defaultValues })
   const { handleSubmit, reset } = methodForm
@@ -53,12 +50,11 @@ export const useSaveRole = () => {
 
   const onSubmit = handleSubmit((data) => {
     if (id) {
-      update({ ...data, id })
-    } else create(data)
+      update({ ...data, organizationId, id })
+    } else create({ ...data, organizationId })
   })
 
   const onCancel = () => navigate(MENU_URL.ROLES)
-  const { data: roles } = useQueryRoles({ page: 1, size: 20 })
 
   const { data } = useQueryRoleByName(id as string, { enabled: !!id })
 
@@ -71,7 +67,7 @@ export const useSaveRole = () => {
   }, [data, reset])
 
   return [
-    { methodForm, id, roleOptions: roles?.data.content, data },
+    { methodForm, id },
     { onSubmit, onCancel }
   ] as const
 }

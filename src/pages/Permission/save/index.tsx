@@ -1,4 +1,5 @@
 import { CoreInput } from '@/components/CoreInput'
+import { CoreTextArea } from '@/components/CoreTextArea'
 import { TRANSLATION } from '@/constants/translates'
 import { useSavePermission } from '@/pages/Permission/save/useSaveSubscription'
 import { Button, Col, Form, Row } from 'antd'
@@ -14,7 +15,7 @@ export const SavePermissionPage = () => {
   return (
     <Form layout='vertical' onFinish={onSubmit}>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col xs={24} md={12} lg={6}>
+        <Col xs={24} md={12}>
           <CoreInput
             control={control}
             name='name'
@@ -23,14 +24,8 @@ export const SavePermissionPage = () => {
             rules={{ required: t('validation.required') }}
           />
         </Col>
-        <Col xs={24} md={12} lg={6}>
-          <CoreInput
-            control={control}
-            name='description'
-            label='Mô tả'
-            required
-            rules={{ required: t('validation.required') }}
-          />
+        <Col xs={24} md={12}>
+          <CoreTextArea control={control} name='description' label='Mô tả' />
         </Col>
         <Col xs={24} style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
           <Button danger onClick={onCancel}>

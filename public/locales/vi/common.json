@@ -24,6 +24,7 @@
     "permissions": "Quyền",
     "change-password": "Đổi mật khẩu",
     "profile": "Hồ sơ",
-    "payment-history": "Lịch sử thanh toán"
+    "payment-history": "Lịch sử thanh toán",
+    "current-subscription": "Gói dịch vụ hiện tại"
   }
 }

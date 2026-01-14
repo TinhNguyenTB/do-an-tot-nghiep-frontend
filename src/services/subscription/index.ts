@@ -1,5 +1,9 @@
 import axiosInstance from '@/libs/axiosInstance'
-import { Subscription, SubscriptionFormValues } from '@/services/subscription/type'
+import {
+  Subscription,
+  SubscriptionFormValues,
+  UserSubscription
+} from '@/services/subscription/type'
 import { BaseResponse, PageResponse, QueryParams } from '@/services/types'
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
@@ -59,6 +63,23 @@ export const updateSubscription = async (body: SubscriptionFormValues & { id: st
     url: `${SUBSCRIPTIONS_QUERY_KEY}/${body.id}`,
     method: 'PATCH',
     data: requestBody
+  })
+  return data
+}
+
+export const renewSubscription = async (body: { subscriptionId: number }) => {
+  const { data } = await axiosInstance<BaseResponse<{ redirectUrl: string }>>({
+    url: `${SUBSCRIPTIONS_QUERY_KEY}/renew`,
+    method: 'POST',
+    data: body
+  })
+  return data
+}
+
+export const fetchMySubscription = async () => {
+  const { data } = await axiosInstance<BaseResponse<UserSubscription>>({
+    url: `${SUBSCRIPTIONS_QUERY_KEY}/my`,
+    method: 'GET'
   })
   return data
 }

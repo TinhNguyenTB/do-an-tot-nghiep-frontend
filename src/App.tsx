@@ -5,6 +5,7 @@ import { usePermission } from '@/hooks/usePermission'
 import { AccessDeniedPage } from '@/pages/AccessDenied'
 import { AnalyticPage } from '@/pages/Analytic'
 import { ChangePasswordPage } from '@/pages/ChangePassword'
+import { CurrentSubscriptionPage } from '@/pages/CurrentSubscription'
 import { ForgotPasswordPage } from '@/pages/ForgotPassword'
 import { HomePage } from '@/pages/Home'
 import { LoginPage } from '@/pages/Login'
@@ -111,6 +112,9 @@ function App() {
 
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_USERS} />}>
             <Route path={MENU_URL.PAYMENT_HISTORY} element={<PaymentHistoryPage />} />
+          </Route>
+          <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_USERS} />}>
+            <Route path={MENU_URL.CURRENT_SUBSCRIPTION} element={<CurrentSubscriptionPage />} />
           </Route>
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_ANALYTICS} />}>
             <Route path={MENU_URL.ANALYTICS} element={<AnalyticPage />} />

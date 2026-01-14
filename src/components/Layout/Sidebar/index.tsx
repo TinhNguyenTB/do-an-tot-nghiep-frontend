@@ -115,6 +115,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
           permission: PERMISSIONS.READ_ROLES
         },
         {
+          label: t('menu.current-subscription'),
+          key: MENU_URL.CURRENT_SUBSCRIPTION,
+          icon: <OrderedListOutlined />
+        },
+        {
           label: t('menu.payment-history'),
           key: MENU_URL.PAYMENT_HISTORY,
           icon: <HistoryOutlined />,

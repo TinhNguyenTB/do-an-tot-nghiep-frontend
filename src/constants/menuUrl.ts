@@ -12,5 +12,6 @@ export const MENU_URL = {
   PROFILE: '/profile',
   FORGOT_PASSWORD: '/forgot-password',
   ANALYTICS: '/analytics',
-  PAYMENT_HISTORY: '/payment-history'
+  PAYMENT_HISTORY: '/payment-history',
+  CURRENT_SUBSCRIPTION: '/current-subscription'
 }

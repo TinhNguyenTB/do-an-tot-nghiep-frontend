@@ -58,8 +58,7 @@ export const PaymentHistoryPage = () => {
           <Card
             key={payment.id}
             hoverable
-            className='border-l-4'
-            style={{ borderLeftColor: getStatusColor(payment.status) }}
+            style={{ borderBottomColor: getStatusColor(payment.status), marginBottom: '8px' }}
           >
             <div className='flex justify-between items-start'>
               <div className='flex-1'>
@@ -100,13 +99,8 @@ export const PaymentHistoryPage = () => {
 
       {/* Điểm kích hoạt load more */}
       <div ref={loadMoreRef} className='py-6 text-center'>
-        {isFetchingNextPage ? (
-          <Spin tip='Đang tải thêm...' />
-        ) : hasNextPage ? (
-          <Text type='secondary'>Cuộn để xem thêm</Text>
-        ) : (
-          <Divider plain>Bạn đã xem hết lịch sử</Divider>
-        )}
+        {isFetchingNextPage && <Spin tip='Đang tải thêm...' />}
+        {hasNextPage && <Text type='secondary'>Cuộn để xem thêm</Text>}
       </div>
     </div>
   )

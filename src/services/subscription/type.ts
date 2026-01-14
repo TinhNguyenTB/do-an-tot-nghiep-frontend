@@ -13,3 +13,15 @@ export interface SubscriptionFormValues {
   price: string
   userLimit: number
 }
+
+export interface UserSubscription {
+  id: number
+  userId: number
+  organizationId: number
+  subscriptionId: number
+  paymentId: number
+  startDate: string
+  endDate: string
+  status: string
+  subscription: Subscription
+}

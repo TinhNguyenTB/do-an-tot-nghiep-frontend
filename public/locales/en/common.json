@@ -24,6 +24,7 @@
     "permissions": "Permissions",
     "change-password": "Change Password",
     "profile": "Profile",
-    "payment-history": "Payment History"
+    "payment-history": "Payment History",
+    "current-subscription": "Current Subscription"
   }
 }
