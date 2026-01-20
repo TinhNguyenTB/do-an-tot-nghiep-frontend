@@ -40,7 +40,7 @@ export const useRegister = () => {
   const { mutate } = useMutation({
     mutationFn: register,
     onSuccess: (data) => {
-      toastSuccess('Đăng ký thành công')
+      toastSuccess('Đăng ký thành công. Chuyển đến trang thanh toán')
       location.href = data.data.redirectUrl
     }
   })

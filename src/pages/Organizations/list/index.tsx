@@ -32,13 +32,13 @@ export const ListOrganizationPage = () => {
           </Space>
         </Form.Item>
       </Form>
-      <Button
+      {/* <Button
         type='primary'
         onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/addNew`)}
         style={{ marginBottom: 20 }}
       >
         {t('btn.addNew')}
-      </Button>
+      </Button> */}
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}

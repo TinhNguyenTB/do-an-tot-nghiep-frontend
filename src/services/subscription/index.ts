@@ -83,3 +83,12 @@ export const fetchMySubscription = async () => {
   })
   return data
 }
+
+export const changeSubscription = async (body: { newSubId: number }) => {
+  const { data } = await axiosInstance<BaseResponse<{ url: string; type: string }>>({
+    url: `${SUBSCRIPTIONS_QUERY_KEY}/change`,
+    method: 'POST',
+    data: body
+  })
+  return data
+}

@@ -11,6 +11,7 @@ export interface UserProfile {
     description: string | null
   }
   roles: string[]
+  balance: string
 }
 
 export interface ProfileFormValues {
