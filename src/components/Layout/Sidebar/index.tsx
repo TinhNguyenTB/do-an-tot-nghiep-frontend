@@ -94,6 +94,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
         permission: PERMISSIONS.READ_SUBSCRIPTIONS
       },
       {
+        label: 'Giao dịch',
+        key: MENU_URL.TRANSACTION,
+        icon: <HistoryOutlined />,
+        permission: PERMISSIONS.READ_TRANSACTION_HISTORY
+      },
+      {
         label: 'Thống kê',
         key: MENU_URL.ANALYTICS,
         icon: <BarChartOutlined />,

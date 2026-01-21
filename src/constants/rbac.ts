@@ -17,6 +17,7 @@ export const PERMISSIONS = {
 
   READ_SELF_SUBSCRIPTION: 'read_self_subscription',
   READ_PAYMENT_HISTORY: 'read_payment_history',
+  READ_TRANSACTION_HISTORY: 'read_transaction_history',
 
   /*
    |--------------------------------------------------------------------------

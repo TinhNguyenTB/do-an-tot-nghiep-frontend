@@ -12,6 +12,7 @@ import { ORGANIZATIONS_QUERY_KEY, useQueryOrganizations } from '@/services/organ
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
 import { Permission } from '@/services/permission/type'
 import { PERMISSIONS_QUERY_KEY, useQueryPermissions } from '@/services/permission'
+import { formatDay } from '@/utils/formatDay'
 
 const defaultFilters = {
   name: ''
@@ -70,7 +71,20 @@ export const useListPermission = () => {
       title: 'Mô tả',
       dataIndex: 'description'
     },
-
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'createdAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
+    {
+      title: 'Ngày cập nhật gần nhất',
+      dataIndex: 'updatedAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
     {
       title: 'Actions',
       render: (_, record) => {

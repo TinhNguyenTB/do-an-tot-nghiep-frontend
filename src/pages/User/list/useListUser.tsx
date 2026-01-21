@@ -9,6 +9,8 @@ import { PaginationMeta } from '@/services/types'
 import { useQueryUsers, USERS_QUERY_KEY } from '@/services/user'
 import { User } from '@/services/user/type'
 import { useRbacStore } from '@/store/rbacStore'
+import { formatDay } from '@/utils/formatDay'
+import { getUserStatusBadge } from '@/utils/getUserStatusBadge'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Popconfirm, Space, TableProps, Tag } from 'antd'
@@ -81,10 +83,25 @@ export const useListUser = () => {
       },
       { title: 'Tổ chức', dataIndex: 'organizationName' },
       {
+        title: 'Ngày tạo',
+        dataIndex: 'createdAt',
+        render(value) {
+          return formatDay(value)
+        }
+      },
+      {
+        title: 'Ngày cập nhật gần nhất',
+        dataIndex: 'updatedAt',
+        render(value) {
+          return formatDay(value)
+        }
+      },
+      {
         title: 'Trạng thái',
         dataIndex: 'status',
         render: (status: UserStatus) => {
-          return <Tag key={status}>{status}</Tag>
+          const statusInfo = getUserStatusBadge(status)
+          return <Tag color={statusInfo.color}>{statusInfo.label}</Tag>
         }
       }
     ]

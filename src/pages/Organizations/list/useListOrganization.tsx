@@ -11,6 +11,7 @@ import { MENU_URL } from '@/constants/menuUrl'
 import { ORGANIZATIONS_QUERY_KEY, useQueryOrganizations } from '@/services/organization'
 import { Organization } from '@/services/organization/type'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
+import { formatDay } from '@/utils/formatDay'
 
 const defaultFilters = {
   name: ''
@@ -66,11 +67,21 @@ export const useListOrganization = () => {
       // Sắp xếp theo thứ tự bảng chữ cái (A-Z)
       sorter: (a, b) => a.name.localeCompare(b.name)
     },
-    { title: 'Số lượng thành viên', dataIndex: 'userCount' }
-    // {
-    //   title: 'Mô tả',
-    //   dataIndex: 'description'
-    // },
+    { title: 'Số lượng thành viên', dataIndex: 'userCount' },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'createdAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
+    {
+      title: 'Ngày cập nhật gần nhất',
+      dataIndex: 'updatedAt',
+      render(value) {
+        return formatDay(value)
+      }
+    }
 
     // {
     //   title: 'Actions',

@@ -16,14 +16,9 @@ export function ForgotPasswordPage() {
   const { onSubmit, onSendOTP, getValues } = handles
 
   return (
-    <main
-      className='flex items-center justify-center h-screen px-4 overflow-auto bg-cover bg-center'
-      style={{ backgroundImage: "url('/images/bgLogin.jpg')" }}
-    >
+    <main className='flex items-center justify-center h-screen px-4 overflow-auto bg-slate-100 bg-center'>
       <div className='flex flex-col w-full max-w-md bg-white opacity-80 p-6 rounded-xl shadow-md'>
-        <div className='flex justify-end'>
-          <LanguageSwitcher />
-        </div>
+        <div className='flex justify-center font-semibold text-2xl'>Quên mật khẩu</div>
         <Form layout='vertical' onFinish={onSubmit}>
           <CoreInput
             control={control}

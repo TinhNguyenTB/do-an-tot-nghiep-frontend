@@ -19,6 +19,7 @@ export interface User {
   organizationId: number | null
   organizationName: string | null
   createdAt: string
+  updatedAt: string
   roles: string[]
   avatar?: string
 }

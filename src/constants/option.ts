@@ -1,6 +1,6 @@
 export const userStatusOption = [
-  { label: 'PENDING', value: 'PENDING' },
-  { label: 'ACTIVE', value: 'ACTIVE' },
-  { label: 'EXPIRED', value: 'EXPIRED' },
-  { label: 'SUSPENDED', value: 'SUSPENDED' }
+  { label: 'Chưa kích hoạt', value: 'PENDING' },
+  { label: 'Đang hoạt động', value: 'ACTIVE' },
+  { label: 'Đã hết hạn', value: 'EXPIRED' },
+  { label: 'Đang bị khóa', value: 'SUSPENDED' }
 ]

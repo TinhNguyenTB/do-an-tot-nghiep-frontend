@@ -1,5 +1,5 @@
 import { CoreInput } from '@/components/CoreInput'
-import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import logoUrl from '@/assets/logo.png'
 import { TRANSLATION } from '@/constants/translates'
 import { useLogin } from '@/pages/Login/useLogin'
 import { LockOutlined, MailOutlined } from '@ant-design/icons'
@@ -14,60 +14,72 @@ export function LoginPage() {
   const { onSubmit, onRePayment } = handles
 
   return (
-    <main
-      className='flex items-center justify-center h-screen px-4 overflow-auto bg-cover bg-center'
-      style={{ backgroundImage: "url('/images/bgLogin.jpg')" }}
-    >
-      <div className='flex flex-col w-full max-w-md bg-white opacity-80 p-6 rounded-xl shadow-md'>
-        <div className='flex justify-end'>
-          <LanguageSwitcher />
+    <main className='min-h-screen flex p-10 bg-slate-100'>
+      {/* LEFT */}
+      <div className='hidden lg:flex w-2/5 items-center justify-end'>
+        <div className='text-center space-y-6'>
+          <img src={logoUrl} alt='logo' className='mx-auto' style={{ width: 120 }} />
+          <p className='text-2xl font-semibold'>Hệ thống quản lý tài khoản</p>
         </div>
-        <Form layout='vertical' onFinish={onSubmit}>
-          <CoreInput
-            control={control}
-            name='email'
-            label={t('auth:login.email')}
-            required
-            size='large'
-            rules={{
-              required: t('validation.required'),
-              pattern: { value: /^\S+@\S+$/, message: t('validation.email') }
-            }}
-            prefix={<MailOutlined />}
-          />
-          <CoreInput
-            control={control}
-            name='password'
-            label={t('auth:login.password')}
-            password
-            size='large'
-            required
-            rules={{ required: t('validation.required') }}
-            prefix={<LockOutlined />}
-          />
-          <div className='text-right -mt-2 mb-4'>
-            <Link to={MENU_URL.FORGOT_PASSWORD} className='text-sm text-blue-500 hover:underline'>
-              {t('auth:login.forgotPassword')}
+      </div>
+
+      {/* RIGHT - LOGIN FORM */}
+      <div className='flex w-full lg:w-3/5 items-center justify-center lg:bg-transparent'>
+        <div className='w-full max-w-xl bg-white p-6 rounded-md shadow-lg'>
+          <h2 className='text-xl font-semibold mb-6'>{t('btn.login')}</h2>
+
+          <Form layout='vertical' onFinish={onSubmit}>
+            <CoreInput
+              control={control}
+              name='email'
+              label={t('auth:login.email')}
+              required
+              size='large'
+              rules={{
+                required: t('validation.required'),
+                pattern: { value: /^\S+@\S+$/, message: t('validation.email') }
+              }}
+              prefix={<MailOutlined />}
+            />
+
+            <CoreInput
+              control={control}
+              name='password'
+              label={t('auth:login.password')}
+              password
+              size='large'
+              required
+              rules={{ required: t('validation.required') }}
+              prefix={<LockOutlined />}
+            />
+
+            <div className='flex justify-between text-sm mb-4'>
+              <Link to={MENU_URL.FORGOT_PASSWORD} className='text-blue-500 hover:underline'>
+                {t('auth:login.forgotPassword')}
+              </Link>
+            </div>
+
+            <Form.Item>
+              <Button type='primary' htmlType='submit' block size='large'>
+                {t('btn.login')}
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <div className='text-center text-sm mt-4'>
+            Chưa có tài khoản?{' '}
+            <Link className='text-blue-500' to={MENU_URL.REGISTER}>
+              Đăng ký
             </Link>
           </div>
-          <Form.Item>
-            <Button type='primary' htmlType='submit' block>
-              {t('btn.login')}
+
+          <div className='text-center text-sm mt-2'>
+            Tài khoản chưa kích hoạt?
+            <Button type='link' onClick={onRePayment} style={{ padding: 0 }}>
+              Kích hoạt ngay
             </Button>
-          </Form.Item>
-        </Form>
-        <span className='text-sm flex items-center gap-2 justify-center'>
-          Chưa có tài khoản?
-          <Link className='text-blue-500' to={MENU_URL.REGISTER}>
-            Đăng ký
-          </Link>
-        </span>
-        <span className='text-sm flex items-center justify-center gap-2'>
-          Tài khoản chưa kích hoạt?
-          <Button type='link' style={{ padding: 0 }} onClick={onRePayment}>
-            Kích hoạt ngay
-          </Button>
-        </span>
+          </div>
+        </div>
       </div>
     </main>
   )

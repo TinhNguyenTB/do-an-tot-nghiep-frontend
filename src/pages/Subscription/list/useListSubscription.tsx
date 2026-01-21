@@ -12,6 +12,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { MENU_URL } from '@/constants/menuUrl'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
+import { formatDay } from '@/utils/formatDay'
 
 const defaultFilters = {
   name: ''
@@ -75,7 +76,20 @@ export const useListSubscription = () => {
     },
     { title: 'Số ngày sử dụng', dataIndex: 'duration' },
     { title: 'Giới hạn người dùng', dataIndex: 'userLimit' },
-
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'createdAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
+    {
+      title: 'Ngày cập nhật gần nhất',
+      dataIndex: 'updatedAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
     {
       title: 'Actions',
       render: (_: any, record: Subscription) => {

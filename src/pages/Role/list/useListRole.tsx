@@ -12,6 +12,7 @@ import { ROLES_QUERY_KEY, useQueryRoles } from '@/services/role'
 import { Role } from '@/services/role/type'
 import { ROLES } from '@/constants/rbac'
 import { defaultPaginationMeta } from '@/constants/paginationMeta'
+import { formatDay } from '@/utils/formatDay'
 
 const defaultFilters = {
   name: ''
@@ -63,6 +64,20 @@ export const useListRole = () => {
       dataIndex: 'name'
     },
     { title: 'Mô tả', dataIndex: 'description' },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'createdAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
+    {
+      title: 'Ngày cập nhật gần nhất',
+      dataIndex: 'updatedAt',
+      render(value) {
+        return formatDay(value)
+      }
+    },
     {
       title: 'Actions',
       render: (_, record) => {

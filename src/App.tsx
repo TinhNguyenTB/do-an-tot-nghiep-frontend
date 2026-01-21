@@ -20,6 +20,7 @@ import { ListRolePage } from '@/pages/Role/list'
 import { SaveRolePage } from '@/pages/Role/save'
 import { ListSubscriptionPage } from '@/pages/Subscription/list'
 import { SaveSubscriptionPage } from '@/pages/Subscription/save'
+import { TransactionHistoryPage } from '@/pages/TransactionHistory'
 import { ListUserPage } from '@/pages/User/list'
 import { SaveUserPage } from '@/pages/User/save'
 import { useRbacStore } from '@/store/rbacStore'
@@ -70,10 +71,10 @@ function App() {
 
           <Route path={MENU_URL.PROFILE} element={<ProfilePage />} />
 
+          <Route path={MENU_URL.TRANSACTION} element={<TransactionHistoryPage />} />
+
           {/* Settings */}
-          <Route element={<RBACRoute requiredPermission={PERMISSIONS.CHANGE_SELF_PASSWORD} />}>
-            <Route path={MENU_URL.CHANGE_PASSWORD} element={<ChangePasswordPage />} />
-          </Route>
+          <Route path={MENU_URL.CHANGE_PASSWORD} element={<ChangePasswordPage />} />
 
           {/* Gói dịch vụ */}
           <Route element={<RBACRoute requiredPermission={PERMISSIONS.READ_SUBSCRIPTIONS} />}>
