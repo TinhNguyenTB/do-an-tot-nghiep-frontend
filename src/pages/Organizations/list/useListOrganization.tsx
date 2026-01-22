@@ -1,17 +1,15 @@
+import { defaultPaginationMeta } from '@/constants/paginationMeta'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
 import axiosInstance from '@/libs/axiosInstance'
-import { PaginationMeta } from '@/services/types'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Popconfirm, Space, TableProps } from 'antd'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
-import { MENU_URL } from '@/constants/menuUrl'
 import { ORGANIZATIONS_QUERY_KEY, useQueryOrganizations } from '@/services/organization'
 import { Organization } from '@/services/organization/type'
-import { defaultPaginationMeta } from '@/constants/paginationMeta'
+import { PaginationMeta } from '@/services/types'
 import { formatDay } from '@/utils/formatDay'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { TableProps } from 'antd'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 const defaultFilters = {
   name: ''
@@ -68,6 +66,7 @@ export const useListOrganization = () => {
       sorter: (a, b) => a.name.localeCompare(b.name)
     },
     { title: 'Số lượng thành viên', dataIndex: 'userCount' },
+    { title: 'Số điện thoại', dataIndex: 'phoneNumber' },
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',

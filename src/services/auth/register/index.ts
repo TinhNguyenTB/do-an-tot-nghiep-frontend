@@ -4,6 +4,7 @@ import {
   RegisterResponse,
   ValidateEmailResponse
 } from '@/services/auth/register/type'
+import { BaseResponse } from '@/services/types'
 
 export const register = async (body: RegisterFormValues) => {
   const { data } = await axiosInstance<RegisterResponse>({
@@ -19,6 +20,15 @@ export const validateEmail = async (body: { email: string }) => {
     url: '/api/auth/check-email',
     data: body,
     method: 'post'
+  })
+  return data
+}
+
+export const handleSendOTPRegister = async (body: { email: string }) => {
+  const { data } = await axiosInstance<BaseResponse<{ expiresIn: number }>>({
+    url: `/api/users/sendOTP`,
+    method: 'POST',
+    data: body
   })
   return data
 }

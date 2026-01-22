@@ -1,7 +1,7 @@
 export interface Organization {
   id: number
   name: string
-  description: string | null
+  phoneNumber: string
   userCount: number
   createdAt: string
   updatedAt: string

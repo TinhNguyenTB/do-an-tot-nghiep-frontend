@@ -1,8 +1,6 @@
 import { CoreInput } from '@/components/CoreInput'
 import { Button, Form, Space, Table } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
-import { MENU_URL } from '@/constants/menuUrl'
 import { useTranslation } from 'react-i18next'
 import { TRANSLATION } from '@/constants/translates'
 import { useListOrganization } from '@/pages/Organizations/list/useListOrganization'
@@ -11,7 +9,7 @@ export const ListOrganizationPage = () => {
   const [values, handles] = useListOrganization()
   const { isLoading, listOrganizations, columns, control, meta } = values
   const { handleReset, onSubmit, handleSubmit, handleTableChange } = handles
-  const navigate = useNavigate()
+
   const { t } = useTranslation(TRANSLATION.COMMON)
 
   return (
@@ -32,13 +30,7 @@ export const ListOrganizationPage = () => {
           </Space>
         </Form.Item>
       </Form>
-      {/* <Button
-        type='primary'
-        onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/addNew`)}
-        style={{ marginBottom: 20 }}
-      >
-        {t('btn.addNew')}
-      </Button> */}
+
       <Table
         scroll={{ x: 'max-content' }}
         columns={columns}

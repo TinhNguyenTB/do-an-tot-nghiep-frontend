@@ -1,6 +1,7 @@
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { register, validateEmail } from '@/services/auth/register'
 import { RegisterFormValues } from '@/services/auth/register/type'
+import { handleVerifyOTP } from '@/services/auth/verify-otp'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
@@ -11,9 +12,9 @@ export const useRegister = () => {
       email: '',
       password: '',
       name: '',
-      isOrganization: false,
       organizationName: '',
-      subscriptionId: undefined
+      subscriptionId: undefined,
+      organizationPhoneNumber: ''
     },
     mode: 'onBlur'
   })
@@ -24,15 +25,31 @@ export const useRegister = () => {
     onSuccess: (res) => toastSuccess(res.message ?? 'Success')
   })
 
+  const { mutateAsync: validateOTP } = useMutation({
+    mutationFn: handleVerifyOTP
+  })
+
   const validateFields = async (): Promise<boolean> => {
-    const isValid = await trigger(['name', 'email', 'password'])
+    const isValid = await trigger([
+      'name',
+      'email',
+      'password',
+      'otp',
+      'organizationName',
+      'organizationPhoneNumber'
+    ])
 
     if (isValid) {
       const validationResponse = await validateAsync({
         email: getValues('email')
       })
 
-      return validationResponse.data.isAvailable
+      const validationOTPResponse = await validateOTP({
+        email: getValues('email'),
+        otp: getValues('otp')
+      })
+
+      return validationResponse.data.isAvailable && validationOTPResponse.data.isValid
     }
     return false
   }
@@ -46,12 +63,11 @@ export const useRegister = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    const { isOrganization, ...rest } = data
     if (!data.subscriptionId) {
       toastError('Vui lòng chọn gói dịch vụ')
       return
     }
-    mutate(rest)
+    mutate(data)
   })
 
   return [{ methodForm }, { validateFields, onSubmit }] as const

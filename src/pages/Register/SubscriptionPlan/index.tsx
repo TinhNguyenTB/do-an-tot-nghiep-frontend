@@ -7,19 +7,15 @@ import { RegisterFormValues } from '@/services/auth/register/type'
 export const SubscriptionPlan = () => {
   // Lấy các hàm cần thiết từ React Hook Form Context
   const { setValue, control } = useFormContext<RegisterFormValues>()
-  const [selectedSubscriptionId, isOrganization] = useWatch({
+  const [selectedSubscriptionId] = useWatch({
     control,
-    name: ['subscriptionId', 'isOrganization']
+    name: ['subscriptionId']
   })
 
   // Fetch danh sách các gói dịch vụ
   const { data, isLoading, isError } = useQuerySubscriptions({ page: 1, size: 20 })
 
   const subscriptions = data?.data.content || []
-  const filteredSubscriptions =
-    isOrganization === false
-      ? subscriptions.filter((sub) => sub.userLimit > 1)
-      : subscriptions.filter((sub) => sub.userLimit === 1)
 
   if (isLoading) {
     return (
@@ -29,7 +25,7 @@ export const SubscriptionPlan = () => {
     )
   }
 
-  if (isError || filteredSubscriptions.length === 0) {
+  if (isError || subscriptions.length === 0) {
     return (
       <div className='text-center p-10 text-red-600'>
         <Typography.Title level={4}>Không tìm thấy gói dịch vụ nào.</Typography.Title>
@@ -46,7 +42,7 @@ export const SubscriptionPlan = () => {
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-      {filteredSubscriptions.map((sub) => (
+      {subscriptions.map((sub) => (
         <Card
           key={sub.id}
           title={sub.name}

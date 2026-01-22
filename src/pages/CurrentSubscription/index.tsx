@@ -97,9 +97,6 @@ export function CurrentSubscriptionPage() {
                 <Title level={3} className='m-0 text-blue-600'>
                   {subData?.data.subscription.name}
                 </Title>
-                <Text type='secondary' className='text-xs'>
-                  ID Giao dịch: {subData?.data.paymentId}
-                </Text>
 
                 <div className='mt-6 space-y-3'>
                   <div className='flex items-center gap-3'>

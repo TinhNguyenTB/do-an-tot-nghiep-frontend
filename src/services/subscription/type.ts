@@ -20,7 +20,6 @@ export interface UserSubscription {
   userId: number
   organizationId: number
   subscriptionId: number
-  paymentId: number
   startDate: string
   endDate: string
   status: string

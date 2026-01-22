@@ -10,7 +10,7 @@ import { PermissionFormValues } from '@/services/permission/type'
 import { useRbacStore } from '@/store/rbacStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const defaultValues: PermissionFormValues = {
@@ -27,7 +27,13 @@ export const useSavePermission = () => {
   const organizationId = useRbacStore((state) => state.organizationId)
 
   const methodForm = useForm<PermissionFormValues>({ defaultValues })
-  const { handleSubmit, reset } = methodForm
+  const { handleSubmit, reset, control } = methodForm
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'endpoints',
+    keyName: 'key'
+  })
 
   const { mutate: create } = useMutation({
     mutationFn: createPermission,
@@ -72,7 +78,7 @@ export const useSavePermission = () => {
   }, [reset, data])
 
   return [
-    { methodForm, id },
-    { onSubmit, onCancel }
+    { methodForm, id, fields },
+    { onSubmit, onCancel, append, remove }
   ] as const
 }

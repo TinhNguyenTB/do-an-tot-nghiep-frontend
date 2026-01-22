@@ -4,8 +4,9 @@ export interface RegisterFormValues {
   email: string
   password: string
   name: string
-  isOrganization?: boolean
-  organizationName?: string
+  otp: string
+  organizationName: string
+  organizationPhoneNumber: string
   subscriptionId: number
 }
 
