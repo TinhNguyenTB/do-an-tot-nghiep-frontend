@@ -5,4 +5,5 @@ export interface Organization {
   userCount: number
   createdAt: string
   updatedAt: string
+  subscriptionName: string
 }

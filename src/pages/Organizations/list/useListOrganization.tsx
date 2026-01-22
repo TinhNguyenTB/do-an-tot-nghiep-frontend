@@ -67,6 +67,7 @@ export const useListOrganization = () => {
     },
     { title: 'Số lượng thành viên', dataIndex: 'userCount' },
     { title: 'Số điện thoại', dataIndex: 'phoneNumber' },
+    { title: 'Gói đăng ký', dataIndex: 'subscriptionName' },
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
@@ -81,31 +82,6 @@ export const useListOrganization = () => {
         return formatDay(value)
       }
     }
-
-    // {
-    //   title: 'Actions',
-    //   render: (_, record) => {
-    //     return (
-    //       <Space size={'large'}>
-    //         <EditOutlined
-    //           style={{ color: 'blue' }}
-    //           onClick={() => navigate(`${MENU_URL.ORGANIZATIONS}/${record.id}`)}
-    //         />
-
-    //         <Popconfirm
-    //           placement='topLeft'
-    //           title='Xác nhận xóa'
-    //           description={`Bạn có chắc muốn xóa tổ chức: ${record.name}?`}
-    //           onConfirm={() => confirmDelete(record)}
-    //           okText='Có'
-    //           cancelText='Không'
-    //         >
-    //           <DeleteOutlined style={{ color: 'red' }} />
-    //         </Popconfirm>
-    //       </Space>
-    //     )
-    //   }
-    // }
   ]
 
   const deleteOrganizationMutation = useMutation({
