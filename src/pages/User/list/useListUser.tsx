@@ -160,7 +160,7 @@ export const useListUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEY] })
-      toastSuccess('Xóa gói người dùng thành công')
+      toastSuccess('Xóa người dùng thành công')
     }
   })
 

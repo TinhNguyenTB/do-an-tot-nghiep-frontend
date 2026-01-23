@@ -2,12 +2,16 @@ import { defaultPaginationMeta } from '@/constants/paginationMeta'
 import { useGlobalMessage } from '@/hooks/useGlobalMessage'
 import { usePaginationAndFilter } from '@/hooks/usePaginationAndFilter'
 import axiosInstance from '@/libs/axiosInstance'
-import { ORGANIZATIONS_QUERY_KEY, useQueryOrganizations } from '@/services/organization'
+import {
+  ORGANIZATIONS_QUERY_KEY,
+  UpdateOrganizationStatus,
+  useQueryOrganizations
+} from '@/services/organization'
 import { Organization } from '@/services/organization/type'
 import { PaginationMeta } from '@/services/types'
 import { formatDay } from '@/utils/formatDay'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { TableProps } from 'antd'
+import { Switch, TableProps } from 'antd'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -81,21 +85,35 @@ export const useListOrganization = () => {
       render(value) {
         return formatDay(value)
       }
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'isActive',
+      key: 'isActive',
+      render: (isActive: boolean, record: Organization) => (
+        <Switch
+          checked={isActive}
+          loading={
+            updateStatusMutation.isPending && updateStatusMutation.variables?.id === record.id
+          }
+          onChange={(checked) => handleStatusChange(record.id, checked)}
+          checkedChildren='Active'
+          unCheckedChildren='Locked'
+        />
+      )
     }
   ]
 
-  const deleteOrganizationMutation = useMutation({
-    mutationFn: async (subscriptionId: string) => {
-      await axiosInstance.delete(`${ORGANIZATIONS_QUERY_KEY}/${subscriptionId}`)
-    },
-    onSuccess: () => {
+  const updateStatusMutation = useMutation({
+    mutationFn: UpdateOrganizationStatus,
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: [ORGANIZATIONS_QUERY_KEY] })
-      toastSuccess('Xóa tổ chức thành công')
+      toastSuccess(res.message ?? 'Cập nhật trạng thái tổ chức thành công')
     }
   })
 
-  const confirmDelete = (org: Organization) => {
-    deleteOrganizationMutation.mutate(org.id.toString())
+  const handleStatusChange = (id: number, checked: boolean) => {
+    updateStatusMutation.mutate({ id, isActive: checked })
   }
 
   return [

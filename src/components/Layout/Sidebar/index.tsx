@@ -123,7 +123,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isMobile, isSidebarOpen, onClose }) =
         {
           label: t('menu.current-subscription'),
           key: MENU_URL.CURRENT_SUBSCRIPTION,
-          icon: <OrderedListOutlined />
+          icon: <OrderedListOutlined />,
+          permission: PERMISSIONS.READ_PAYMENT_HISTORY
         },
         {
           label: t('menu.payment-history'),

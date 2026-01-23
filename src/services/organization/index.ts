@@ -20,3 +20,12 @@ export const useQueryOrganizations = (params: QueryParams) => {
     queryFn: () => fetOrganizations(params)
   })
 }
+
+export const UpdateOrganizationStatus = async (body: { id: number; isActive: boolean }) => {
+  const { data } = await axiosInstance<PageResponse<{ isActive: boolean }>>({
+    url: `${ORGANIZATIONS_QUERY_KEY}/status`,
+    method: 'POST',
+    data: body
+  })
+  return data
+}
