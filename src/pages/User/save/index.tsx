@@ -68,19 +68,20 @@ export const SaveUserPage = () => {
             />
           </Col>
         )}
-        <Col xs={24} md={12} lg={6}>
-          <CoreSelect
-            control={control}
-            name='status'
-            label='Trạng thái'
-            required
-            disabled={!isSuperAdmin}
-            labelPath='label'
-            valuePath='value'
-            options={userStatusOption}
-            rules={{ required: t('validation.required') }}
-          />
-        </Col>
+        {isSuperAdmin && (
+          <Col xs={24} md={12} lg={6}>
+            <CoreSelect
+              control={control}
+              name='status'
+              label='Trạng thái'
+              required
+              labelPath='label'
+              valuePath='value'
+              options={userStatusOption}
+              rules={{ required: t('validation.required') }}
+            />
+          </Col>
+        )}
         <Col xs={24} style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
           <Button danger onClick={onCancel}>
             {t('btn.cancel')}

@@ -81,7 +81,14 @@ export const useListUser = () => {
         title: 'Email',
         dataIndex: 'email'
       },
-      { title: 'Tổ chức', dataIndex: 'organizationName' },
+      ...(isSuperAdmin
+        ? [
+            {
+              title: 'Tổ chức',
+              dataIndex: 'organizationName'
+            }
+          ]
+        : []),
       {
         title: 'Ngày tạo',
         dataIndex: 'createdAt',
